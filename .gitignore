@@ -14,15 +14,6 @@ logs/*.log
 logs/commands/*.json
 logs/daily/*.md
 
-# Intelligence data (personal)
-intelligence/data/*.json
-
-# Self data (private)
-self/diary/*.md
-self/performance/*.json
-self/improvements/*.json
-self/improvements/*.md
-self/backups/
 
 # Schedules and backups
 schedules/

@@ -1,0 +1,22 @@
+{
+  "commands": [
+    {
+      "command": "/start",
+      "category": "system",
+      "timestamp": "2026-04-07T15:18:58.371211",
+      "hour": 15,
+      "day": "tuesday",
+      "date": "2026-04-07"
+    }
+  ],
+  "patterns": {
+    "hourly": {},
+    "daily": {},
+    "sequences": []
+  },
+  "projects": {},
+  "apps": {},
+  "files": {},
+  "predictions": [],
+  "last_analysis": null
+}

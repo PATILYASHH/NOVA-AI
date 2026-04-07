@@ -1,0 +1,45 @@
+{
+  "profile": {
+    "command_success_rates": {
+      "test_cmd": {
+        "success": 1,
+        "total": 1
+      },
+      "Check out all code files and mainly foundry present in code folder this is our main focuse because its erp of our company for now study on foundry file learn code structure stuffs of that code file": {
+        "success": 1,
+        "total": 1
+      },
+      "Just read": {
+        "success": 1,
+        "total": 1
+      },
+      "Hello noca": {
+        "success": 1,
+        "total": 1
+      },
+      "How are u": {
+        "success": 1,
+        "total": 1
+      },
+      "On foundry erp website": {
+        "success": 1,
+        "total": 1
+      },
+      "Hello": {
+        "success": 1,
+        "total": 1
+      },
+      "/start": {
+        "success": 1,
+        "total": 1
+      }
+    },
+    "error_patterns": {},
+    "user_corrections": [],
+    "effective_responses": [],
+    "timing_patterns": {},
+    "path_preferences": {},
+    "workflow_patterns": []
+  },
+  "last_save": "2026-04-07T15:18:58.373512"
+}

@@ -1,0 +1,15 @@
+{
+  "date": "2026-04-07",
+  "commands_executed": 1,
+  "commands_successful": 1,
+  "commands_failed": 0,
+  "errors_encountered": [],
+  "good_actions": [],
+  "mistakes": [],
+  "tasks_completed": 0,
+  "response_quality": [],
+  "self_score": null,
+  "score_reasoning": "",
+  "improvements_needed": [],
+  "strengths_shown": []
+}

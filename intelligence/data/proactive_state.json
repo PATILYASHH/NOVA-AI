@@ -1,0 +1,109 @@
+{
+  "dismissed": [],
+  "history": [
+    {
+      "category": "system_memory",
+      "message": "Memory is at 91.6%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T14:25:53.837502"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 87.8%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T14:30:54.641844"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 89.9%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T14:35:55.570965"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.2%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T14:40:56.327851"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 89.6%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T14:42:58.944876"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 82.1%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T14:47:59.730406"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 83.0%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T14:53:12.340646"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 80.7%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T14:58:13.138243"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 88.5%. Top consumers: node.exe (7.1%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T15:03:13.863959"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 80.5%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T15:23:20.723992"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 97.1%. Top consumers: node.exe (12.0%), node.exe (5.0%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T15:28:23.560852"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 80.4%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T15:35:51.309572"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 80.8%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T15:36:23.745144"
+    }
+  ]
+}

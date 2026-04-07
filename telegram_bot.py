@@ -2675,6 +2675,21 @@ def create_bot() -> Application:
     except Exception as e:
         logger.warning(f"Process auto-kill failed to start: {e}")
 
+    # Schedule daily 5PM auto-push to GitHub
+    try:
+        existing = scheduler.get_task("auto_push_github")
+        if not existing:
+            scheduler.add_task(
+                name="auto_push_github",
+                command="python auto_push.py",
+                schedule_type="daily",
+                schedule_time="17:00",
+                enabled=True
+            )
+            logger.info("Daily 5PM GitHub auto-push scheduled")
+    except Exception as e:
+        logger.warning(f"Auto-push schedule failed: {e}")
+
     # Analyze habits at startup
     try:
         habit_tracker.analyze_patterns()
