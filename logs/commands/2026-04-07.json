@@ -10,6 +10,36 @@
       "user_id": null,
       "project": null,
       "execution_time_ms": null
+    },
+    {
+      "timestamp": "2026-04-07T16:57:00.715586",
+      "command": "open anydesk",
+      "result": "Opened AnyDesk for you.",
+      "success": true,
+      "category": "app",
+      "user_id": null,
+      "project": null,
+      "execution_time_ms": null
+    },
+    {
+      "timestamp": "2026-04-07T16:58:28.837927",
+      "command": "open anydesk",
+      "result": "Opened AnyDesk for you.",
+      "success": true,
+      "category": "app",
+      "user_id": null,
+      "project": null,
+      "execution_time_ms": null
+    },
+    {
+      "timestamp": "2026-04-07T16:59:04.131077",
+      "command": "open anydesk",
+      "result": "Opened AnyDesk for you.",
+      "success": true,
+      "category": "app",
+      "user_id": null,
+      "project": null,
+      "execution_time_ms": null
     }
   ]
 }

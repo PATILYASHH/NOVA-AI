@@ -55,6 +55,10 @@ from intelligence.extras import (
 from core.self_improve import SelfImproveEngine
 from core.personality import Personality
 from intelligence.work_setup import WorkSetupEngine, OnlineBroadcast
+from intelligence.powers import (
+    ScreenVision, WebSearch, FileContentSearch, CodeReview,
+    AutoGitCommit, QuickNotes, AppTracker, SystemDashboard
+)
 
 # Setup logging
 logging.basicConfig(
@@ -105,6 +109,16 @@ nl_router = NLCommandRouter()
 self_improve = SelfImproveEngine(reflection, learning_loop)
 work_setup = WorkSetupEngine()
 personality = Personality()
+
+# Power features
+screen_vision = ScreenVision()
+web_search = WebSearch()
+file_search = FileContentSearch()
+code_review = CodeReview()
+auto_git = AutoGitCommit()
+notes = QuickNotes()
+app_tracker = AppTracker()
+dashboard = SystemDashboard()
 
 # Connect intelligence to brain
 nova.init_intelligence(nlp_engine, reasoning_engine, context_engine,
@@ -1977,6 +1991,154 @@ async def addrule_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text(f"Error: {result.get('error')}")
 
+# ============ POWER FEATURES ============
+
+async def see_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """NOVA reads the screen"""
+    if not is_authorized(update.effective_chat.id):
+        return
+    await update.message.chat.send_action("typing")
+    await update.message.reply_text("Reading your screen...")
+    result = screen_vision.read_screen()
+    if result["success"]:
+        text = result["text"][:3000] if result["text"] else "Screen is empty or couldn't read text."
+        await send_long_message(update, f"**What I see on screen:**\n```\n{text}\n```")
+    else:
+        await update.message.reply_text(f"Can't read screen: {result['error']}")
+
+async def web_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Search the web"""
+    if not is_authorized(update.effective_chat.id):
+        return
+    query = " ".join(context.args) if context.args else ""
+    if not query:
+        await update.message.reply_text("Usage: /web <search query>")
+        return
+    await update.message.chat.send_action("typing")
+    result = web_search.search(query)
+    if result["success"] and result["results"]:
+        text = f"**Search: {query}**\n\n"
+        for i, r in enumerate(result["results"], 1):
+            text += f"{i}. **{r['title']}**\n   {r['snippet']}\n\n"
+        await send_long_message(update, text)
+    else:
+        await update.message.reply_text(f"No results for '{query}'.")
+
+async def fetch_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Fetch a webpage"""
+    if not is_authorized(update.effective_chat.id):
+        return
+    url = " ".join(context.args) if context.args else ""
+    if not url:
+        await update.message.reply_text("Usage: /fetch <url>")
+        return
+    await update.message.chat.send_action("typing")
+    result = web_search.fetch_page(url)
+    if result["success"]:
+        text = f"**{result.get('title', 'Page')}**\n\n{result['text'][:2000]}"
+        await send_long_message(update, text)
+    else:
+        await update.message.reply_text(f"Error: {result['error']}")
+
+async def grep_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Search inside files"""
+    if not is_authorized(update.effective_chat.id):
+        return
+    if not context.args:
+        await update.message.reply_text("Usage: /grep <text> [directory]")
+        return
+    query = context.args[0]
+    directory = context.args[1] if len(context.args) > 1 else "."
+    await update.message.chat.send_action("typing")
+    result = file_search.search(query, directory)
+    if result["success"] and result["results"]:
+        text = f"**Found '{query}' in {result['count']} places:**\n\n"
+        for r in result["results"][:15]:
+            text += f"`{r['file']}:{r['line']}` {r['text'][:60]}\n"
+        await send_long_message(update, text)
+    else:
+        await update.message.reply_text(f"Not found: '{query}'")
+
+async def findfunc_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Find function/class definition"""
+    if not is_authorized(update.effective_chat.id):
+        return
+    if not context.args:
+        await update.message.reply_text("Usage: /findfunc <name> [directory]")
+        return
+    name = context.args[0]
+    directory = context.args[1] if len(context.args) > 1 else "."
+    await update.message.chat.send_action("typing")
+    result = file_search.find_function(name, directory)
+    if result["success"] and result["results"]:
+        text = f"**Found '{name}':**\n\n"
+        for r in result["results"]:
+            text += f"`{r['file']}:{r['line']}` {r['text'][:80]}\n"
+        await send_long_message(update, text)
+    else:
+        await update.message.reply_text(f"Function '{name}' not found.")
+
+async def codereview_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Review code changes"""
+    if not is_authorized(update.effective_chat.id):
+        return
+    repo = " ".join(context.args) if context.args else "."
+    await update.message.chat.send_action("typing")
+    await update.message.reply_text("Reviewing code changes...")
+    result = code_review.review(repo, personality)
+    await send_long_message(update, result)
+
+async def smartcommit_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Auto-generate commit message and commit"""
+    if not is_authorized(update.effective_chat.id):
+        return
+    repo = context.args[0] if context.args else "."
+    await update.message.chat.send_action("typing")
+    result = auto_git.auto_commit(repo, personality=personality)
+    if result["success"]:
+        await update.message.reply_text(f"Committed: {result['message']}")
+    else:
+        await update.message.reply_text(f"Error: {result.get('error', 'Unknown')}")
+
+async def note_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Quick notes"""
+    if not is_authorized(update.effective_chat.id):
+        return
+    if not context.args:
+        text = notes.list_all()
+        await send_long_message(update, text)
+        return
+    action = context.args[0]
+    if action == "del" and len(context.args) > 1:
+        result = notes.delete(int(context.args[1]))
+        await update.message.reply_text(result)
+    elif action == "done" and len(context.args) > 1:
+        result = notes.mark_done(int(context.args[1]))
+        await update.message.reply_text(result)
+    elif action == "search" and len(context.args) > 1:
+        result = notes.search(" ".join(context.args[1:]))
+        await send_long_message(update, result)
+    else:
+        text = " ".join(context.args)
+        result = notes.add(text)
+        await update.message.reply_text(result)
+
+async def apps_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """App usage report"""
+    if not is_authorized(update.effective_chat.id):
+        return
+    date = context.args[0] if context.args else None
+    text = app_tracker.get_report(date)
+    await send_long_message(update, text)
+
+async def dashboard_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """System dashboard"""
+    if not is_authorized(update.effective_chat.id):
+        return
+    await update.message.chat.send_action("typing")
+    text = dashboard.generate()
+    await send_long_message(update, text)
+
 # ============ SCHEDULER COMMANDS ============
 
 async def schedule_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -2584,6 +2746,18 @@ def create_bot() -> Application:
     # Memory recall
     application.add_handler(CommandHandler("recall", recall_cmd))
 
+    # Power features
+    application.add_handler(CommandHandler("see", see_cmd))
+    application.add_handler(CommandHandler("web", web_cmd))
+    application.add_handler(CommandHandler("fetch", fetch_cmd))
+    application.add_handler(CommandHandler("grep", grep_cmd))
+    application.add_handler(CommandHandler("findfunc", findfunc_cmd))
+    application.add_handler(CommandHandler("codereview", codereview_cmd))
+    application.add_handler(CommandHandler("smartcommit", smartcommit_cmd))
+    application.add_handler(CommandHandler("note", note_cmd))
+    application.add_handler(CommandHandler("apps", apps_cmd))
+    application.add_handler(CommandHandler("dashboard", dashboard_cmd))
+
     # User-defined rules
     application.add_handler(CommandHandler("addrule", addrule_cmd))
 
@@ -2689,6 +2863,13 @@ def create_bot() -> Application:
             logger.info("Daily 5PM GitHub auto-push scheduled")
     except Exception as e:
         logger.warning(f"Auto-push schedule failed: {e}")
+
+    # Start app tracker
+    try:
+        app_tracker.start(interval=60)
+        logger.info("App tracker started")
+    except Exception as e:
+        logger.warning(f"App tracker failed: {e}")
 
     # Analyze habits at startup
     try:

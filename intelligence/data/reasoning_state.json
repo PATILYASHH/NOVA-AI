@@ -6,6 +6,13 @@
       "count": 1,
       "confidence": 10,
       "last_seen": "2026-04-07T15:18:58.374512"
+    },
+    {
+      "cause": "open anydesk",
+      "effect": "success:Opened AnyDesk for you.",
+      "count": 3,
+      "confidence": 30,
+      "last_seen": "2026-04-07T16:59:04.139403"
     }
   ],
   "knowledge_base": {
@@ -15,7 +22,14 @@
       "failure": 0,
       "common_errors": [],
       "best_practices": []
+    },
+    "open anydesk": {
+      "total": 3,
+      "success": 3,
+      "failure": 0,
+      "common_errors": [],
+      "best_practices": []
     }
   },
-  "last_save": "2026-04-07T15:18:58.375510"
+  "last_save": "2026-04-07T16:59:04.139403"
 }
