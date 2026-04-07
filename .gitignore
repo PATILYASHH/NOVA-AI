@@ -1,28 +1,10 @@
-# Environment
+# Environment secrets only
 .env
 venv/
 __pycache__/
 *.pyc
 
-# Sensitive data
-memory/ROM/*.db
-memory/RAM/*.json
-memory/RM/*.json
-
-# Logs (too large)
-logs/*.log
-logs/commands/*.json
-logs/daily/*.md
-
-
-# Schedules and backups
-schedules/
-backups/
-
-# Project tracking (personal)
-projects/
-
-# OS
+# OS junk
 *.lock
 Thumbs.db
 desktop.ini

@@ -1,0 +1,635 @@
+2026-04-07 14:25:49,459 - core.memory_system - INFO - NOVA Memory System initialized
+2026-04-07 14:25:49,461 - core.nlp_engine - INFO - NLP Engine initialized
+2026-04-07 14:25:49,462 - core.reasoning_engine - INFO - Reasoning Engine initialized
+2026-04-07 14:25:49,462 - core.context_engine - INFO - Context Engine initialized
+2026-04-07 14:25:49,462 - core.emotion_engine - INFO - Emotion Engine initialized
+2026-04-07 14:25:49,463 - core.learning_loop - INFO - Learning Loop initialized
+2026-04-07 14:25:49,463 - core.goal_planner - INFO - Goal Planner initialized
+2026-04-07 14:25:49,463 - intelligence.smart_automation - INFO - Smart Automation initialized
+2026-04-07 14:25:49,463 - intelligence.anomaly_detector - INFO - Anomaly Detector initialized
+2026-04-07 14:25:49,466 - intelligence.style_learner - INFO - Style Learner initialized
+2026-04-07 14:25:49,467 - core.self_improve - INFO - Self-Improvement Engine initialized
+2026-04-07 14:25:49,467 - intelligence.work_setup - INFO - Work Setup Engine initialized
+2026-04-07 14:25:49,468 - core.nova_brain - INFO - NOVA Brain: All intelligence modules connected
+2026-04-07 14:25:49,468 - intelligence.proactive_assistant - INFO - Proactive Assistant initialized
+2026-04-07 14:25:51,133 - intelligence.proactive_monitor - INFO - Proactive monitor started
+2026-04-07 14:25:51,133 - telegram_bot - INFO - Proactive monitor started
+2026-04-07 14:25:51,134 - intelligence.anomaly_detector - INFO - Anomaly detector started
+2026-04-07 14:25:51,134 - telegram_bot - INFO - Anomaly detector started
+2026-04-07 14:25:51,149 - intelligence.proactive_assistant - INFO - Proactive assistant started in background
+2026-04-07 14:25:51,171 - telegram_bot - INFO - Proactive assistant started
+2026-04-07 14:25:51,234 - intelligence.scheduler - INFO - Task scheduler started
+2026-04-07 14:25:51,271 - telegram_bot - INFO - Task scheduler started
+2026-04-07 14:25:51,280 - telegram_bot - INFO - File watcher started
+2026-04-07 14:25:51,349 - telegram_bot - INFO - Resource history tracker started
+2026-04-07 14:25:51,430 - telegram_bot - INFO - Daily auto-report started
+2026-04-07 14:25:51,499 - telegram_bot - INFO - NOVA AGI-Enhanced bot created with all intelligence modules
+2026-04-07 14:25:51,554 - __main__ - INFO - NOVA AGI-Enhanced is now online and listening
+2026-04-07 14:25:53,806 - telegram_bot - ERROR - Failed to send alert: There is no current event loop in thread 'Thread-3 (_loop)'.
+2026-04-07 14:25:54,777 - telegram_bot - ERROR - Failed to send alert: There is no current event loop in thread 'Thread-1 (_monitor_loop)'.
+2026-04-07 14:25:58,623 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getMe "HTTP/1.1 200 OK"
+2026-04-07 14:26:00,268 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 14:26:00,270 - intelligence.work_setup - INFO - Online notification sent to 1409333377
+2026-04-07 14:26:00,513 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-07 14:26:00,514 - apscheduler.scheduler - INFO - Scheduler started
+2026-04-07 14:26:00,515 - telegram.ext.Application - INFO - Application started
+2026-04-07 14:26:11,253 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:26:21,500 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:26:31,703 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:26:41,961 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:26:52,205 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:27:02,439 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:27:12,689 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:27:22,928 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:27:33,190 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:27:43,820 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:27:54,040 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:28:04,259 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:28:14,479 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:28:24,745 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:28:34,983 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:28:45,217 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:28:55,448 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:29:05,697 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:29:15,937 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:29:26,154 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:29:36,417 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:29:46,653 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:29:56,879 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:30:07,083 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:30:17,298 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:30:27,537 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:30:37,783 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:30:48,017 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:30:54,641 - telegram_bot - ERROR - Failed to send alert: There is no current event loop in thread 'Thread-3 (_loop)'.
+2026-04-07 14:30:58,221 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:30:58,497 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:30:59,457 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 14:31:03,665 - telegram_bot - ERROR - Failed to send alert: There is no current event loop in thread 'Thread-1 (_monitor_loop)'.
+2026-04-07 14:31:08,738 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:31:10,939 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:31:12,141 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 14:31:21,183 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:31:31,434 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:31:41,696 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:31:51,922 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:32:02,176 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:32:12,417 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:32:22,661 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:32:32,877 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:32:43,129 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:32:53,367 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:33:03,736 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:33:13,987 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:33:24,265 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:33:34,507 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:33:44,733 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:33:54,973 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:34:05,216 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:34:15,469 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:34:25,775 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:34:36,015 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:34:46,382 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:34:56,657 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:35:06,886 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:35:17,132 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:35:27,372 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:35:37,623 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:35:47,838 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:35:55,570 - telegram_bot - ERROR - Failed to send alert: There is no current event loop in thread 'Thread-3 (_loop)'.
+2026-04-07 14:35:58,088 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:36:08,304 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:36:14,243 - telegram_bot - ERROR - Failed to send alert: There is no current event loop in thread 'Thread-1 (_monitor_loop)'.
+2026-04-07 14:36:18,521 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:36:28,732 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:36:38,961 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:36:49,197 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:36:59,455 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:37:10,047 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:37:20,257 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:37:30,472 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:37:40,712 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:37:50,971 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:38:01,212 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:38:11,451 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:38:21,699 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:38:31,901 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:38:42,170 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:38:52,380 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:39:02,626 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:39:02,970 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:39:03,971 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 14:39:10,720 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:39:11,441 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 14:39:17,514 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:39:18,251 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 14:39:27,819 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:39:38,100 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:39:48,333 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:39:58,575 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:40:08,810 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:40:19,179 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:40:29,453 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:40:39,690 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:40:49,939 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:40:56,327 - telegram_bot - ERROR - Failed to send alert: There is no current event loop in thread 'Thread-3 (_loop)'.
+2026-04-07 14:41:00,168 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:41:10,419 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:41:20,656 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:41:23,044 - telegram_bot - ERROR - Failed to send alert: There is no current event loop in thread 'Thread-1 (_monitor_loop)'.
+2026-04-07 14:41:30,863 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:41:41,128 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:41:51,373 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:42:01,608 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:42:11,815 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:42:22,046 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:42:32,258 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:42:43,060 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:42:56,067 - core.memory_system - INFO - NOVA Memory System initialized
+2026-04-07 14:42:56,067 - core.nlp_engine - INFO - NLP Engine initialized
+2026-04-07 14:42:56,068 - core.reasoning_engine - INFO - Reasoning Engine initialized
+2026-04-07 14:42:56,068 - core.context_engine - INFO - Context Engine initialized
+2026-04-07 14:42:56,068 - core.emotion_engine - INFO - Emotion Engine initialized
+2026-04-07 14:42:56,069 - core.learning_loop - INFO - Learning Loop initialized
+2026-04-07 14:42:56,069 - core.goal_planner - INFO - Goal Planner initialized
+2026-04-07 14:42:56,069 - intelligence.smart_automation - INFO - Smart Automation initialized
+2026-04-07 14:42:56,070 - intelligence.anomaly_detector - INFO - Anomaly Detector initialized
+2026-04-07 14:42:56,072 - intelligence.style_learner - INFO - Style Learner initialized
+2026-04-07 14:42:56,074 - core.self_improve - INFO - Self-Improvement Engine initialized
+2026-04-07 14:42:56,074 - intelligence.work_setup - INFO - Work Setup Engine initialized
+2026-04-07 14:42:56,074 - core.nova_brain - INFO - NOVA Brain: All intelligence modules connected
+2026-04-07 14:42:56,075 - intelligence.proactive_assistant - INFO - Proactive Assistant initialized
+2026-04-07 14:42:57,206 - intelligence.proactive_monitor - INFO - Proactive monitor started
+2026-04-07 14:42:57,206 - telegram_bot - INFO - Proactive monitor started
+2026-04-07 14:42:57,207 - intelligence.anomaly_detector - INFO - Anomaly detector started
+2026-04-07 14:42:57,207 - telegram_bot - INFO - Anomaly detector started
+2026-04-07 14:42:57,225 - intelligence.proactive_assistant - INFO - Proactive assistant started in background
+2026-04-07 14:42:57,225 - telegram_bot - INFO - Proactive assistant started
+2026-04-07 14:42:57,239 - intelligence.scheduler - INFO - Task scheduler started
+2026-04-07 14:42:57,268 - telegram_bot - INFO - Task scheduler started
+2026-04-07 14:42:57,332 - telegram_bot - INFO - File watcher started
+2026-04-07 14:42:57,395 - telegram_bot - INFO - Resource history tracker started
+2026-04-07 14:42:57,439 - telegram_bot - INFO - Daily auto-report started
+2026-04-07 14:42:57,473 - telegram_bot - INFO - NOVA AGI-Enhanced bot created with all intelligence modules
+2026-04-07 14:42:57,502 - __main__ - INFO - NOVA AGI-Enhanced is now online and listening
+2026-04-07 14:42:58,925 - telegram_bot - INFO - [ALERT-system_memory] Memory is at 89.6%.
+2026-04-07 14:42:59,643 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getMe "HTTP/1.1 200 OK"
+2026-04-07 14:43:00,505 - telegram_bot - INFO - [ALERT-memory_high] Memory usage is high: 89.6% (14GB used)
+2026-04-07 14:43:01,139 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 14:43:01,140 - intelligence.work_setup - INFO - Online notification sent to 1409333377
+2026-04-07 14:43:01,369 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-07 14:43:01,371 - apscheduler.scheduler - INFO - Scheduler started
+2026-04-07 14:43:01,371 - telegram.ext.Application - INFO - Application started
+2026-04-07 14:43:12,345 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:43:22,543 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:43:32,713 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:43:42,994 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:43:53,183 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:44:03,347 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:44:13,584 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:44:23,742 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:44:33,963 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:44:44,142 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:44:46,685 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:44:47,823 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 14:44:56,902 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:45:03,611 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:45:04,995 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 14:45:14,195 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:45:24,408 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:45:34,573 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:45:44,792 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:45:54,957 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:46:05,347 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:46:15,582 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:46:25,749 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:46:35,997 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:46:46,164 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:46:56,383 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:47:06,568 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:47:16,909 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:47:27,089 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:47:37,265 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:47:47,433 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:47:57,653 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:47:59,730 - telegram_bot - INFO - [ALERT-system_memory] Memory is at 82.1%.
+2026-04-07 14:48:07,878 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:48:18,069 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:48:28,240 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:48:38,408 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:48:48,621 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:48:58,794 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:49:09,037 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:49:19,266 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:49:29,431 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:49:39,597 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:49:49,768 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:49:59,996 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:50:10,271 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:50:20,481 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:50:30,713 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:50:40,945 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:50:51,127 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:51:01,343 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:51:11,518 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:51:21,731 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:51:32,031 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:51:42,228 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:51:52,414 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:52:02,636 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:52:12,871 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:52:23,044 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:52:33,237 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:52:43,447 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:52:53,768 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:53:09,421 - core.memory_system - INFO - NOVA Memory System initialized
+2026-04-07 14:53:09,421 - core.nlp_engine - INFO - NLP Engine initialized
+2026-04-07 14:53:09,421 - core.reasoning_engine - INFO - Reasoning Engine initialized
+2026-04-07 14:53:09,421 - core.context_engine - INFO - Context Engine initialized
+2026-04-07 14:53:09,423 - core.emotion_engine - INFO - Emotion Engine initialized
+2026-04-07 14:53:09,423 - core.learning_loop - INFO - Learning Loop initialized
+2026-04-07 14:53:09,424 - core.goal_planner - INFO - Goal Planner initialized
+2026-04-07 14:53:09,424 - intelligence.smart_automation - INFO - Smart Automation initialized
+2026-04-07 14:53:09,424 - intelligence.anomaly_detector - INFO - Anomaly Detector initialized
+2026-04-07 14:53:09,426 - intelligence.style_learner - INFO - Style Learner initialized
+2026-04-07 14:53:09,427 - core.self_improve - INFO - Self-Improvement Engine initialized
+2026-04-07 14:53:09,427 - intelligence.work_setup - INFO - Work Setup Engine initialized
+2026-04-07 14:53:09,427 - core.nova_brain - INFO - NOVA Brain: All intelligence modules connected
+2026-04-07 14:53:09,428 - intelligence.proactive_assistant - INFO - Proactive Assistant initialized
+2026-04-07 14:53:10,486 - intelligence.proactive_monitor - INFO - Proactive monitor started
+2026-04-07 14:53:10,486 - telegram_bot - INFO - Proactive monitor started
+2026-04-07 14:53:10,487 - intelligence.anomaly_detector - INFO - Anomaly detector started
+2026-04-07 14:53:10,487 - telegram_bot - INFO - Anomaly detector started
+2026-04-07 14:53:10,508 - intelligence.proactive_assistant - INFO - Proactive assistant started in background
+2026-04-07 14:53:10,525 - telegram_bot - INFO - Proactive assistant started
+2026-04-07 14:53:10,586 - intelligence.scheduler - INFO - Task scheduler started
+2026-04-07 14:53:10,621 - telegram_bot - INFO - Task scheduler started
+2026-04-07 14:53:10,665 - telegram_bot - INFO - File watcher started
+2026-04-07 14:53:10,727 - telegram_bot - INFO - Resource history tracker started
+2026-04-07 14:53:10,791 - telegram_bot - INFO - Daily auto-report started
+2026-04-07 14:53:10,803 - telegram_bot - INFO - NOVA AGI-Enhanced bot created with all intelligence modules
+2026-04-07 14:53:10,839 - __main__ - INFO - NOVA AGI-Enhanced is now online and listening
+2026-04-07 14:53:12,331 - telegram_bot - INFO - [ALERT-system_memory] Memory is at 83.0%.
+2026-04-07 14:53:13,283 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getMe "HTTP/1.1 200 OK"
+2026-04-07 14:53:14,823 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 14:53:14,866 - intelligence.work_setup - INFO - Online notification sent to 1409333377
+2026-04-07 14:53:15,185 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-07 14:53:15,233 - apscheduler.scheduler - INFO - Scheduler started
+2026-04-07 14:53:15,234 - telegram.ext.Application - INFO - Application started
+2026-04-07 14:53:26,119 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:53:36,406 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:53:46,641 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:53:56,870 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:54:07,115 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:54:17,357 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:54:27,582 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:54:37,835 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:54:48,069 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:54:58,331 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:55:08,596 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:55:18,805 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:55:29,032 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:55:39,286 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:55:49,520 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:55:59,743 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:56:09,999 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:56:20,226 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:56:30,455 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:56:40,715 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:56:50,957 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:57:01,188 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:57:11,440 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:57:19,863 - telegram_bot - INFO - [ALERT-memory_high] Memory usage is high: 85.5% (13GB used)
+2026-04-07 14:57:21,828 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:57:32,065 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:57:42,325 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:57:52,659 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:58:02,890 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:58:13,136 - telegram_bot - INFO - [ALERT-system_memory] Memory is at 80.7%.
+2026-04-07 14:58:13,137 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:58:23,405 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:58:33,693 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:58:43,941 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:58:54,155 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:59:04,414 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:59:14,638 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:59:24,878 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:59:35,179 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:59:45,405 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 14:59:55,635 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:00:05,922 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:00:16,155 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:00:26,376 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:00:36,584 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:00:46,793 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:00:57,038 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:01:07,252 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:01:17,482 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:01:27,713 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:01:37,967 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:01:48,192 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:01:58,455 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:02:08,704 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:02:18,943 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:02:28,397 - telegram_bot - INFO - [ALERT-memory_high] Memory usage is high: 85.8% (13GB used)
+2026-04-07 15:02:29,172 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:02:39,407 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:02:49,748 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:02:59,985 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:03:10,382 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:03:13,863 - telegram_bot - INFO - [ALERT-system_memory] Memory is at 88.5%. Top consumers: node.exe (7.1%)
+2026-04-07 15:03:20,614 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:03:30,856 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:03:41,092 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:03:51,332 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:04:01,541 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:04:11,780 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:04:22,012 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:04:32,301 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:04:42,650 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:04:52,997 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:05:03,214 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:18:18,556 - core.memory_system - INFO - NOVA Memory System initialized
+2026-04-07 15:18:18,557 - core.nlp_engine - INFO - NLP Engine initialized
+2026-04-07 15:18:18,557 - core.reasoning_engine - INFO - Reasoning Engine initialized
+2026-04-07 15:18:18,558 - core.context_engine - INFO - Context Engine initialized
+2026-04-07 15:18:18,558 - core.emotion_engine - INFO - Emotion Engine initialized
+2026-04-07 15:18:18,559 - core.learning_loop - INFO - Learning Loop initialized
+2026-04-07 15:18:18,559 - core.goal_planner - INFO - Goal Planner initialized
+2026-04-07 15:18:18,559 - intelligence.smart_automation - INFO - Smart Automation initialized
+2026-04-07 15:18:18,560 - intelligence.anomaly_detector - INFO - Anomaly Detector initialized
+2026-04-07 15:18:18,562 - intelligence.style_learner - INFO - Style Learner initialized
+2026-04-07 15:18:18,564 - core.self_improve - INFO - Self-Improvement Engine initialized
+2026-04-07 15:18:18,565 - intelligence.work_setup - INFO - Work Setup Engine initialized
+2026-04-07 15:18:18,565 - core.nova_brain - INFO - NOVA Brain: All intelligence modules connected
+2026-04-07 15:18:18,565 - intelligence.proactive_assistant - INFO - Proactive Assistant initialized
+2026-04-07 15:18:20,076 - intelligence.proactive_monitor - INFO - Proactive monitor started
+2026-04-07 15:18:20,077 - telegram_bot - INFO - Proactive monitor started
+2026-04-07 15:18:20,077 - intelligence.anomaly_detector - INFO - Anomaly detector started
+2026-04-07 15:18:20,077 - telegram_bot - INFO - Anomaly detector started
+2026-04-07 15:18:20,084 - intelligence.proactive_assistant - INFO - Proactive assistant started in background
+2026-04-07 15:18:20,084 - telegram_bot - INFO - Proactive assistant started
+2026-04-07 15:18:20,084 - intelligence.scheduler - INFO - Task scheduler started
+2026-04-07 15:18:20,085 - telegram_bot - INFO - Task scheduler started
+2026-04-07 15:18:20,085 - telegram_bot - INFO - File watcher started
+2026-04-07 15:18:20,090 - telegram_bot - INFO - Resource history tracker started
+2026-04-07 15:18:20,091 - telegram_bot - INFO - Daily auto-report started
+2026-04-07 15:18:20,091 - telegram_bot - INFO - NOVA AGI-Enhanced bot created with all intelligence modules
+2026-04-07 15:18:20,091 - __main__ - INFO - NOVA AGI-Enhanced is now online and listening
+2026-04-07 15:18:20,871 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getMe "HTTP/1.1 200 OK"
+2026-04-07 15:18:22,402 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 15:18:22,435 - intelligence.work_setup - INFO - Online notification sent to 1409333377
+2026-04-07 15:18:22,677 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-07 15:18:22,724 - apscheduler.scheduler - INFO - Scheduler started
+2026-04-07 15:18:22,754 - telegram.ext.Application - INFO - Application started
+2026-04-07 15:18:23,537 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:18:23,933 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendChatAction "HTTP/1.1 200 OK"
+2026-04-07 15:18:34,506 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:18:35,455 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendChatAction "HTTP/1.1 200 OK"
+2026-04-07 15:18:46,621 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:18:47,588 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 15:18:57,470 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:18:58,359 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 15:19:07,685 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:19:17,937 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:19:28,182 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:19:38,411 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:19:48,657 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:19:58,902 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:20:09,178 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:20:19,385 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:20:29,650 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:20:39,938 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:20:50,494 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:21:00,734 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:21:11,292 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:21:21,538 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:21:31,888 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:21:42,141 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:21:52,379 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:22:02,603 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:22:12,863 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:22:23,100 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:22:33,340 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:22:43,580 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:22:53,823 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:23:04,059 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:23:14,297 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:23:20,723 - telegram_bot - INFO - [ALERT-system_memory] Memory is at 80.5%.
+2026-04-07 15:23:24,536 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:23:34,744 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:23:45,009 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:23:55,766 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:24:06,011 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:24:16,582 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:24:27,023 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:24:34,600 - telegram_bot - INFO - [ALERT-cpu_high] CPU usage is high: 100.0%
+2026-04-07 15:24:34,600 - telegram_bot - INFO - [ALERT-memory_high] Memory usage is high: 95.9% (15GB used)
+2026-04-07 15:24:37,257 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:24:47,491 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:24:57,716 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:25:07,947 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:25:18,619 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:25:28,857 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:25:39,095 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:25:49,331 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:25:59,576 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:26:09,786 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:26:20,066 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:26:30,291 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:26:40,521 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:26:50,771 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:27:01,018 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:27:11,236 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:27:21,491 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:27:31,836 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:27:42,035 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:27:52,291 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:28:02,530 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:28:12,781 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:28:23,043 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:28:23,560 - telegram_bot - INFO - [ALERT-system_memory] Memory is at 97.1%. Top consumers: node.exe (12.0%), node.exe (5.0%)
+2026-04-07 15:28:33,330 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:28:42,276 - telegram_bot - INFO - [ALERT-memory_high] Memory usage is high: 94.5% (15GB used)
+2026-04-07 15:28:43,567 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:28:53,771 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:29:03,969 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:29:14,172 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:29:24,373 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:29:34,605 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:29:44,855 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:29:55,102 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:30:05,332 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:30:15,573 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:30:25,804 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:30:36,051 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:30:46,263 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:30:56,486 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:31:06,750 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:31:16,975 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:31:27,213 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:31:37,450 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:31:47,749 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:31:58,095 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:32:08,330 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:32:18,572 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:32:28,824 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:32:39,056 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:32:49,335 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:32:59,683 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:33:09,910 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:33:20,169 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:33:30,398 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:33:40,650 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:33:50,937 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:34:01,289 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:34:11,537 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:34:21,770 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:34:32,010 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:34:42,234 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:34:52,502 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:35:02,728 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:35:12,948 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:35:23,235 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 200 OK"
+2026-04-07 15:35:29,404 - core.memory_system - INFO - NOVA Memory System initialized
+2026-04-07 15:35:29,405 - core.nlp_engine - INFO - NLP Engine initialized
+2026-04-07 15:35:29,405 - core.reasoning_engine - INFO - Reasoning Engine initialized
+2026-04-07 15:35:29,406 - core.context_engine - INFO - Context Engine initialized
+2026-04-07 15:35:29,406 - core.emotion_engine - INFO - Emotion Engine initialized
+2026-04-07 15:35:29,407 - core.learning_loop - INFO - Learning Loop initialized
+2026-04-07 15:35:29,407 - core.goal_planner - INFO - Goal Planner initialized
+2026-04-07 15:35:29,408 - intelligence.smart_automation - INFO - Smart Automation initialized
+2026-04-07 15:35:29,408 - intelligence.anomaly_detector - INFO - Anomaly Detector initialized
+2026-04-07 15:35:29,409 - intelligence.style_learner - INFO - Style Learner initialized
+2026-04-07 15:35:29,411 - core.self_improve - INFO - Self-Improvement Engine initialized
+2026-04-07 15:35:29,411 - intelligence.work_setup - INFO - Work Setup Engine initialized
+2026-04-07 15:35:29,411 - core.nova_brain - INFO - NOVA Brain: All intelligence modules connected
+2026-04-07 15:35:29,411 - intelligence.proactive_assistant - INFO - Proactive Assistant initialized
+2026-04-07 15:35:30,578 - intelligence.proactive_monitor - INFO - Proactive monitor started
+2026-04-07 15:35:30,578 - telegram_bot - INFO - Proactive monitor started
+2026-04-07 15:35:30,578 - intelligence.anomaly_detector - INFO - Anomaly detector started
+2026-04-07 15:35:30,579 - telegram_bot - INFO - Anomaly detector started
+2026-04-07 15:35:30,583 - intelligence.proactive_assistant - INFO - Proactive assistant started in background
+2026-04-07 15:35:30,583 - telegram_bot - INFO - Proactive assistant started
+2026-04-07 15:35:30,584 - intelligence.scheduler - INFO - Task scheduler started
+2026-04-07 15:35:30,584 - telegram_bot - INFO - Task scheduler started
+2026-04-07 15:35:30,585 - telegram_bot - INFO - File watcher started
+2026-04-07 15:35:30,590 - telegram_bot - INFO - Resource history tracker started
+2026-04-07 15:35:30,590 - telegram_bot - INFO - Daily auto-report started
+2026-04-07 15:35:30,591 - telegram_bot - INFO - Daily 5PM GitHub auto-push scheduled
+2026-04-07 15:35:30,591 - telegram_bot - INFO - NOVA AGI-Enhanced bot created with all intelligence modules
+2026-04-07 15:35:30,591 - __main__ - INFO - NOVA AGI-Enhanced is now online and listening
+2026-04-07 15:35:31,293 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getMe "HTTP/1.1 200 OK"
+2026-04-07 15:35:32,886 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 15:35:32,888 - intelligence.work_setup - INFO - Online notification sent to 1409333377
+2026-04-07 15:35:33,133 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-07 15:35:33,133 - apscheduler.scheduler - INFO - Scheduler started
+2026-04-07 15:35:33,134 - telegram.ext.Application - INFO - Application started
+2026-04-07 15:35:33,848 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:35:33,850 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:35:38,145 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:35:38,146 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:35:39,363 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:35:39,364 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:35:44,123 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:35:44,124 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:35:45,848 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:35:45,849 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:35:48,597 - core.memory_system - INFO - NOVA Memory System initialized
+2026-04-07 15:35:48,598 - core.nlp_engine - INFO - NLP Engine initialized
+2026-04-07 15:35:48,599 - core.reasoning_engine - INFO - Reasoning Engine initialized
+2026-04-07 15:35:48,599 - core.context_engine - INFO - Context Engine initialized
+2026-04-07 15:35:48,599 - core.emotion_engine - INFO - Emotion Engine initialized
+2026-04-07 15:35:48,599 - core.learning_loop - INFO - Learning Loop initialized
+2026-04-07 15:35:48,599 - core.goal_planner - INFO - Goal Planner initialized
+2026-04-07 15:35:48,600 - intelligence.smart_automation - INFO - Smart Automation initialized
+2026-04-07 15:35:48,600 - intelligence.anomaly_detector - INFO - Anomaly Detector initialized
+2026-04-07 15:35:48,601 - intelligence.style_learner - INFO - Style Learner initialized
+2026-04-07 15:35:48,602 - core.self_improve - INFO - Self-Improvement Engine initialized
+2026-04-07 15:35:48,602 - intelligence.work_setup - INFO - Work Setup Engine initialized
+2026-04-07 15:35:48,602 - core.nova_brain - INFO - NOVA Brain: All intelligence modules connected
+2026-04-07 15:35:48,602 - intelligence.proactive_assistant - INFO - Proactive Assistant initialized
+2026-04-07 15:35:49,556 - intelligence.proactive_monitor - INFO - Proactive monitor started
+2026-04-07 15:35:49,556 - telegram_bot - INFO - Proactive monitor started
+2026-04-07 15:35:49,557 - intelligence.anomaly_detector - INFO - Anomaly detector started
+2026-04-07 15:35:49,557 - telegram_bot - INFO - Anomaly detector started
+2026-04-07 15:35:49,570 - intelligence.proactive_assistant - INFO - Proactive assistant started in background
+2026-04-07 15:35:49,587 - telegram_bot - INFO - Proactive assistant started
+2026-04-07 15:35:49,650 - intelligence.scheduler - INFO - Task scheduler started
+2026-04-07 15:35:49,650 - telegram_bot - INFO - Task scheduler started
+2026-04-07 15:35:49,712 - telegram_bot - INFO - File watcher started
+2026-04-07 15:35:49,755 - telegram_bot - INFO - Resource history tracker started
+2026-04-07 15:35:49,803 - telegram_bot - INFO - Daily auto-report started
+2026-04-07 15:35:49,819 - telegram_bot - INFO - NOVA AGI-Enhanced bot created with all intelligence modules
+2026-04-07 15:35:49,837 - __main__ - INFO - NOVA AGI-Enhanced is now online and listening
+2026-04-07 15:35:51,308 - telegram_bot - INFO - [ALERT-system_memory] Memory is at 80.4%.
+2026-04-07 15:35:51,327 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:35:51,327 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:35:52,515 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getMe "HTTP/1.1 200 OK"
+2026-04-07 15:35:53,847 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:35:53,848 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:35:53,967 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 15:35:53,968 - intelligence.work_setup - INFO - Online notification sent to 1409333377
+2026-04-07 15:35:54,232 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-07 15:35:54,238 - apscheduler.scheduler - INFO - Scheduler started
+2026-04-07 15:35:54,289 - telegram.ext.Application - INFO - Application started
+2026-04-07 15:35:57,454 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:35:57,457 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:35:57,984 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:35:57,986 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:36:01,610 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:36:01,612 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:36:01,659 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:36:01,662 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:36:06,335 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:36:06,336 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:36:07,423 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:36:07,423 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:36:12,114 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:36:12,116 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:36:12,888 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:36:12,889 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:36:15,715 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:36:15,715 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:36:20,649 - core.memory_system - INFO - NOVA Memory System initialized
+2026-04-07 15:36:20,649 - core.nlp_engine - INFO - NLP Engine initialized
+2026-04-07 15:36:20,650 - core.reasoning_engine - INFO - Reasoning Engine initialized
+2026-04-07 15:36:20,650 - core.context_engine - INFO - Context Engine initialized
+2026-04-07 15:36:20,650 - core.emotion_engine - INFO - Emotion Engine initialized
+2026-04-07 15:36:20,650 - core.learning_loop - INFO - Learning Loop initialized
+2026-04-07 15:36:20,650 - core.goal_planner - INFO - Goal Planner initialized
+2026-04-07 15:36:20,650 - intelligence.smart_automation - INFO - Smart Automation initialized
+2026-04-07 15:36:20,651 - intelligence.anomaly_detector - INFO - Anomaly Detector initialized
+2026-04-07 15:36:20,651 - intelligence.style_learner - INFO - Style Learner initialized
+2026-04-07 15:36:20,652 - core.self_improve - INFO - Self-Improvement Engine initialized
+2026-04-07 15:36:20,653 - intelligence.work_setup - INFO - Work Setup Engine initialized
+2026-04-07 15:36:20,653 - core.nova_brain - INFO - NOVA Brain: All intelligence modules connected
+2026-04-07 15:36:20,653 - intelligence.proactive_assistant - INFO - Proactive Assistant initialized
+2026-04-07 15:36:21,059 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:36:21,059 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:36:21,655 - intelligence.proactive_monitor - INFO - Proactive monitor started
+2026-04-07 15:36:21,655 - telegram_bot - INFO - Proactive monitor started
+2026-04-07 15:36:21,656 - intelligence.anomaly_detector - INFO - Anomaly detector started
+2026-04-07 15:36:21,656 - telegram_bot - INFO - Anomaly detector started
+2026-04-07 15:36:21,674 - intelligence.proactive_assistant - INFO - Proactive assistant started in background
+2026-04-07 15:36:21,691 - telegram_bot - INFO - Proactive assistant started
+2026-04-07 15:36:21,721 - intelligence.scheduler - INFO - Task scheduler started
+2026-04-07 15:36:21,738 - telegram_bot - INFO - Task scheduler started
+2026-04-07 15:36:21,786 - telegram_bot - INFO - File watcher started
+2026-04-07 15:36:21,806 - telegram_bot - INFO - Resource history tracker started
+2026-04-07 15:36:21,834 - telegram_bot - INFO - Daily auto-report started
+2026-04-07 15:36:21,847 - telegram_bot - INFO - NOVA AGI-Enhanced bot created with all intelligence modules
+2026-04-07 15:36:21,863 - __main__ - INFO - NOVA AGI-Enhanced is now online and listening
+2026-04-07 15:36:23,745 - telegram_bot - INFO - [ALERT-system_memory] Memory is at 80.8%.
+2026-04-07 15:36:24,228 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:36:24,229 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:36:24,374 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getMe "HTTP/1.1 200 OK"
+2026-04-07 15:36:25,939 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/sendMessage "HTTP/1.1 200 OK"
+2026-04-07 15:36:25,940 - intelligence.work_setup - INFO - Online notification sent to 1409333377
+2026-04-07 15:36:26,186 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-07 15:36:26,187 - apscheduler.scheduler - INFO - Scheduler started
+2026-04-07 15:36:26,200 - telegram.ext.Application - INFO - Application started
+2026-04-07 15:36:29,912 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:36:29,913 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-04-07 15:36:30,074 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8699424895:AAHpIKlffsHfTQUEs0-PeMUsBu8ytXsJYCo/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-07 15:36:30,075 - telegram_bot - ERROR - Error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running

@@ -1,0 +1,58 @@
+{
+  "date": "2026-04-07",
+  "conversations": [
+    {
+      "user": "Check out all code files and mainly foundry present in code folder this is our main focuse because its erp of our company for now study on foundry file learn code structure stuffs of that code file",
+      "nova": "What would you like me to do with the file? (read, write, find, delete)",
+      "timestamp": "2026-04-07T14:30:59.464244"
+    },
+    {
+      "user": "Just read",
+      "nova": "I'm ready to help. Tell me what you need or use /help.",
+      "timestamp": "2026-04-07T14:31:12.145499"
+    },
+    {
+      "user": "Hello noca",
+      "nova": "Good afternoon, Yash. How can I help?",
+      "timestamp": "2026-04-07T14:39:03.973758"
+    },
+    {
+      "user": "How are u",
+      "nova": "I can help with that. Try using /help to see what I can do, or describe your task.",
+      "timestamp": "2026-04-07T14:39:11.443902"
+    },
+    {
+      "user": "Hello",
+      "nova": "Afternoon. What are we working on?",
+      "timestamp": "2026-04-07T14:44:47.826656"
+    },
+    {
+      "user": "On foundry erp website",
+      "nova": "What should I search or open?",
+      "timestamp": "2026-04-07T14:45:04.996983"
+    },
+    {
+      "user": "Hello",
+      "nova": "Hey Yash, what's going on?",
+      "timestamp": "2026-04-07T15:18:47.593609"
+    }
+  ],
+  "commands_executed": [
+    {
+      "command": "/start",
+      "result": "Session started",
+      "success": true,
+      "category": "system",
+      "timestamp": "2026-04-07T15:18:58.362591"
+    }
+  ],
+  "files_modified": [],
+  "projects_worked": [],
+  "insights": [],
+  "errors": [],
+  "statistics": {
+    "total_commands": 1,
+    "total_messages": 7,
+    "session_count": 9
+  }
+}

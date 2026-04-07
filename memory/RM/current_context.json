@@ -1,0 +1,116 @@
+{
+  "session_start": "2026-04-07T14:25:49.457787",
+  "last_activity": "2026-04-07T15:18:47.591608",
+  "conversation": [
+    {
+      "role": "user",
+      "content": "Hello noca",
+      "timestamp": "2026-04-07T14:39:02.978436"
+    },
+    {
+      "role": "nova",
+      "content": "Good afternoon, Yash. How can I help?",
+      "timestamp": "2026-04-07T14:39:03.971248"
+    },
+    {
+      "role": "user",
+      "content": "Hello noca",
+      "timestamp": "2026-04-07T14:39:03.972253"
+    },
+    {
+      "role": "nova",
+      "content": "Good afternoon, Yash. How can I help?",
+      "timestamp": "2026-04-07T14:39:03.973251"
+    },
+    {
+      "role": "user",
+      "content": "How are u",
+      "timestamp": "2026-04-07T14:39:10.728233"
+    },
+    {
+      "role": "nova",
+      "content": "I can help with that. Try using /help to see what I can do, or describe your task.",
+      "timestamp": "2026-04-07T14:39:11.441909"
+    },
+    {
+      "role": "user",
+      "content": "How are u",
+      "timestamp": "2026-04-07T14:39:11.442900"
+    },
+    {
+      "role": "nova",
+      "content": "I can help with that. Try using /help to see what I can do, or describe your task.",
+      "timestamp": "2026-04-07T14:39:11.442900"
+    },
+    {
+      "role": "user",
+      "content": "Hello",
+      "timestamp": "2026-04-07T14:44:46.700045"
+    },
+    {
+      "role": "nova",
+      "content": "Afternoon. What are we working on?",
+      "timestamp": "2026-04-07T14:44:47.823615"
+    },
+    {
+      "role": "user",
+      "content": "Hello",
+      "timestamp": "2026-04-07T14:44:47.824668"
+    },
+    {
+      "role": "nova",
+      "content": "Afternoon. What are we working on?",
+      "timestamp": "2026-04-07T14:44:47.825629"
+    },
+    {
+      "role": "user",
+      "content": "On foundry erp website",
+      "timestamp": "2026-04-07T14:45:03.857915"
+    },
+    {
+      "role": "nova",
+      "content": "What should I search or open?",
+      "timestamp": "2026-04-07T14:45:04.995019"
+    },
+    {
+      "role": "user",
+      "content": "On foundry erp website",
+      "timestamp": "2026-04-07T14:45:04.995974"
+    },
+    {
+      "role": "nova",
+      "content": "What should I search or open?",
+      "timestamp": "2026-04-07T14:45:04.996983"
+    },
+    {
+      "role": "user",
+      "content": "Hello",
+      "timestamp": "2026-04-07T15:18:23.933720"
+    },
+    {
+      "role": "nova",
+      "content": "Hey Yash, what's going on?",
+      "timestamp": "2026-04-07T15:18:47.589610"
+    },
+    {
+      "role": "user",
+      "content": "Hello",
+      "timestamp": "2026-04-07T15:18:47.590607"
+    },
+    {
+      "role": "nova",
+      "content": "Hey Yash, what's going on?",
+      "timestamp": "2026-04-07T15:18:47.591608"
+    }
+  ],
+  "current_task": null,
+  "active_project": null,
+  "recent_commands": [
+    {
+      "command": "/start",
+      "result": "Session started",
+      "timestamp": "2026-04-07T15:18:58.361591"
+    }
+  ],
+  "temp_data": {}
+}
