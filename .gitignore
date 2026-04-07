@@ -1,0 +1,37 @@
+# Environment
+.env
+venv/
+__pycache__/
+*.pyc
+
+# Sensitive data
+memory/ROM/*.db
+memory/RAM/*.json
+memory/RM/*.json
+
+# Logs (too large)
+logs/*.log
+logs/commands/*.json
+logs/daily/*.md
+
+# Intelligence data (personal)
+intelligence/data/*.json
+
+# Self data (private)
+self/diary/*.md
+self/performance/*.json
+self/improvements/*.json
+self/improvements/*.md
+self/backups/
+
+# Schedules and backups
+schedules/
+backups/
+
+# Project tracking (personal)
+projects/
+
+# OS
+*.lock
+Thumbs.db
+desktop.ini
