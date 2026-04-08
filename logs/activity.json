@@ -1,42 +1,6 @@
 {
   "activities": [
     {
-      "timestamp": "2026-04-07T21:56:25.571199",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:56:29.873507",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:57:00.736659",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:57:04.990218",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:57:35.787679",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:57:39.982770",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
       "timestamp": "2026-04-07T21:58:10.661597",
       "type": "error",
       "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
@@ -5998,6 +5962,42 @@
       "timestamp": "2026-04-08T13:34:12.357143",
       "type": "error",
       "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:11:41.123407",
+      "type": "error",
+      "description": "httpx.ConnectError: [Errno 11001] getaddrinfo failed",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:11:48.440764",
+      "type": "error",
+      "description": "httpx.ConnectError: [Errno 11002] getaddrinfo failed",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:11:49.465072",
+      "type": "error",
+      "description": "httpx.ConnectError: [Errno 11002] getaddrinfo failed",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:11:50.968519",
+      "type": "error",
+      "description": "httpx.ConnectError: [Errno 11002] getaddrinfo failed",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:11:53.391608",
+      "type": "error",
+      "description": "httpx.ConnectError: [Errno 11002] getaddrinfo failed",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:11:56.761732",
+      "type": "error",
+      "description": "httpx.ConnectError: [Errno 11002] getaddrinfo failed",
       "metadata": {}
     }
   ]
