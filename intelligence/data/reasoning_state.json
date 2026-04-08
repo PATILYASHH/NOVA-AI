@@ -10,9 +10,9 @@
     {
       "cause": "open anydesk",
       "effect": "success:Opened AnyDesk for you.",
-      "count": 3,
-      "confidence": 30,
-      "last_seen": "2026-04-07T16:59:04.139403"
+      "count": 4,
+      "confidence": 40,
+      "last_seen": "2026-04-07T18:34:34.345397"
     }
   ],
   "knowledge_base": {
@@ -24,12 +24,12 @@
       "best_practices": []
     },
     "open anydesk": {
-      "total": 3,
-      "success": 3,
+      "total": 4,
+      "success": 4,
       "failure": 0,
       "common_errors": [],
       "best_practices": []
     }
   },
-  "last_save": "2026-04-07T16:59:04.139403"
+  "last_save": "2026-04-07T18:34:34.345397"
 }

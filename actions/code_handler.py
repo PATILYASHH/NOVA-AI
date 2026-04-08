@@ -21,8 +21,8 @@ class CodeHandler:
         "node": "node",
         "javascript": "node",
         "js": "node",
-        "powershell": "powershell -Command",
-        "ps1": "powershell -File",
+        "powershell": "powershell -ExecutionPolicy Bypass -File",
+        "ps1": "powershell -ExecutionPolicy Bypass -File",
         "batch": "cmd /c",
         "bat": "cmd /c",
     }

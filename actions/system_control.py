@@ -19,23 +19,46 @@ class SystemControl:
     APPS = {
         "notepad": "notepad.exe",
         "calculator": "calc.exe",
+        "calc": "calc.exe",
         "explorer": "explorer.exe",
+        "file explorer": "explorer.exe",
+        "files": "explorer.exe",
         "cmd": "cmd.exe",
+        "command prompt": "cmd.exe",
         "powershell": "powershell.exe",
         "vscode": "code",
         "vs code": "code",
+        "visual studio code": "code",
+        "code": "code",
         "chrome": "chrome",
+        "google chrome": "chrome",
         "firefox": "firefox",
         "edge": "msedge",
+        "microsoft edge": "msedge",
+        "brave": "brave",
         "word": "winword",
+        "microsoft word": "winword",
         "excel": "excel",
+        "microsoft excel": "excel",
         "outlook": "outlook",
         "teams": "teams",
+        "microsoft teams": "teams",
         "slack": "slack",
+        "discord": "discord",
         "spotify": "spotify",
         "vlc": "vlc",
         "terminal": "wt.exe",
+        "windows terminal": "wt.exe",
         "task manager": "taskmgr.exe",
+        "taskmgr": "taskmgr.exe",
+        "paint": "mspaint.exe",
+        "snipping tool": "SnippingTool.exe",
+        "settings": "ms-settings:",
+        "control panel": "control.exe",
+        "tally": "tally",
+        "whatsapp": "whatsapp",
+        "telegram": "telegram",
+        "postman": "postman",
     }
 
     @staticmethod
@@ -80,8 +103,14 @@ class SystemControl:
                 command = app_name
 
             # Use start command for Windows
+            # Only quote if command contains spaces (quoting breaks PATH lookup for short names)
+            if " " in command:
+                cmd_str = f'start "" "{command}"'
+            else:
+                cmd_str = f'start "" {command}'
+
             subprocess.Popen(
-                f'start "" "{command}"',
+                cmd_str,
                 shell=True,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL

@@ -136,6 +136,590 @@
       "priority": 7,
       "action": "check_memory",
       "timestamp": "2026-04-07T16:06:40.723128"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 95.6%. Top consumers: ollama.exe (12.7%), node.exe (6.3%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T17:51:42.095091"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 83.5%. Top consumers: ollama.exe (26.1%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T17:56:42.710077"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 95.9%. Top consumers: Code.exe (5.7%), vmmem (7.1%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T18:01:44.895994"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.9%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T18:06:45.603048"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 87.9%. Top consumers: aswidsagent.exe (5.3%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T18:11:46.392825"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 90.5%. Top consumers: aswidsagent.exe (6.6%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T18:16:47.274974"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 87.1%. Top consumers: aswidsagent.exe (7.8%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T18:21:48.239131"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 85.3%. Top consumers: aswidsagent.exe (6.8%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T18:26:48.965613"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.7%. Top consumers: MemCompression (5.1%), aswidsagent.exe (8.0%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T18:31:49.953202"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 83.6%. Top consumers: aswidsagent.exe (7.2%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T18:36:50.817535"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 87.8%. Top consumers: aswidsagent.exe (7.4%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T18:41:51.642041"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 85.0%. Top consumers: aswidsagent.exe (7.4%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T18:46:52.461333"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.4%. Top consumers: aswidsagent.exe (8.5%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T18:51:53.241537"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 85.9%. Top consumers: aswidsagent.exe (7.3%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T18:56:54.485498"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 87.7%. Top consumers: aswidsagent.exe (8.3%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T19:01:55.213705"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 85.4%. Top consumers: aswidsagent.exe (7.2%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T19:06:55.966075"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 89.6%. Top consumers: aswidsagent.exe (8.4%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T19:11:57.184184"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 89.1%. Top consumers: aswidsagent.exe (7.8%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T19:16:57.987677"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.1%. Top consumers: aswidsagent.exe (8.4%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T19:21:58.738435"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 83.3%. Top consumers: aswidsagent.exe (7.1%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T19:26:59.478196"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 87.8%. Top consumers: aswidsagent.exe (8.3%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T19:32:00.173203"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 85.6%. Top consumers: aswidsagent.exe (6.6%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T19:37:00.919824"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 88.6%. Top consumers: aswidsagent.exe (8.4%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T19:42:01.626004"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 85.7%. Top consumers: aswidsagent.exe (6.8%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T19:47:02.395292"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.8%. Top consumers: aswidsagent.exe (8.2%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T19:52:03.205679"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 85.5%. Top consumers: aswidsagent.exe (7.6%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T19:57:03.950994"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.5%. Top consumers: aswidsagent.exe (8.0%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T20:02:04.777542"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.3%. Top consumers: aswidsagent.exe (6.6%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T20:07:05.555534"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 87.6%. Top consumers: aswidsagent.exe (8.2%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T20:12:06.938182"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.6%. Top consumers: aswidsagent.exe (6.6%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T20:17:08.333264"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 87.5%. Top consumers: aswidsagent.exe (8.2%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T20:22:09.159490"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.8%. Top consumers: aswidsagent.exe (6.7%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T20:27:09.909290"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.6%. Top consumers: aswidsagent.exe (8.3%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T20:32:10.680510"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.2%. Top consumers: aswidsagent.exe (6.1%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T20:37:11.431952"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 87.2%. Top consumers: aswidsagent.exe (8.2%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T20:42:12.253477"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.2%. Top consumers: aswidsagent.exe (6.7%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T20:47:12.991688"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 91.0%. Top consumers: aswidsagent.exe (8.3%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T20:52:15.112436"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 87.8%. Top consumers: aswidsagent.exe (6.8%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T20:57:15.960729"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 89.4%. Top consumers: aswidsagent.exe (8.1%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T21:02:16.724700"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 89.3%. Top consumers: aswidsagent.exe (7.1%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T21:07:17.547092"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 89.8%. Top consumers: aswidsagent.exe (8.2%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T21:12:18.358223"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 89.2%. Top consumers: aswidsagent.exe (7.2%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T21:17:19.093171"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.1%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T21:22:19.859031"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.4%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T21:27:20.588379"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.9%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T21:32:21.344815"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.8%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T21:37:22.050554"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.5%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T21:42:22.835627"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 83.9%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T21:47:23.549190"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.8%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T21:52:24.303560"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 85.4%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T21:57:25.097000"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.9%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T22:02:25.849111"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 85.2%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T22:07:26.662580"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 87.6%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T22:12:27.386091"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.8%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T22:17:28.132841"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.3%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T22:22:28.949582"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 85.2%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T22:27:29.713884"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 88.9%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T22:32:30.532987"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.2%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T22:37:31.284415"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.3%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T22:42:32.025753"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.3%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T22:47:32.799836"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.0%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T22:52:33.641107"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.1%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T22:57:34.385404"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 86.2%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T23:02:35.211676"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 88.8%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T23:07:35.954304"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 85.7%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T23:12:36.678553"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 91.2%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-07T23:17:37.670587"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 99.6%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-08T10:16:38.683201"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.0%. Top consumers: node.exe (5.0%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-08T10:21:39.726310"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 89.1%. Top consumers: node.exe (5.0%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-08T10:26:40.814842"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 82.7%. Top consumers: node.exe (7.5%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-08T10:31:41.800511"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 89.3%. Top consumers: node.exe (15.4%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-08T10:56:47.243730"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 87.9%.",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-08T14:01:48.884576"
+    },
+    {
+      "category": "system_memory",
+      "message": "Memory is at 84.5%. Top consumers: node.exe (16.7%)",
+      "reason": "High memory usage detected",
+      "priority": 7,
+      "action": "check_memory",
+      "timestamp": "2026-04-08T14:16:51.592780"
     }
   ]
 }

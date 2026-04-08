@@ -31,6 +31,14 @@
       "hour": 16,
       "day": "tuesday",
       "date": "2026-04-07"
+    },
+    {
+      "command": "open anydesk",
+      "category": "app",
+      "timestamp": "2026-04-07T18:34:34.343402",
+      "hour": 18,
+      "day": "tuesday",
+      "date": "2026-04-07"
     }
   ],
   "patterns": {
@@ -41,12 +49,13 @@
   "projects": {},
   "apps": {
     "anydesk": {
-      "count": 3,
+      "count": 4,
       "hours": {
-        "16": 3
+        "16": 3,
+        "18": 1
       },
       "days": {
-        "tuesday": 3
+        "tuesday": 4
       }
     }
   },

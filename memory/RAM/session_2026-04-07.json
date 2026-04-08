@@ -85,6 +85,16 @@
       "user": "No anydesk is not opened check problem and open it",
       "nova": "Opened AnyDesk for you.",
       "timestamp": "2026-04-07T16:59:05.181700"
+    },
+    {
+      "user": "Hello",
+      "nova": "Hey Yash, what's up?",
+      "timestamp": "2026-04-07T17:50:50.021643"
+    },
+    {
+      "user": "Open anydesk",
+      "nova": "Opened AnyDesk for you.",
+      "timestamp": "2026-04-07T18:34:35.370214"
     }
   ],
   "commands_executed": [
@@ -115,6 +125,13 @@
       "success": true,
       "category": "app",
       "timestamp": "2026-04-07T16:59:04.132043"
+    },
+    {
+      "command": "open anydesk",
+      "result": "Opened AnyDesk for you.",
+      "success": true,
+      "category": "app",
+      "timestamp": "2026-04-07T18:34:34.331682"
     }
   ],
   "files_modified": [],
@@ -122,8 +139,8 @@
   "insights": [],
   "errors": [],
   "statistics": {
-    "total_commands": 4,
-    "total_messages": 17,
-    "session_count": 12
+    "total_commands": 5,
+    "total_messages": 19,
+    "session_count": 13
   }
 }

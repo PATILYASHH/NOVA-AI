@@ -40,6 +40,16 @@
       "user_id": null,
       "project": null,
       "execution_time_ms": null
+    },
+    {
+      "timestamp": "2026-04-07T18:34:34.325684",
+      "command": "open anydesk",
+      "result": "Opened AnyDesk for you.",
+      "success": true,
+      "category": "app",
+      "user_id": null,
+      "project": null,
+      "execution_time_ms": null
     }
   ]
 }
