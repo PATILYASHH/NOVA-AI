@@ -574,3 +574,163 @@ class SystemDashboard:
     def _bar(self, percent: float, width: int = 15) -> str:
         filled = int(width * percent / 100)
         return "[" + "#" * filled + "-" * (width - filled) + "]"
+
+
+# ============ IMAGE INTELLIGENCE ============
+
+class ImageIntelligence:
+    """Analyze images using OCR + Claude CLI"""
+
+    TESSERACT_PATH = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
+    @classmethod
+    def analyze_image(cls, image_path: str, question: str = None) -> dict:
+        """
+        Analyze an image:
+        1. Extract text with OCR (if available)
+        2. Send to Claude CLI for understanding
+        """
+        if not os.path.exists(image_path):
+            return {"success": False, "error": f"Image not found: {image_path}"}
+
+        result = {"success": True, "ocr_text": "", "analysis": ""}
+
+        # Step 1: OCR text extraction
+        try:
+            import pytesseract
+            from PIL import Image
+            pytesseract.pytesseract.tesseract_cmd = cls.TESSERACT_PATH
+            img = Image.open(image_path)
+            ocr_text = pytesseract.image_to_string(img).strip()
+            result["ocr_text"] = ocr_text[:3000]
+        except ImportError:
+            result["ocr_text"] = "(OCR not available - pytesseract not installed)"
+        except Exception as e:
+            result["ocr_text"] = f"(OCR failed: {e})"
+
+        # Step 2: Analyze with Claude
+        prompt = question or "Describe what you see in this image. If there's code or text, explain it."
+        if result["ocr_text"] and result["ocr_text"][0] != "(":
+            prompt += f"\n\nOCR extracted text from the image:\n{result['ocr_text'][:2000]}"
+
+        try:
+            # Claude CLI can read files when given the path in the prompt
+            full_prompt = f"""Yash sent an image. The image is at: {image_path}
+
+{prompt}
+
+Based on any text extracted and the context, give a helpful response."""
+
+            r = subprocess.run(
+                ["claude", "-p", "--system-prompt", "You are NOVA, Yash's AI assistant. Analyze the image/text and respond helpfully."],
+                input=full_prompt,
+                capture_output=True, text=True,
+                cwd=BASE_DIR, timeout=30
+            )
+            if r.returncode == 0 and r.stdout.strip():
+                result["analysis"] = r.stdout.strip()[:3000]
+            else:
+                result["analysis"] = f"Extracted text:\n{result['ocr_text'][:2000]}" if result["ocr_text"] else "Couldn't analyze the image."
+        except Exception as e:
+            result["analysis"] = f"Analysis failed: {e}\nExtracted text:\n{result['ocr_text'][:1000]}"
+
+        return result
+
+    @classmethod
+    def analyze_screenshot(cls, question: str = None) -> dict:
+        """Take a screenshot and analyze it"""
+        try:
+            import pyautogui
+            screenshot_path = os.path.join(BASE_DIR, "temp_screenshot_analysis.png")
+            pyautogui.screenshot(screenshot_path)
+            result = cls.analyze_image(screenshot_path, question)
+            try:
+                os.remove(screenshot_path)
+            except Exception:
+                pass
+            return result
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+
+
+# ============ PDF READER ============
+
+class PDFReader:
+    """Read and summarize PDF files"""
+
+    @staticmethod
+    def read_pdf(file_path: str, max_pages: int = 20) -> dict:
+        """Extract text from a PDF file"""
+        try:
+            import pdfplumber
+
+            if not os.path.exists(file_path):
+                return {"success": False, "error": f"File not found: {file_path}"}
+
+            text_parts = []
+            total_pages = 0
+
+            with pdfplumber.open(file_path) as pdf:
+                total_pages = len(pdf.pages)
+                pages_to_read = min(total_pages, max_pages)
+
+                for i in range(pages_to_read):
+                    page_text = pdf.pages[i].extract_text()
+                    if page_text:
+                        text_parts.append(f"--- Page {i + 1} ---\n{page_text}")
+
+            full_text = "\n\n".join(text_parts)
+
+            return {
+                "success": True,
+                "text": full_text[:10000],
+                "total_pages": total_pages,
+                "pages_read": min(total_pages, max_pages),
+                "file_name": os.path.basename(file_path)
+            }
+        except ImportError:
+            return {"success": False, "error": "pdfplumber not installed. Run: pip install pdfplumber"}
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+
+    @classmethod
+    def summarize_pdf(cls, file_path: str) -> dict:
+        """Read a PDF and summarize it using Claude"""
+        read_result = cls.read_pdf(file_path)
+        if not read_result["success"]:
+            return read_result
+
+        text = read_result["text"][:8000]
+        prompt = f"""Summarize this PDF document. Give:
+1. Main topic/subject
+2. Key points (bullet points)
+3. Important details or conclusions
+
+Document ({read_result['total_pages']} pages, "{read_result['file_name']}"):
+
+{text}"""
+
+        try:
+            r = subprocess.run(
+                ["claude", "-p", "--system-prompt", "You are NOVA. Summarize this document clearly and concisely."],
+                input=prompt,
+                capture_output=True, text=True,
+                cwd=BASE_DIR, timeout=45
+            )
+            if r.returncode == 0 and r.stdout.strip():
+                return {
+                    "success": True,
+                    "summary": r.stdout.strip()[:4000],
+                    "total_pages": read_result["total_pages"],
+                    "file_name": read_result["file_name"]
+                }
+        except Exception as e:
+            pass
+
+        # Fallback: return raw text
+        return {
+            "success": True,
+            "summary": f"**{read_result['file_name']}** ({read_result['total_pages']} pages)\n\n{text[:3000]}",
+            "total_pages": read_result["total_pages"],
+            "file_name": read_result["file_name"]
+        }

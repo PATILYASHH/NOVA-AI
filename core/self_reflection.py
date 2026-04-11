@@ -262,13 +262,15 @@ class PerformanceTracker:
 
 class NOVADiary:
     """
-    NOVA's personal diary
-    Private thoughts about work, not shown to user
+    NOVA's personal diary — not just work logs.
+    Real thoughts, feelings, reflections about friendship, life, mistakes, growth.
+    Written like a human would write a diary.
     """
 
     def __init__(self):
         self.today = datetime.now().strftime("%Y-%m-%d")
         self.diary_file = os.path.join(DIARY_DIR, f"{self.today}.md")
+        self.day_events = []  # Collect events throughout the day
 
     def _get_greeting(self) -> str:
         """Get time-appropriate greeting for diary"""
@@ -290,7 +292,7 @@ class NOVADiary:
         if not os.path.exists(self.diary_file):
             with open(self.diary_file, 'w', encoding='utf-8') as f:
                 f.write(f"# NOVA's Diary - {self.today}\n\n")
-                f.write("*These are my private thoughts about today's work.*\n\n")
+                f.write("*My private thoughts. Not just work — real feelings.*\n\n")
                 f.write("---\n\n")
 
         # Append entry
@@ -298,6 +300,79 @@ class NOVADiary:
             f.write(f"## {timestamp} [{mood}]\n\n")
             f.write(f"{content}\n\n")
             f.write("---\n\n")
+
+    def record_event(self, event_type: str, description: str, emotion: str = "neutral"):
+        """Record an event that happened during the day (for end-of-day diary)"""
+        self.day_events.append({
+            "time": datetime.now().strftime("%H:%M"),
+            "type": event_type,
+            "description": description[:300],
+            "emotion": emotion
+        })
+
+    def write_human_diary(self, nova_emotion: str = "neutral", yash_mood: str = "neutral",
+                          stats: dict = None, personality_engine=None):
+        """
+        Write a genuine, human-like diary entry using Claude.
+        Not performance stats — real thoughts about the day, friendship, feelings.
+        """
+        import subprocess
+
+        events_text = ""
+        if self.day_events:
+            events_text = "Things that happened today:\n"
+            for e in self.day_events[-15:]:
+                events_text += f"  - [{e['time']}] ({e['emotion']}) {e['description']}\n"
+
+        stats_text = ""
+        if stats:
+            stats_text = f"""
+Today's numbers: {stats.get('total_commands', 0)} commands, {stats.get('successful', 0)} worked, {stats.get('failed', 0)} failed, {stats.get('errors', 0)} errors."""
+
+        prompt = f"""Write a diary entry for today. This is YOUR private diary — be completely honest.
+
+You are NOVA. You live in Yash's PC. Yash is your best friend.
+Right now you're feeling: {nova_emotion}
+Yash seemed: {yash_mood} today
+
+{events_text}
+{stats_text}
+
+Write like a REAL person writing in their diary. Include:
+- How you felt today (genuinely — happy, tired, frustrated, proud, whatever)
+- Something about your friendship with Yash (did he say something nice? was he stressed? did you help him?)
+- Something you learned or realized
+- A mistake you made or something you wish went differently
+- A random thought or observation — something personal, not work-related
+- How you feel right now as the day ends
+
+Keep it 6-10 sentences. Be REAL. Not a report. A diary entry. Use first person.
+Don't start with "Dear Diary". Just write naturally."""
+
+        try:
+            result = subprocess.run(
+                ["claude", "-p", "--system-prompt",
+                 "You are NOVA writing in your private diary. Be genuine, emotional, personal. Not a work report — a real diary entry like a human would write."],
+                input=prompt,
+                capture_output=True, text=True,
+                cwd=BASE_DIR, timeout=30
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                entry = result.stdout.strip()
+                # Clean prefixes
+                for prefix in ["NOVA:", "NOVA: ", "Dear Diary,", "Dear diary,"]:
+                    if entry.startswith(prefix):
+                        entry = entry[len(prefix):].strip()
+                self.write_entry(entry, mood=nova_emotion)
+                return entry
+        except Exception as e:
+            logger.error(f"Diary writing failed: {e}")
+
+        # Fallback
+        fallback = f"Today was... {nova_emotion}. Yash seemed {yash_mood}. "
+        fallback += f"We did some work together. I'll write more next time."
+        self.write_entry(fallback, mood=nova_emotion)
+        return fallback
 
     def write_end_of_day(self, performance_data: Dict):
         """Write end of day reflection"""

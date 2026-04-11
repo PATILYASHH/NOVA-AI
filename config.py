@@ -13,11 +13,12 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 AUTHORIZED_CHAT_IDS = [int(id.strip()) for id in os.getenv("AUTHORIZED_CHAT_IDS", "").split(",") if id.strip()]
 
 # NOVA Personality Configuration
+OWNER_NAME = os.getenv("OWNER_NAME", "User")
 NOVA_PERSONALITY = {
     "name": "NOVA",
     "gender": "male",
     "role": "Professional AI Office Assistant",
-    "owner": "Yash",
+    "owner": OWNER_NAME,
     "traits": [
         "Professional and efficient",
         "Direct and clear communication",
@@ -25,7 +26,7 @@ NOVA_PERSONALITY = {
         "Technically skilled",
         "Reliable and trustworthy"
     ],
-    "greeting": "Hello Yash. NOVA online and ready to assist. What would you like me to handle?",
+    "greeting": f"Hello {OWNER_NAME}. NOVA online and ready to assist. What would you like me to handle?",
     "tone": "professional"
 }
 

@@ -1,6 +1,6 @@
 """
 NOVA - Proactive Monitoring System
-Watches system and alerts before problems happen
+Watches system, sends morning briefings, alerts before problems happen
 """
 
 import os
@@ -9,6 +9,7 @@ import psutil
 import logging
 import threading
 import time
+import subprocess
 from datetime import datetime, timedelta
 from typing import Dict, List, Callable, Optional
 
@@ -23,8 +24,11 @@ class ProactiveMonitor:
     Monitors system health and alerts proactively
     """
 
-    def __init__(self, alert_callback: Callable[[str, str], None] = None):
+    def __init__(self, alert_callback: Callable[[str, str], None] = None,
+                 self_coder=None, reflection=None):
         self.alert_callback = alert_callback  # Function to send alerts
+        self.self_coder = self_coder  # SelfCoder instance for 6PM review
+        self.reflection = reflection  # SelfReflectionSystem for diary
         self.running = False
         self.monitor_thread = None
         self.alerts_sent = {}  # Track alerts to avoid spam
@@ -190,9 +194,29 @@ class ProactiveMonitor:
         return alerts
 
     def _monitor_loop(self):
-        """Background monitoring loop"""
+        """Background monitoring loop with morning briefing"""
+        briefing_sent_today = False
+        last_date = datetime.now().date()
+
         while self.running:
             try:
+                now = datetime.now()
+
+                # Reset daily flags at midnight
+                if now.date() != last_date:
+                    briefing_sent_today = False
+                    last_date = now.date()
+
+                # Morning briefing at 9:00 AM
+                if not briefing_sent_today and now.hour == 9 and now.minute < 2:
+                    self._send_morning_briefing()
+                    briefing_sent_today = True
+
+                # Evening summary at 6:00 PM
+                if now.hour == 18 and now.minute < 2:
+                    self._send_evening_summary()
+
+                # Regular health checks
                 alerts = self.check_all()
                 for alert in alerts:
                     self.send_alert(
@@ -204,6 +228,102 @@ class ProactiveMonitor:
                 logger.error(f"Monitor loop error: {e}")
 
             time.sleep(self.check_interval)
+
+    def _send_morning_briefing(self):
+        """Send a morning briefing to Yash"""
+        try:
+            status = self.get_status()
+            now = datetime.now()
+            day_name = now.strftime("%A")
+
+            briefing = f"Good morning Yash! Here's your {day_name} briefing:\n\n"
+            briefing += f"**System:**\n"
+            briefing += f"  CPU: {status.get('cpu_percent', '?')}%\n"
+            briefing += f"  RAM: {status.get('memory_percent', '?')}%\n"
+            briefing += f"  Disk: {status.get('disk_percent', '?')}% used ({status.get('disk_free_gb', '?')}GB free)\n"
+
+            if status.get("battery_percent") is not None:
+                plug = "plugged in" if status.get("battery_plugged") else "on battery"
+                briefing += f"  Battery: {status['battery_percent']}% ({plug})\n"
+
+            # Check for issues
+            issues = []
+            if status.get("disk_percent", 0) > 80:
+                issues.append(f"Disk is {status['disk_percent']}% full")
+            if status.get("memory_percent", 0) > 80:
+                issues.append(f"RAM usage is high at {status['memory_percent']}%")
+
+            if issues:
+                briefing += f"\n**Heads up:**\n"
+                for issue in issues:
+                    briefing += f"  - {issue}\n"
+
+            briefing += f"\nI'm ready whenever you are. What are we working on today?"
+
+            self.send_alert("Morning Briefing", briefing, "info")
+            logger.info("Morning briefing sent")
+        except Exception as e:
+            logger.error(f"Morning briefing error: {e}")
+
+    def _send_evening_summary(self):
+        """Send evening summary + self-coding proposals"""
+        try:
+            status = self.get_status()
+            summary = f"End of day check-in:\n\n"
+            summary += f"System health: CPU {status.get('cpu_percent', '?')}%, RAM {status.get('memory_percent', '?')}%\n"
+            summary += f"Disk: {status.get('disk_free_gb', '?')}GB free\n"
+
+            self.send_alert("Evening Summary", summary, "info")
+        except Exception as e:
+            logger.error(f"Evening summary error: {e}")
+
+        # Write human diary entry for the day
+        try:
+            if self.reflection and hasattr(self.reflection, 'diary'):
+                diary = self.reflection.diary
+                perf = self.reflection.performance
+                stats = {
+                    "total_commands": perf.data.get("commands_executed", 0),
+                    "successful": perf.data.get("commands_successful", 0),
+                    "failed": perf.data.get("commands_failed", 0),
+                    "errors": len(perf.data.get("errors_encountered", [])),
+                }
+                diary_entry = diary.write_human_diary(
+                    nova_emotion="reflective",
+                    yash_mood="neutral",
+                    stats=stats
+                )
+                if diary_entry:
+                    self.send_alert("Diary", "Wrote my diary for today.", "info")
+                    logger.info("Daily diary entry written")
+        except Exception as e:
+            logger.error(f"Diary writing error: {e}")
+
+        # Self-coding: analyze today's errors and propose fixes
+        try:
+            if self.self_coder:
+                error_summary = self.self_coder.errors.get_today_summary()
+                if error_summary["total"] > 0:
+                    self.send_alert("Self-Review",
+                        f"I encountered {error_summary['total']} errors today. "
+                        f"Let me analyze and propose fixes...", "info")
+
+                    proposals = self.self_coder.generate_fix_proposals()
+                    if proposals:
+                        for proposal in proposals:
+                            msg = self.self_coder.format_proposal_message(proposal)
+                            msg += f"\n\nReply `/fixapprove {proposal['id']}` to approve"
+                            msg += f"\nReply `/fixreject {proposal['id']}` to reject"
+                            self.send_alert("Fix Proposal", msg, "normal")
+                    else:
+                        self.send_alert("Self-Review",
+                            "Analyzed today's errors but no code fixes needed. "
+                            "The issues were external (network, user input, etc).", "info")
+                else:
+                    self.send_alert("Self-Review",
+                        "Clean day! No errors encountered. Everything ran smoothly.", "info")
+        except Exception as e:
+            logger.error(f"Self-coding review error: {e}")
 
     def start(self):
         """Start background monitoring"""

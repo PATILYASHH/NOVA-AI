@@ -36,7 +36,7 @@ from core.learning_loop import LearningLoop
 from core.goal_planner import GoalPlanner
 from actions.file_ops import FileOperations
 from actions.system_control import SystemControl
-from actions.code_handler import CodeHandler
+from actions.code_handler import CodeHandler, _get_gh_username
 from actions.utilities import Utilities
 from actions.advanced_control import AdvancedControl
 from intelligence.proactive_assistant import ProactiveAssistant
@@ -54,10 +54,13 @@ from intelligence.extras import (
 )
 from core.self_improve import SelfImproveEngine
 from core.personality import Personality
+from core.agent_executor import AgentExecutor
+from core.self_coder import DailyErrorCollector, SelfCoder
 from intelligence.work_setup import WorkSetupEngine, OnlineBroadcast
 from intelligence.powers import (
     ScreenVision, WebSearch, FileContentSearch, CodeReview,
-    AutoGitCommit, QuickNotes, AppTracker, SystemDashboard
+    AutoGitCommit, QuickNotes, AppTracker, SystemDashboard,
+    ImageIntelligence, PDFReader
 )
 
 # Setup logging
@@ -107,6 +110,8 @@ error_recovery = ErrorRecovery(learning_loop)
 batch_ops = BatchFileOps()
 nl_router = NLCommandRouter()
 self_improve = SelfImproveEngine(reflection, learning_loop)
+error_collector = DailyErrorCollector()
+self_coder = SelfCoder(error_collector)
 work_setup = WorkSetupEngine()
 personality = Personality()
 
@@ -130,6 +135,7 @@ system = SystemControl()
 code = CodeHandler()
 utils = Utilities()
 advanced = AdvancedControl()
+agent = AgentExecutor()
 
 # Telegram app reference (set in create_bot)
 _app = None
@@ -210,6 +216,13 @@ def log_cmd(command: str, result: str, success: bool, category: str = "general",
     except Exception as e:
         logger.error(f"Command logger error: {e}")
 
+    # Record failures for self-coding
+    if not success:
+        try:
+            error_collector.record_failed_command(command, result[:300])
+        except Exception:
+            pass
+
     try:
         reflection.record_action(command, success)
         habit_tracker.record_command(command, category)
@@ -219,6 +232,13 @@ def log_cmd(command: str, result: str, success: bool, category: str = "general",
         emotion_engine.record_action_outcome(success)
     except Exception as e:
         logger.error(f"Intelligence feed error: {e}")
+
+    # Store in vector memory for semantic recall
+    try:
+        if personality.vector_memory.is_ready():
+            personality.vector_memory.store_task(command, result[:300], success, category)
+    except Exception:
+        pass
 
     # Record in macro if recording
     if automation.recording:
@@ -240,20 +260,60 @@ def log_cmd(command: str, result: str, success: bool, category: str = "general",
             pass
 
 
+def _smart_split(text: str, max_len: int = 4000) -> list:
+    """Split text respecting code blocks and paragraph boundaries"""
+    if len(text) <= max_len:
+        return [text]
+
+    parts = []
+    remaining = text
+
+    while len(remaining) > max_len:
+        chunk = remaining[:max_len]
+
+        # Priority 1: Split at code block boundary (```)
+        last_block_end = chunk.rfind('\n```\n')
+        if last_block_end > max_len // 3:
+            split_at = last_block_end + 4
+        # Priority 2: Split at double newline (paragraph)
+        elif chunk.rfind('\n\n') > max_len // 3:
+            split_at = chunk.rfind('\n\n') + 2
+        # Priority 3: Split at single newline
+        elif chunk.rfind('\n') > max_len // 3:
+            split_at = chunk.rfind('\n') + 1
+        else:
+            split_at = max_len
+
+        part = remaining[:split_at]
+        remaining = remaining[split_at:]
+
+        # If we split inside a code block, close it and reopen
+        if part.count('```') % 2 != 0:
+            last_open = part.rfind('```')
+            after_ticks = part[last_open + 3:last_open + 30].split('\n')[0].strip()
+            lang_tag = after_ticks if after_ticks and not ' ' in after_ticks else ''
+            part += '\n```'
+            remaining = f'```{lang_tag}\n' + remaining
+
+        parts.append(part.strip())
+
+    if remaining.strip():
+        parts.append(remaining.strip())
+
+    return parts
+
+
 async def send_long_message(update: Update, text: str):
-    """Send message, splitting if too long"""
-    if len(text) > 4000:
-        parts = [text[i:i+4000] for i in range(0, len(text), 4000)]
-        for part in parts:
-            try:
-                await update.message.reply_text(part, parse_mode="Markdown")
-            except Exception:
-                await update.message.reply_text(part)
-    else:
+    """Send message, splitting intelligently at code block boundaries"""
+    parts = _smart_split(text, 4000)
+    for part in parts:
         try:
-            await update.message.reply_text(text, parse_mode="Markdown")
+            await update.message.reply_text(part, parse_mode="Markdown")
         except Exception:
-            await update.message.reply_text(text)
+            try:
+                await update.message.reply_text(part)
+            except Exception:
+                pass
 
 
 # ============ BASIC COMMANDS ============
@@ -1277,6 +1337,317 @@ async def claude_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = f"Error: {result['error']}"
     await send_long_message(update, response)
     log_cmd(f"/claude {prompt[:50]}", result.get('output', result.get('error', ''))[:500], result["success"], "claude")
+
+
+async def graphify_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Build and query knowledge graphs with Graphify"""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    if not context.args:
+        await update.message.reply_text(
+            "**Graphify - Knowledge Graph Tool**\n\n"
+            "Usage:\n"
+            "`/graphify <path>` - Build knowledge graph of a codebase\n"
+            "`/graphify query <question>` - Query the active project's graph\n"
+            "`/graphify status` - Show indexed projects\n\n"
+            "Example: `/graphify C:\\code\\FlashLink`",
+            parse_mode="Markdown"
+        )
+        return
+
+    subcmd = context.args[0].lower()
+
+    if subcmd == "status":
+        result = code.graphify_status()
+        if result["count"] == 0:
+            await update.message.reply_text("No projects indexed yet. Use `/graphify <path>` to index one.", parse_mode="Markdown")
+        else:
+            text = f"**Indexed Projects ({result['count']}):**\n\n"
+            for p in result["indexed_projects"]:
+                text += f"- **{p['project']}** ({p['graph_size']}) - Updated: {p['last_updated']}\n  `{p['path']}`\n"
+            await send_long_message(update, text)
+        return
+
+    if subcmd == "query":
+        question = " ".join(context.args[1:])
+        if not question:
+            await update.message.reply_text("Usage: `/graphify query <your question>`", parse_mode="Markdown")
+            return
+
+        # Use active project path
+        active_project = memory.rm.context.get("active_project")
+        project_path = None
+        if active_project:
+            for p in memory.rom.get_all_projects():
+                if p["name"] == active_project:
+                    project_path = p["path"]
+                    break
+
+        if not project_path:
+            await update.message.reply_text("No active project set. Use the project path directly or set an active project first.", parse_mode="Markdown")
+            return
+
+        await update.message.chat.send_action("typing")
+        result = code.graphify_query(question, project_path)
+        if result["success"]:
+            response = f"**Graph Query** ({result.get('relevant_count', 0)}/{result.get('total_nodes', 0)} nodes matched):\n\n```\n{result['context']}\n```"
+        else:
+            response = f"Error: {result['error']}"
+        await send_long_message(update, response)
+        return
+
+    # Default: build graph for the given path
+    path = " ".join(context.args)
+    await update.message.reply_text(f"Building knowledge graph for `{path}`...\nThis may take a few minutes.", parse_mode="Markdown")
+    result = code.graphify_build(path)
+    if result["success"]:
+        response = f"Knowledge graph built for `{path}`\n\nUse `/graphify query <question>` to query it."
+    else:
+        response = f"Error building graph: {result['error']}"
+    await send_long_message(update, response)
+    log_cmd(f"graphify {path}", result.get('output', result.get('error', ''))[:500], result["success"], "graphify")
+
+
+# ============ AUTONOMOUS AGENT COMMANDS ============
+
+async def build_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Build a complete project from description, push to GitHub"""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    if not context.args:
+        await update.message.reply_text(
+            "**NOVA Build - Autonomous Project Creator**\n\n"
+            "Usage: `/build <project description>`\n\n"
+            "Examples:\n"
+            '`/build Create a Flask REST API for todo app with auth`\n'
+            '`/build Build a React dashboard with dark theme`\n'
+            '`/build Make a Python CLI tool for file encryption`\n'
+            '`/build Create a Flutter weather app called WeatherNow`\n\n'
+            "NOVA will:\n"
+            "1. Create project folder\n"
+            "2. Write ALL code using Claude Code\n"
+            "3. Initialize git\n"
+            "4. Create GitHub repo\n"
+            "5. Push everything\n"
+            "6. Return the GitHub URL",
+            parse_mode="Markdown"
+        )
+        return
+
+    if agent.is_running:
+        await update.message.reply_text("Already building a project. Wait for it to finish.")
+        return
+
+    description = " ".join(context.args)
+    await update.message.reply_text(f"Starting autonomous build...\n**Project:** {description}", parse_mode="Markdown")
+
+    async def progress(msg):
+        try:
+            await update.message.reply_text(msg, parse_mode="Markdown")
+        except Exception:
+            await update.message.reply_text(msg)
+
+    result = await agent.build_project(description, progress_cb=progress)
+
+    # Format final result
+    if result["success"]:
+        response = f"**Project Built Successfully!**\n\n"
+        response += f"**Name:** {result.get('project_name', 'unknown')}\n"
+        response += f"**Path:** `{result.get('project_path', '')}`\n"
+        if result.get("repo_url"):
+            response += f"**GitHub:** {result['repo_url']}\n"
+        if result.get("file_count"):
+            response += f"**Files:** {result['file_count']} files created\n"
+        if result.get("files_created"):
+            file_list = "\n".join(f"  - {f}" for f in result["files_created"][:15])
+            response += f"\n**Files:**\n{file_list}"
+            if result["file_count"] > 15:
+                response += f"\n  ... and {result['file_count'] - 15} more"
+    else:
+        response = f"**Build had issues:**\n{result.get('error', 'Unknown error')}\n\n"
+        steps = result.get("steps", [])
+        if steps:
+            response += "**Steps completed:**\n"
+            for s in steps:
+                icon = "done" if s["status"] == "done" else "failed"
+                response += f"  [{icon}] {s['step']}\n"
+
+    await send_long_message(update, response)
+    log_cmd(f"build {description[:50]}", f"{'Success' if result['success'] else 'Failed'}", result["success"], "agent")
+
+
+async def autopush_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Auto commit and push all changes"""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    # Determine repo path
+    if context.args:
+        repo_path = " ".join(context.args)
+    else:
+        # Use active project
+        active_project = memory.rm.context.get("active_project")
+        repo_path = None
+        if active_project:
+            for p in memory.rom.get_all_projects():
+                if p["name"] == active_project:
+                    repo_path = p["path"]
+                    break
+        if not repo_path:
+            await update.message.reply_text(
+                "Usage: `/autopush <repo_path>`\nOr set an active project first.",
+                parse_mode="Markdown"
+            )
+            return
+
+    await update.message.reply_text(f"Auto-pushing `{repo_path}`...", parse_mode="Markdown")
+
+    async def progress(msg):
+        try:
+            await update.message.reply_text(msg, parse_mode="Markdown")
+        except Exception:
+            pass
+
+    result = await agent.auto_push(repo_path, progress_cb=progress)
+
+    if result["success"]:
+        response = f"Pushed successfully!\n```\n{result.get('output', 'Done')}\n```"
+    else:
+        response = f"Push failed: {result.get('error', result.get('output', 'Unknown error'))}"
+
+    await send_long_message(update, response)
+    log_cmd(f"autopush {repo_path}", result.get('output', '')[:200], result["success"], "agent")
+
+
+async def newrepo_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Create a new GitHub repository"""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    if not context.args:
+        await update.message.reply_text(
+            "**Create GitHub Repo**\n\n"
+            "Usage:\n"
+            "`/newrepo <name>` - Create public repo\n"
+            "`/newrepo <name> --private` - Create private repo\n"
+            '`/newrepo <name> -d "description"` - With description\n'
+            "`/newrepo <name> --path C:\\code\\myproject` - Link to local folder\n",
+            parse_mode="Markdown"
+        )
+        return
+
+    args = context.args
+    name = args[0]
+    private = "--private" in args
+    description = ""
+    path = None
+
+    # Parse -d "description"
+    if "-d" in args:
+        d_idx = args.index("-d")
+        if d_idx + 1 < len(args):
+            description = args[d_idx + 1]
+
+    # Parse --path
+    if "--path" in args:
+        p_idx = args.index("--path")
+        if p_idx + 1 < len(args):
+            path = args[p_idx + 1]
+
+    async def progress(msg):
+        try:
+            await update.message.reply_text(msg, parse_mode="Markdown")
+        except Exception:
+            pass
+
+    result = await agent.create_repo(name, description, path, private, progress_cb=progress)
+
+    if result["success"]:
+        response = f"**Repo Created!**\n\nURL: {result.get('repo_url', f'https://github.com/{_get_gh_username()}/{name}')}"
+    else:
+        response = f"Failed to create repo: {result.get('error', result.get('output', ''))}"
+
+    await send_long_message(update, response)
+    log_cmd(f"newrepo {name}", result.get('output', '')[:200], result["success"], "agent")
+
+
+async def repos_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """List GitHub repositories"""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    await update.message.chat.send_action("typing")
+    result = code.github_list_repos()
+
+    if result["success"] and result.get("repos"):
+        text = f"**Your GitHub Repos ({result['count']}):**\n\n"
+        for repo in result["repos"]:
+            visibility = "Private" if repo.get("isPrivate") else "Public"
+            desc = repo.get("description", "No description")[:60]
+            text += f"- **{repo['name']}** [{visibility}]\n  {desc}\n  {repo.get('url', '')}\n\n"
+        await send_long_message(update, text)
+    else:
+        await update.message.reply_text(f"Error: {result.get('error', 'Could not fetch repos')}")
+
+
+async def task_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Execute any task autonomously using Claude Code"""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    if not context.args:
+        await update.message.reply_text(
+            "**NOVA Task - Do Anything**\n\n"
+            "Usage: `/task <what you want done>`\n"
+            "Optional: `/task -d <directory> <task>`\n\n"
+            "Examples:\n"
+            "`/task Add dark mode to the FlashLink app`\n"
+            "`/task Fix all TypeScript errors in the frontend`\n"
+            "`/task -d C:\\code\\NOVA Refactor the memory system`\n"
+            "`/task Write tests for the API endpoints`\n",
+            parse_mode="Markdown"
+        )
+        return
+
+    if agent.is_running:
+        await update.message.reply_text("Already running a task. Wait for it to finish.")
+        return
+
+    args = context.args
+    working_dir = None
+
+    if args[0] == "-d" and len(args) >= 3:
+        working_dir = args[1]
+        task_desc = " ".join(args[2:])
+    else:
+        task_desc = " ".join(args)
+        # Use active project path if available
+        active_project = memory.rm.context.get("active_project")
+        if active_project:
+            for p in memory.rom.get_all_projects():
+                if p["name"] == active_project:
+                    working_dir = p["path"]
+                    break
+
+    await update.message.reply_text(f"Working on it...\n**Task:** {task_desc}", parse_mode="Markdown")
+
+    async def progress(msg):
+        try:
+            await update.message.reply_text(msg, parse_mode="Markdown")
+        except Exception:
+            pass
+
+    result = await agent.execute_task(task_desc, working_dir, progress_cb=progress)
+
+    if result["success"]:
+        response = f"**Task Done!**\n\n```\n{result.get('output', 'Completed')[:3000]}\n```"
+    else:
+        response = f"**Task failed:**\n{result.get('error', 'Unknown error')}"
+
+    await send_long_message(update, response)
+    log_cmd(f"task {task_desc[:50]}", result.get('output', result.get('error', ''))[:500], result["success"], "agent")
 
 
 # ============ NETWORK COMMANDS ============
@@ -2332,6 +2703,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception:
         pass
 
+    # Detect Yash's mood and get NOVA's emotional state
+    try:
+        emotion_engine.detect_mood(message)
+        brain_context["nova_emotion"] = emotion_engine.get_nova_emotional_state()
+    except Exception:
+        pass
+
     # Step 1: Ask Claude if this needs an action or is just chat
     action_decision = personality.should_execute_action(message, brain_context)
 
@@ -2563,6 +2941,150 @@ Give a brief, honest self-assessment in 2-3 sentences. Be genuine, not robotic."
             })
             reflection.diary.write_entry(diary_text, mood="analytical")
 
+        # === AGENT ACTIONS (autonomous multi-step) ===
+
+        elif atype == "build_project":
+            if agent.is_running:
+                response = "I'm already working on something. Let me finish first."
+            else:
+                await update.message.reply_text("On it! Building the project... I'll keep you updated.", parse_mode="Markdown")
+
+                async def build_progress(msg):
+                    try:
+                        await update.message.reply_text(msg, parse_mode="Markdown")
+                    except Exception:
+                        await update.message.reply_text(msg)
+
+                build_result = await agent.build_project(atarget or message, progress_cb=build_progress)
+
+                if build_result["success"]:
+                    response = f"**Done! Project is ready.**\n\n"
+                    response += f"**Name:** {build_result.get('project_name', '')}\n"
+                    response += f"**Path:** `{build_result.get('project_path', '')}`\n"
+                    if build_result.get("repo_url"):
+                        response += f"**GitHub:** {build_result['repo_url']}\n"
+                    if build_result.get("file_count"):
+                        response += f"**Files:** {build_result['file_count']} files created\n"
+                    if build_result.get("files_created"):
+                        file_list = "\n".join(f"  - {f}" for f in build_result["files_created"][:15])
+                        response += f"\n{file_list}"
+                        if build_result["file_count"] > 15:
+                            response += f"\n  ... and {build_result['file_count'] - 15} more"
+                else:
+                    response = f"Had some trouble: {build_result.get('error', 'Unknown issue')}"
+
+                log_cmd(f"build_project", atarget[:100], build_result["success"], "agent")
+
+        elif atype == "create_repo":
+            repo_name = atarget.strip()
+            if not repo_name:
+                response = "What should I name the repo?"
+            else:
+                await update.message.reply_text(f"Creating GitHub repo **{repo_name}**...", parse_mode="Markdown")
+
+                # Check if there's a local project to link
+                local_path = None
+                project_path = os.path.join("C:\\code", repo_name)
+                if os.path.exists(project_path):
+                    local_path = project_path
+
+                async def repo_progress(msg):
+                    try:
+                        await update.message.reply_text(msg, parse_mode="Markdown")
+                    except Exception:
+                        pass
+
+                repo_result = await agent.create_repo(repo_name, path=local_path, progress_cb=repo_progress)
+                if repo_result["success"]:
+                    response = f"Repo created! {repo_result.get('repo_url', f'https://github.com/{_get_gh_username()}/{repo_name}')}"
+                else:
+                    response = f"Couldn't create repo: {repo_result.get('error', repo_result.get('output', ''))}"
+                log_cmd(f"create_repo {repo_name}", response[:200], repo_result["success"], "agent")
+
+        elif atype == "auto_push":
+            # Figure out which project to push
+            push_path = None
+            if atarget:
+                # User mentioned a project name
+                for p in memory.rom.get_all_projects():
+                    if atarget.lower() in p["name"].lower():
+                        push_path = p["path"]
+                        break
+                if not push_path:
+                    test_path = os.path.join("C:\\code", atarget)
+                    if os.path.exists(test_path):
+                        push_path = test_path
+
+            if not push_path:
+                active_project = memory.rm.context.get("active_project")
+                if active_project:
+                    for p in memory.rom.get_all_projects():
+                        if p["name"] == active_project:
+                            push_path = p["path"]
+                            break
+
+            if not push_path:
+                response = "Which project should I push? Tell me the name or path."
+            else:
+                await update.message.reply_text(f"Pushing `{push_path}`...", parse_mode="Markdown")
+
+                async def push_progress(msg):
+                    try:
+                        await update.message.reply_text(msg, parse_mode="Markdown")
+                    except Exception:
+                        pass
+
+                push_result = await agent.auto_push(push_path, progress_cb=push_progress)
+                if push_result["success"]:
+                    response = f"Pushed! {push_result.get('output', 'Done')}"
+                else:
+                    response = f"Push failed: {push_result.get('error', push_result.get('output', ''))}"
+                log_cmd(f"auto_push {push_path}", response[:200], push_result["success"], "agent")
+
+        elif atype == "agent_task":
+            if agent.is_running:
+                response = "I'm already working on something. Let me finish first."
+            else:
+                # Find working directory
+                task_dir = None
+                active_project = memory.rm.context.get("active_project")
+                if active_project:
+                    for p in memory.rom.get_all_projects():
+                        if p["name"] == active_project:
+                            task_dir = p["path"]
+                            break
+
+                await update.message.reply_text(f"Working on it...", parse_mode="Markdown")
+
+                async def task_progress(msg):
+                    try:
+                        await update.message.reply_text(msg, parse_mode="Markdown")
+                    except Exception:
+                        pass
+
+                task_result = await agent.execute_task(atarget or message, task_dir, progress_cb=task_progress)
+                if task_result["success"]:
+                    output = task_result.get('output', 'Done')
+                    if len(output) > 3000:
+                        output = output[:3000] + "\n... (truncated)"
+                    response = f"Done!\n\n```\n{output}\n```"
+                else:
+                    response = f"Had an issue: {task_result.get('error', 'Unknown')}"
+                log_cmd(f"agent_task", (atarget or message)[:100], task_result["success"], "agent")
+
+        elif atype == "list_repos":
+            await update.message.chat.send_action("typing")
+            repos_result = code.github_list_repos()
+            if repos_result["success"] and repos_result.get("repos"):
+                response = f"**Your GitHub Repos ({repos_result['count']}):**\n\n"
+                for repo in repos_result["repos"]:
+                    vis = "Private" if repo.get("isPrivate") else "Public"
+                    desc = repo.get("description", "")
+                    desc_str = f" - {desc[:50]}" if desc else ""
+                    response += f"- **{repo['name']}** [{vis}]{desc_str}\n  {repo.get('url', '')}\n"
+            else:
+                response = "Couldn't fetch repos. " + repos_result.get("error", "")
+
         else:
             # Unknown action type - let Claude chat naturally
             response = personality.generate_response(message, brain_context)
@@ -2570,6 +3092,28 @@ Give a brief, honest self-assessment in 2-3 sentences. Be genuine, not robotic."
     else:
         # === JUST CHAT - Let Claude respond naturally ===
         await update.message.chat.send_action("typing")
+        # Enrich context with context engine data
+        try:
+            nlp_result = nlp_engine.analyze(message) if nlp_engine else {"primary_intent": "general"}
+            rich_ctx = context_engine.build_context(message, nlp_result)
+            if rich_ctx:
+                brain_context["rich_context"] = rich_ctx
+        except Exception:
+            pass
+        # Auto-inject graphify context for coding questions
+        try:
+            msg_type = personality._detect_message_type(message)
+            if msg_type == "coding":
+                active_project = memory.rm.context.get("active_project")
+                if active_project:
+                    for p in memory.rom.get_all_projects():
+                        if p["name"] == active_project:
+                            graph_result = code.graphify_query(message, p["path"])
+                            if graph_result.get("success") and graph_result.get("context"):
+                                brain_context["graph_context"] = graph_result["context"]
+                            break
+        except Exception:
+            pass
         response = personality.generate_response(message, brain_context)
 
     if not response or not response.strip():
@@ -2577,9 +3121,47 @@ Give a brief, honest self-assessment in 2-3 sentences. Be genuine, not robotic."
 
     await send_long_message(update, response)
 
-    memory.rm.add_message("nova", response[:500])
-    memory.process_message(message, response[:500])
+    memory.rm.add_message("nova", response[:1500])
+    memory.process_message(message, response[:1500])
     nova.post_process(message, response[:200], True)
+
+    # Dynamic learning: detect if Yash told NOVA something to remember
+    try:
+        msg_lower = message.lower()
+        if any(kw in msg_lower for kw in ["remember", "don't forget", "keep in mind", "note that", "fyi", "btw i"]):
+            personality.identity.learn_from_yash(message[:300])
+            if personality.vector_memory.is_ready():
+                personality.vector_memory.store_knowledge(message[:300], "yash_told_me", "direct")
+        # Learn facts from direct statements
+        if any(kw in msg_lower for kw in ["i like", "i prefer", "i hate", "i want", "i need", "my favorite"]):
+            personality.identity.learn_from_yash(message[:300])
+            if personality.vector_memory.is_ready():
+                personality.vector_memory.store_knowledge(message[:300], "preference", "direct")
+    except Exception:
+        pass
+
+    # Record interesting moments for diary
+    try:
+        nova_emo = brain_context.get("nova_emotion", {}).get("emotion", "neutral")
+        yash_mood = brain_context.get("nova_emotion", {}).get("yash_mood", "neutral")
+
+        # Record notable events for end-of-day diary
+        if action_decision:
+            atype = action_decision.get("type", "")
+            if atype in ("build_project", "agent_task", "create_repo"):
+                reflection.diary.record_event("big_task", f"Yash asked me to: {message[:100]}", nova_emo)
+            elif atype in ("auto_push",):
+                reflection.diary.record_event("git", f"Pushed code for Yash", nova_emo)
+        if yash_mood == "frustrated":
+            reflection.diary.record_event("yash_mood", f"Yash seemed frustrated: {message[:80]}", "caring")
+        elif yash_mood == "happy":
+            reflection.diary.record_event("yash_mood", f"Yash was in a good mood: {message[:80]}", "happy")
+        if any(kw in message.lower() for kw in ["thank", "good job", "nice", "perfect", "awesome"]):
+            reflection.diary.record_event("compliment", f"Yash said: {message[:100]}", "proud")
+        if any(kw in message.lower() for kw in ["wrong", "not what i", "no that's", "fix this", "you broke"]):
+            reflection.diary.record_event("correction", f"Yash corrected me: {message[:100]}", "learning")
+    except Exception:
+        pass
 
     # Auto-detect project
     try:
@@ -2596,13 +3178,288 @@ Give a brief, honest self-assessment in 2-3 sentences. Be genuine, not robotic."
         pass
 
 
+# ============ SELF-CODING COMMANDS ============
+
+async def fixapprove_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Approve a self-fix proposal - NOVA codes the fix into itself"""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    if not context.args:
+        pending = self_coder.get_pending_proposals()
+        if not pending:
+            await update.message.reply_text("No pending fix proposals.")
+            return
+        text = "**Pending Fix Proposals:**\n\n"
+        for p in pending:
+            text += self_coder.format_proposal_message(p)
+            text += f"Approve: `/fixapprove {p['id']}`\n\n"
+        await send_long_message(update, text)
+        return
+
+    proposal_id = context.args[0]
+    await update.message.reply_text(f"Applying fix `{proposal_id}`... NOVA is coding itself.", parse_mode="Markdown")
+    await update.message.chat.send_action("typing")
+
+    result = self_coder.apply_fix(proposal_id)
+
+    if result["success"]:
+        response = f"**Fix applied!**\n\n"
+        response += f"```\n{result.get('output', 'Done')[:2000]}\n```\n\n"
+        response += "Restart NOVA for changes to take effect."
+    else:
+        response = f"**Fix failed:** {result.get('error', 'Unknown error')}"
+
+    await send_long_message(update, response)
+    log_cmd(f"fixapprove {proposal_id}", result.get('output', '')[:200], result["success"], "self_coding")
+
+
+async def fixreject_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Reject a self-fix proposal"""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    if not context.args:
+        await update.message.reply_text("Usage: `/fixreject <proposal_id>`", parse_mode="Markdown")
+        return
+
+    proposal_id = context.args[0]
+    result = self_coder.reject_fix(proposal_id)
+
+    if result["success"]:
+        await update.message.reply_text(f"Rejected fix `{proposal_id}`. I'll leave it as is.", parse_mode="Markdown")
+    else:
+        await update.message.reply_text(f"Couldn't find proposal: {proposal_id}")
+
+
+async def fixes_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Show today's errors and any pending fix proposals"""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    summary = error_collector.get_today_summary()
+    pending = self_coder.get_pending_proposals()
+
+    text = f"**NOVA Self-Diagnostics**\n\n"
+    text += f"**Errors today:** {summary['total']}\n"
+
+    if summary["types"]:
+        text += "**By type:**\n"
+        for t, count in summary["types"].items():
+            text += f"  - {t}: {count}\n"
+
+    if summary["errors"]:
+        text += "\n**Recent errors:**\n"
+        for e in summary["errors"][-5:]:
+            text += f"  - [{e['timestamp'][11:19]}] {e['message'][:80]}\n"
+
+    if pending:
+        text += f"\n**Pending fix proposals:** {len(pending)}\n"
+        for p in pending:
+            text += f"\n{self_coder.format_proposal_message(p)}"
+            text += f"  `/fixapprove {p['id']}` | `/fixreject {p['id']}`\n"
+    else:
+        text += "\nNo pending fix proposals."
+
+    await send_long_message(update, text)
+
+
+async def selfcode_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Manually trigger self-review and generate fix proposals now"""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    summary = error_collector.get_today_summary()
+    if summary["total"] == 0:
+        await update.message.reply_text("No errors today! Nothing to fix.")
+        return
+
+    await update.message.reply_text(
+        f"Analyzing {summary['total']} errors and generating fix proposals...",
+        parse_mode="Markdown"
+    )
+    await update.message.chat.send_action("typing")
+
+    proposals = self_coder.generate_fix_proposals()
+
+    if proposals:
+        for p in proposals:
+            msg = self_coder.format_proposal_message(p)
+            msg += f"\n`/fixapprove {p['id']}` to approve\n`/fixreject {p['id']}` to reject"
+            await send_long_message(update, msg)
+    else:
+        await update.message.reply_text("Analyzed errors but no code fixes needed - issues were external.")
+
+
+# ============ PHOTO & DOCUMENT HANDLERS ============
+
+async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle photos sent to NOVA - analyze with OCR + Claude"""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    await update.message.chat.send_action("typing")
+    await update.message.reply_text("Analyzing the image...")
+
+    try:
+        # Download the photo
+        photo = update.message.photo[-1]  # Highest resolution
+        photo_file = await photo.get_file()
+        photo_path = os.path.join(BASE_DIR, f"temp_photo_{update.message.message_id}.jpg")
+        await photo_file.download_to_drive(photo_path)
+
+        # Get caption as question
+        question = update.message.caption or None
+
+        # Analyze
+        result = ImageIntelligence.analyze_image(photo_path, question)
+
+        if result["success"]:
+            response = result.get("analysis", "")
+            if not response and result.get("ocr_text"):
+                response = f"**Text extracted from image:**\n```\n{result['ocr_text'][:3000]}\n```"
+            elif not response:
+                response = "Couldn't extract much from this image."
+        else:
+            response = f"Error: {result.get('error', 'Unknown')}"
+
+        await send_long_message(update, response)
+
+        # Cleanup
+        try:
+            os.remove(photo_path)
+        except Exception:
+            pass
+
+        memory.rm.add_message("user", f"[Sent a photo] {question or 'no caption'}")
+        memory.rm.add_message("nova", response[:500])
+        log_cmd("photo_analysis", response[:200], True, "intelligence")
+
+    except Exception as e:
+        await update.message.reply_text(f"Couldn't analyze: {str(e)[:200]}")
+        logger.error(f"Photo handler error: {e}")
+
+
+async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle documents sent to NOVA - PDFs, code files, etc."""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    doc = update.message.document
+    file_name = doc.file_name or "unknown"
+    file_ext = os.path.splitext(file_name)[1].lower()
+
+    await update.message.chat.send_action("typing")
+
+    try:
+        # Download the file
+        doc_file = await doc.get_file()
+        doc_path = os.path.join(BASE_DIR, f"temp_doc_{update.message.message_id}{file_ext}")
+        await doc_file.download_to_drive(doc_path)
+
+        caption = update.message.caption or ""
+
+        if file_ext == ".pdf":
+            # PDF handling
+            await update.message.reply_text(f"Reading **{file_name}**...", parse_mode="Markdown")
+
+            if "summar" in caption.lower() or not caption:
+                result = PDFReader.summarize_pdf(doc_path)
+                if result["success"]:
+                    response = f"**{result['file_name']}** ({result['total_pages']} pages)\n\n{result['summary']}"
+                else:
+                    response = f"Error: {result['error']}"
+            else:
+                # User asked a specific question about the PDF
+                read_result = PDFReader.read_pdf(doc_path)
+                if read_result["success"]:
+                    # Ask Claude about it
+                    from core.personality import Personality
+                    p = Personality()
+                    prompt = f"Yash sent a PDF ({read_result['file_name']}, {read_result['total_pages']} pages) and asks: {caption}\n\nPDF content:\n{read_result['text'][:6000]}"
+                    response = p._ask_claude(prompt, timeout=45) or f"Here's the PDF content:\n```\n{read_result['text'][:3000]}\n```"
+                else:
+                    response = f"Error reading PDF: {read_result['error']}"
+
+        elif file_ext in (".py", ".js", ".ts", ".dart", ".java", ".cpp", ".c", ".go", ".rs",
+                          ".html", ".css", ".json", ".yaml", ".yml", ".md", ".txt", ".sh",
+                          ".bat", ".ps1", ".sql", ".xml", ".csv", ".toml", ".ini", ".cfg"):
+            # Code/text file - read and analyze
+            try:
+                with open(doc_path, 'r', encoding='utf-8', errors='ignore') as f:
+                    content = f.read()[:8000]
+
+                if caption:
+                    # User asked something about the file
+                    from core.personality import Personality
+                    p = Personality()
+                    prompt = f"Yash sent a file ({file_name}) and says: {caption}\n\nFile content:\n```\n{content}\n```"
+                    response = p._ask_claude(prompt, timeout=45) or f"```\n{content[:3000]}\n```"
+                else:
+                    response = f"**{file_name}** ({len(content)} chars):\n```\n{content[:3000]}\n```"
+            except Exception as e:
+                response = f"Error reading {file_name}: {e}"
+
+        elif file_ext in (".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"):
+            # Image file
+            result = ImageIntelligence.analyze_image(doc_path, caption)
+            response = result.get("analysis", result.get("ocr_text", "Couldn't analyze image"))
+
+        else:
+            response = f"Received **{file_name}** ({doc.file_size // 1024}KB). I can read PDFs, code files, and images. This file type ({file_ext}) isn't supported yet."
+
+        await send_long_message(update, response)
+
+        # Cleanup
+        try:
+            os.remove(doc_path)
+        except Exception:
+            pass
+
+        memory.rm.add_message("user", f"[Sent file: {file_name}] {caption}")
+        memory.rm.add_message("nova", response[:500])
+        log_cmd(f"document_{file_ext}", file_name, True, "intelligence")
+
+    except Exception as e:
+        await update.message.reply_text(f"Couldn't process: {str(e)[:200]}")
+        logger.error(f"Document handler error: {e}")
+
+
 # ============ ERROR HANDLER ============
 
 async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Auto-healing error handler - logs, learns, and recovers"""
+    error_str = str(context.error)
     logger.error(f"Error: {context.error}")
-    activity.track("error", str(context.error))
+    activity.track("error", error_str)
+
+    # Auto-healing: detect common errors and suggest fixes
+    error_lower = error_str.lower()
+    recovery_msg = None
+
+    if "timeout" in error_lower:
+        recovery_msg = "That took too long. Try a simpler request or I'll retry with a shorter timeout."
+    elif "connection" in error_lower or "network" in error_lower:
+        recovery_msg = "Network issue. I'll keep trying — check your internet connection."
+    elif "permission" in error_lower or "access" in error_lower:
+        recovery_msg = "Permission denied. I might need admin access for that operation."
+    elif "not found" in error_lower or "no such file" in error_lower:
+        recovery_msg = "File or path not found. Double check the path and try again."
+    elif "memory" in error_lower:
+        recovery_msg = "Running low on memory. I'll try to free some up."
+
+    # Log for learning + self-coding
+    try:
+        learning_loop.after_action("error_recovery", error_str[:200], False, {"error_type": type(context.error).__name__})
+        error_collector.record_crash(error_str[:500], traceback_str=repr(context.error))
+    except Exception:
+        pass
+
     if update and update.effective_message:
-        await update.effective_message.reply_text("An error occurred. Please try again.")
+        if recovery_msg:
+            await update.effective_message.reply_text(f"Something went wrong — {recovery_msg}")
+        else:
+            await update.effective_message.reply_text("Hit a snag. Try again or rephrase what you need.")
 
 
 # ============ BOT CREATION ============
@@ -2680,6 +3537,20 @@ def create_bot() -> Application:
     application.add_handler(CommandHandler("run", run))
     application.add_handler(CommandHandler("git", git))
     application.add_handler(CommandHandler("claude", claude_cmd))
+    application.add_handler(CommandHandler("graphify", graphify_cmd))
+
+    # Autonomous agent commands
+    application.add_handler(CommandHandler("build", build_cmd))
+    application.add_handler(CommandHandler("autopush", autopush_cmd))
+    application.add_handler(CommandHandler("newrepo", newrepo_cmd))
+    application.add_handler(CommandHandler("repos", repos_cmd))
+    application.add_handler(CommandHandler("task", task_cmd))
+
+    # Self-coding commands
+    application.add_handler(CommandHandler("fixapprove", fixapprove_cmd))
+    application.add_handler(CommandHandler("fixreject", fixreject_cmd))
+    application.add_handler(CommandHandler("fixes", fixes_cmd))
+    application.add_handler(CommandHandler("selfcode", selfcode_cmd))
 
     # Network commands
     application.add_handler(CommandHandler("network", network))
@@ -2773,6 +3644,10 @@ def create_bot() -> Application:
     # Callbacks
     application.add_handler(CallbackQueryHandler(button_callback))
 
+    # Photo and document handlers
+    application.add_handler(MessageHandler(filters.PHOTO, handle_photo))
+    application.add_handler(MessageHandler(filters.Document.ALL, handle_document))
+
     # Natural language message handler (LAST - catches all text)
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
@@ -2794,7 +3669,7 @@ def create_bot() -> Application:
     # Start background intelligence systems
     try:
         from intelligence.proactive_monitor import ProactiveMonitor
-        monitor = ProactiveMonitor(alert_callback=_send_telegram_alert)
+        monitor = ProactiveMonitor(alert_callback=_send_telegram_alert, self_coder=self_coder, reflection=reflection)
         monitor.start()
         logger.info("Proactive monitor started")
     except Exception as e:

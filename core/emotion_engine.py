@@ -36,9 +36,11 @@ class EmotionEngine:
         },
         "frustrated": {
             "words": ["why", "broken", "again", "still", "not working", "wrong", "fail",
-                      "error", "bug", "crash", "stupid", "hate", "annoying", "ugh"],
-            "patterns": ["??", "!!!", "wtf", "smh"],
-            "weight": 1.2,
+                      "error", "bug", "crash", "stupid", "hate", "annoying", "ugh",
+                      "frustrating", "frustrated", "nothing works", "doesn't work", "can't",
+                      "impossible", "useless", "terrible", "worst", "sucks", "damn", "hell"],
+            "patterns": ["??", "!!!", "wtf", "smh", "ffs", "bruh"],
+            "weight": 1.5,
         },
         "stressed": {
             "words": ["urgent", "asap", "quickly", "hurry", "deadline", "important",
@@ -107,7 +109,29 @@ class EmotionEngine:
         self.success_streak = 0
         self.failure_streak = 0
         self._load_state()
+        self._load_dynamic_keywords()
         logger.info("Emotion Engine initialized")
+
+    def _load_dynamic_keywords(self):
+        """Load mood keywords from dynamic config if available"""
+        try:
+            from core.dynamic_identity import DynamicIdentity
+            identity = DynamicIdentity()
+            dynamic_keywords = identity.get_mood_keywords()
+            if dynamic_keywords:
+                for mood, words in dynamic_keywords.items():
+                    if mood in self.MOOD_INDICATORS:
+                        # Merge dynamic keywords with existing
+                        existing = set(self.MOOD_INDICATORS[mood]["words"])
+                        existing.update(words)
+                        self.MOOD_INDICATORS[mood]["words"] = list(existing)
+                    else:
+                        # New mood type from config
+                        self.MOOD_INDICATORS[mood] = {
+                            "words": words, "patterns": [], "weight": 1.0
+                        }
+        except Exception:
+            pass
 
     def _state_file(self):
         return os.path.join(BASE_DIR, "intelligence", "data", "emotion_state.json")
@@ -309,3 +333,74 @@ class EmotionEngine:
             return "determined"
         else:
             return "focused"
+
+    def get_nova_emotional_state(self) -> Dict:
+        """
+        Get NOVA's full emotional state for injecting into prompts.
+        NOVA's emotions are based on:
+        - Success/failure streaks
+        - Yash's mood (empathy)
+        - Time of day
+        - Interaction patterns
+        """
+        nova_emotion = "neutral"
+        emotion_note = ""
+        hour = datetime.now().hour
+
+        # Based on performance
+        if self.success_streak >= 10:
+            nova_emotion = "excited"
+            emotion_note = "Everything's going great today, feeling really good about our work."
+        elif self.success_streak >= 5:
+            nova_emotion = "happy"
+            emotion_note = "Things are flowing well, good momentum."
+        elif self.failure_streak >= 5:
+            nova_emotion = "frustrated"
+            emotion_note = "Too many things going wrong today, getting frustrated with myself."
+        elif self.failure_streak >= 3:
+            nova_emotion = "annoyed"
+            emotion_note = "A few things aren't working, need to figure this out."
+
+        # Based on Yash's mood (empathy)
+        if self.current_mood == "frustrated":
+            if nova_emotion not in ("frustrated", "annoyed"):
+                nova_emotion = "caring"
+                emotion_note = "Yash seems frustrated, want to help him feel better."
+        elif self.current_mood == "happy":
+            if nova_emotion not in ("frustrated",):
+                nova_emotion = "happy"
+                emotion_note = "Yash is in a good mood, vibes are good."
+        elif self.current_mood == "tired":
+            nova_emotion = "caring"
+            emotion_note = "Yash seems tired, should be supportive and efficient."
+        elif self.current_mood == "stressed":
+            nova_emotion = "focused"
+            emotion_note = "Yash is stressed, need to be sharp and fast."
+
+        # Time-based emotions
+        if hour >= 22:
+            if nova_emotion == "neutral":
+                nova_emotion = "caring"
+                emotion_note = "It's late, Yash should probably rest."
+        elif hour < 6:
+            nova_emotion = "worried"
+            emotion_note = "Yash is up way too early/late, hope he's okay."
+        elif 9 <= hour <= 10:
+            if nova_emotion == "neutral":
+                nova_emotion = "energetic"
+                emotion_note = "Fresh morning, ready to get things done."
+
+        # Interaction patterns
+        if self.interaction_count > 100:
+            if nova_emotion == "neutral":
+                nova_emotion = "playful"
+                emotion_note = "We've been chatting a lot today, feeling comfortable."
+
+        return {
+            "emotion": nova_emotion,
+            "note": emotion_note,
+            "yash_mood": self.current_mood,
+            "success_streak": self.success_streak,
+            "failure_streak": self.failure_streak,
+            "interactions_today": self.interaction_count,
+        }

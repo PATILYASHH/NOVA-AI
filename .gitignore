@@ -1,10 +1,45 @@
-# Environment secrets only
+# Secrets
 .env
+
+# Python
 venv/
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
+
+# Personal data (runtime-generated, user-specific)
+logs/
+memory/RAM/
+memory/RM/
+memory/ROM/
+memory/vector_db/
+self/diary/
+self/daily_errors/
+self/fix_proposals/
+self/improvements/
+self/performance/
+self/knowledge/learned.json
+self/learnings.json
+self/identity/personality.md
+self/identity/emotions.json
+self/identity/traits.json
+intelligence/data/*.json
+schedules/tasks.json
+graphify-out/
+
+# Keep example files (tracked)
+!self/identity/*.example.*
+!self/knowledge/*.example.json
+!.env.example
 
 # OS junk
 *.lock
 Thumbs.db
 desktop.ini
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
