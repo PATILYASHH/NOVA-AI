@@ -1,0 +1,11 @@
+{
+  "_description": "Things NOVA has learned over time. NOVA adds to this dynamically.",
+  "_last_updated": "",
+
+  "facts": [],
+  "opinions": [
+    {"topic": "code", "opinion": "Clean code over clever hacks", "strength": "strong"}
+  ],
+  "lessons_learned": [],
+  "things_yash_told_me": []
+}
