@@ -1,138 +1,6 @@
 {
   "activities": [
     {
-      "timestamp": "2026-04-07T21:58:10.661597",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:58:14.925219",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:58:50.750371",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:58:55.067875",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:58:56.350822",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:59:01.092834",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:59:02.940678",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:59:08.447393",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:59:10.989915",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:59:14.645214",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:59:18.429435",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:59:24.366585",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:59:30.104221",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:59:38.322922",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:59:46.752225",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T21:59:58.955771",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T22:00:03.227700",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T22:00:21.401878",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T22:00:25.632936",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T22:00:52.032949",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T22:00:56.242281",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
-      "timestamp": "2026-04-07T22:01:26.948127",
-      "type": "error",
-      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
-      "metadata": {}
-    },
-    {
       "timestamp": "2026-04-07T22:01:31.233329",
       "type": "error",
       "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
@@ -5998,6 +5866,138 @@
       "timestamp": "2026-04-08T22:11:56.761732",
       "type": "error",
       "description": "httpx.ConnectError: [Errno 11002] getaddrinfo failed",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:19:45.819730",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:19:50.116369",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:19:51.481044",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:19:56.471458",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:19:58.145378",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:20:03.650758",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:01.805513",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:06.114664",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:07.300761",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:12.079349",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:13.816427",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:19.345262",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:21.780394",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:24.946197",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:25.439890",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:28.517841",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:34.143655",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:39.849544",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:55:48.006194",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:57:44.191018",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:57:48.485251",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-04-08T22:57:49.817221",
+      "type": "error",
+      "description": "Conflict: terminated by other getUpdates request; make sure that only one bot instance is running",
       "metadata": {}
     }
   ]

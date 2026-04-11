@@ -26,8 +26,8 @@
         "total": 1
       },
       "Hello": {
-        "success": 2,
-        "total": 2
+        "success": 4,
+        "total": 4
       },
       "/start": {
         "success": 1,
@@ -76,6 +76,14 @@
       "No anydesk is not opened check problem and open it": {
         "success": 1,
         "total": 1
+      },
+      "Open WhatsApp": {
+        "success": 1,
+        "total": 1
+      },
+      "Which apps are opened on pc": {
+        "success": 1,
+        "total": 1
       }
     },
     "error_patterns": {},
@@ -85,5 +93,5 @@
     "path_preferences": {},
     "workflow_patterns": []
   },
-  "last_save": "2026-04-07T18:34:35.371220"
+  "last_save": "2026-04-08T22:59:20.356232"
 }

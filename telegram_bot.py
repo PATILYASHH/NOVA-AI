@@ -135,6 +135,9 @@ advanced = AdvancedControl()
 _app = None
 
 
+_bot_event_loop = None  # Set when bot starts polling
+
+
 def _send_telegram_alert(alert_type: str, message: str):
     """Send alert to Telegram (safe for background threads)"""
     if _app and AUTHORIZED_CHAT_IDS:
@@ -142,7 +145,7 @@ def _send_telegram_alert(alert_type: str, message: str):
             chat_id = AUTHORIZED_CHAT_IDS[0]
             text = f"**[NOVA - {alert_type}]**\n{message}"
             # Thread-safe: schedule coroutine on the bot's event loop
-            loop = _app.bot._local._loop if hasattr(_app.bot, '_local') else None
+            loop = _bot_event_loop
             if loop and loop.is_running():
                 asyncio.run_coroutine_threadsafe(
                     _app.bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown"),
@@ -2527,7 +2530,7 @@ You just scored yourself {score}/10 today. Stats: {result['stats']}
 Strengths: {result.get('strengths', [])}
 Improvements: {result.get('improvements', [])}
 Give a brief, honest self-assessment in 2-3 sentences. Be genuine, not robotic."""
-            perf_text = personality._call_claude(perf_prompt, timeout=15)
+            perf_text = personality._ask_claude(perf_prompt, timeout=15)
             response = perf_text or f"Today I'd give myself a {score}/10."
             # Also write diary entry about this
             reflection.diary.write_entry(
@@ -2894,6 +2897,8 @@ def create_bot() -> Application:
     # Send online notification after startup
     async def _post_init(app):
         """Called after bot is fully initialized"""
+        global _bot_event_loop
+        _bot_event_loop = asyncio.get_running_loop()
         try:
             await OnlineBroadcast.send_online_message(app, AUTHORIZED_CHAT_IDS)
         except Exception as e:

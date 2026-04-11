@@ -1,6 +1,27 @@
 {
   "date": "2026-04-08",
-  "conversations": [],
+  "conversations": [
+    {
+      "user": "Hello",
+      "nova": "Hey Yash, what's up?",
+      "timestamp": "2026-04-08T22:56:32.269263"
+    },
+    {
+      "user": "Open WhatsApp",
+      "nova": "What do you need?",
+      "timestamp": "2026-04-08T22:56:47.162818"
+    },
+    {
+      "user": "Hello",
+      "nova": "Hey Yash, what's up?",
+      "timestamp": "2026-04-08T22:58:56.116854"
+    },
+    {
+      "user": "Which apps are opened on pc",
+      "nova": "What do you need?",
+      "timestamp": "2026-04-08T22:59:20.353627"
+    }
+  ],
   "commands_executed": [],
   "files_modified": [],
   "projects_worked": [],
@@ -8,7 +29,7 @@
   "errors": [],
   "statistics": {
     "total_commands": 0,
-    "total_messages": 0,
-    "session_count": 5
+    "total_messages": 4,
+    "session_count": 3
   }
 }
