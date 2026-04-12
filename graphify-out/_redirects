@@ -1,0 +1,6 @@
+# Netlify redirects
+# Serve graph.html as the root
+/ /graph.html 200
+
+# Fallback for any other routes
+/* /graph.html 200

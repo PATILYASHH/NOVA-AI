@@ -26,7 +26,7 @@ self/identity/emotions.json
 self/identity/traits.json
 intelligence/data/*.json
 schedules/tasks.json
-graphify-out/
+# graphify-out/ is NOT ignored - needed for Netlify deployment
 
 # Keep example files (tracked)
 !self/identity/*.example.*
