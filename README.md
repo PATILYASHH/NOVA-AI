@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/NOVA-Self--Evolving%20AI%20Agent-blueviolet?style=for-the-badge&logo=robot&logoColor=white" alt="NOVA"/>
+  <img src="https://img.shields.io/badge/NOVA-Autonomous%20AI%20Agent-blueviolet?style=for-the-badge&logo=robot&logoColor=white" alt="NOVA"/>
 </p>
 
 <h1 align="center">NOVA</h1>
 
 <p align="center">
-  <strong>Your PC, controlled by your best friend.</strong>
+  <strong>An autonomous AI agent that lives on your PC.</strong>
 </p>
 
 <p align="center">
@@ -26,128 +26,89 @@
 ---
 
 <p align="center">
-  <em>An autonomous AI agent that lives in your PC. It has emotions, writes a diary, fixes its own bugs, and evolves its personality over time. Talk naturally via Telegram or Terminal — no commands needed.</em>
+  <em>Controls your PC, builds full projects, fixes its own bugs, and evolves its personality — all through natural conversation via Telegram or Terminal.</em>
 </p>
 
 <p align="center">
   <em>No paid APIs. Runs locally using Claude Code CLI.</em>
 </p>
 
+> ⚠️ **Early Stage** — NOVA is under active development. Expect rough edges. Contributions welcome!
+
 ---
 
-## Why NOVA?
+## What NOVA Does
 
-> Most AI bots are tools. NOVA is a **friend** that happens to be insanely capable.
+Most AI assistants answer questions and forget you exist. NOVA is different — it's a persistent agent that **lives on your machine**, remembers your history, acts proactively, and improves itself over time.
 
-<table>
-<tr>
-<td width="50%">
+- Controls your entire PC via natural language
+- Builds full projects and pushes them to GitHub
+- Fixes its own bugs daily with your approval
+- Evolves its personality based on interactions
+- Remembers past conversations semantically (ChromaDB)
+- Sends you morning briefings and proactive alerts
+- Reads PDFs, analyzes screenshots via OCR
 
-### What Others Do
-- Answer questions
-- Generate text
-- That's about it
+---
 
-</td>
-<td width="50%">
+## Demo
 
-### What NOVA Does
-- Controls your entire PC remotely
-- Builds full projects & pushes to GitHub
-- Feels 11 emotions and writes a diary
-- Fixes its own bugs at 6 PM daily
-- Evolves its personality over time
-- Remembers everything via vector memory
-- Sends you morning briefings
-- Reads PDFs and screenshots
-- Learns from every interaction
+> 📹 *Demo GIF coming soon — star the repo to get notified!*
 
-</td>
-</tr>
-</table>
+```
+You: "build a todo app in flask and push to github"
+NOVA: Creates project → writes all code → creates repo → pushes → sends link
+
+You: "what's my cpu at?"
+NOVA: "CPU at 23%, RAM at 67%. Everything's chill."
+
+You: "this code is broken, help me fix it"
+NOVA: Identifies bug → explains why → gives fix with code
+
+You: (sends a PDF)
+NOVA: Reads it, summarizes it, answers questions about it
+```
 
 ---
 
 ## Features
 
-### Compared to Everything Else
-
-| Feature | Siri/Alexa | ChatGPT | Other Bots | **NOVA** |
-|:---|:---:|:---:|:---:|:---:|
-| Full PC Control | Limited | No | Basic | **Yes** |
-| Build Projects + GitHub | No | Code only | No | **Yes** |
-| Real Emotions (11 types) | No | No | No | **Yes** |
-| Self-Coding (fixes own bugs) | No | No | No | **Yes** |
-| Evolving Personality | No | No | No | **Yes** |
-| Private Diary | No | No | No | **Yes** |
-| Semantic Vector Memory | No | Per-chat | No | **ChromaDB** |
-| Knowledge Graph | No | No | No | **Graphify** |
-| 102 Claude Skills | No | No | No | **Yes** |
-| Morning Briefing | No | No | No | **9 AM** |
-| Reads PDFs & Images | No | Yes | No | **Yes** |
-| Natural Language Control | Yes | Yes | No | **Yes** |
-
----
-
-### Core Capabilities
-
 <details>
 <summary><strong>Natural Language Everything</strong> — Just talk, NOVA figures out the rest</summary>
 
-```
-You: "build a todo app in flask and push to github"
-NOVA: Creates project -> writes all code -> creates repo -> pushes -> sends link
-
-You: "what's my cpu at?"
-NOVA: "CPU at 23%, RAM at 67%. Everything's chill."
-
-You: "hey how are you"
-NOVA: "Doing good bro. Been keeping things tidy. What are we working on?"
-
-You: "this code is broken, help me fix it"
-NOVA: Identifies bug -> explains why -> gives fix with code
-
-You: (sends a PDF)
-NOVA: Reads it, summarizes it, answers questions about it
-
-You: (sends a screenshot)
-NOVA: Analyzes with OCR, describes what it sees
-```
-
 No commands needed. NOVA classifies your message and decides what to do:
-- **Chat** -> Responds as your friend
-- **PC Action** -> Opens apps, screenshots, runs commands
-- **Build Project** -> Full project + GitHub repo
-- **Code Task** -> Claude Code implements features
+- **Chat** → Responds conversationally
+- **PC Action** → Opens apps, screenshots, runs commands
+- **Build Project** → Full project + GitHub repo
+- **Code Task** → Claude Code implements features
 </details>
 
 <details>
 <summary><strong>Self-Evolving Personality</strong> — Nothing is hardcoded</summary>
 
-NOVA's personality, emotions, knowledge are stored in editable files that evolve over time:
+NOVA's personality, emotions, and knowledge are stored in editable files that evolve over time:
 
 | File | What It Controls |
 |---|---|
-| `self/identity/personality.md` | Who NOVA is, how it talks |
+| `self/identity/personality.md` | How NOVA talks and behaves |
 | `self/identity/emotions.json` | 11 emotions with triggers & expressions |
 | `self/identity/traits.json` | Personality traits (0-1 scale) |
 | `self/knowledge/learned.json` | Facts, opinions, lessons learned |
 
-NOVA can update ALL of these over time based on interactions.
+NOVA can update all of these based on interactions over time.
 
-**Emotions NOVA feels:**
-`happy` `proud` `frustrated` `angry` `worried` `sad` `excited` `annoyed` `caring` `playful` `curious`
+**Emotions modeled:** `happy` `proud` `frustrated` `angry` `worried` `sad` `excited` `annoyed` `caring` `playful` `curious`
 </details>
 
 <details>
-<summary><strong>Self-Coding</strong> — NOVA fixes its own bugs</summary>
+<summary><strong>Self-Coding</strong> — NOVA proposes fixes for its own bugs</summary>
 
 Every day at 6 PM:
 1. Reviews all errors encountered during the day
 2. Asks Claude to analyze root causes
 3. Proposes specific code fixes
 4. Sends proposals to you on Telegram
-5. On your approval, **codes the fix into itself**
+5. On your approval, **applies the fix into itself**
 
 ```
 NOVA: "I encountered 3 errors today. Let me analyze..."
@@ -172,12 +133,12 @@ NOVA: "Self-Fix Proposal [High]
 | **ROM** | Permanent knowledge | SQLite (9 tables) | Command history, projects, insights |
 | **Vector** | Semantic search | ChromaDB | Finds past conversations by meaning |
 
-**Vector memory example:**
+**Example:**
 ```
 You say: "flutter gradle error"
 NOVA recalls: "Last week you had a Gradle build issue — we fixed it by updating the wrapper"
 ```
-Even though the exact words are different, ChromaDB finds it by meaning.
+Even though the exact words differ, ChromaDB finds it by meaning.
 </details>
 
 <details>
@@ -193,7 +154,7 @@ Even though the exact words are different, ChromaDB finds it by meaning.
 </details>
 
 <details>
-<summary><strong>Full PC Control</strong> — 110+ commands via natural language</summary>
+<summary><strong>Full PC Control</strong> — 110+ actions via natural language</summary>
 
 | Category | Examples |
 |---|---|
@@ -229,8 +190,8 @@ Even though the exact words are different, ChromaDB finds it by meaning.
 
 ```bash
 # Clone the repo
-git clone https://github.com/PATILYASHH/NOVA.git
-cd NOVA
+git clone https://github.com/PATILYASHH/NOVA-AI.git
+cd NOVA-AI
 
 # Run the setup wizard (handles everything)
 python nova_cli.py --setup
@@ -347,7 +308,7 @@ NOVA/
 
 ## Telegram Commands
 
-> NOVA understands natural language, but these commands also work as shortcuts:
+> NOVA understands natural language, but these shortcuts also work:
 
 <details>
 <summary>View all commands</summary>
@@ -390,20 +351,23 @@ NOVA/
 
 ---
 
-## AGI Comparison
+## Known Limitations
 
-> NOVA scores **75%** on our AGI benchmark — rated as an **Advanced AI Agent**.
+- Windows-focused; macOS/Linux support is partial
+- Requires Claude Code CLI to be authenticated and running
+- Self-coding is experimental — always review proposals before approving
+- Telegram bot requires manual setup (no OAuth flow yet)
 
-```
-Basic Bot        [##                    ]  20%
-Smart Assistant  [#####                 ]  35%
-Intelligent Agent[##########            ]  50%
-NOVA             [###############       ]  75%  <-- Here
-Near-AGI         [##################    ]  85%
-AGI              [######################] 100%
-```
+---
 
-**Strongest capabilities:** Self-improvement (9/10), Adaptability (9/10), Tool use (9/10), Autonomy (8/10)
+## Roadmap
+
+- [ ] Demo video / GIF in README
+- [ ] macOS & Linux full support
+- [ ] Web UI dashboard
+- [ ] Plugin system for custom skills
+- [ ] Voice input/output support
+- [ ] CONTRIBUTING.md with detailed guide
 
 ---
 
@@ -423,7 +387,7 @@ AGI              [######################] 100%
 
 ## Contributing
 
-Contributions are welcome! Here's how:
+Contributions are welcome!
 
 1. Fork the repo
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
@@ -431,21 +395,23 @@ Contributions are welcome! Here's how:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+Have an idea or found a bug? [Open an issue](https://github.com/PATILYASHH/NOVA-AI/issues) — all feedback is appreciated.
+
 ---
 
 ## License
 
-Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.
+MIT License. See [`LICENSE`](LICENSE) for details.
 
 ---
 
 <p align="center">
-  Built with passion by <a href="https://github.com/PATILYASHH"><strong>PATILYASHH</strong></a> (Yash Patil)
+  Made by <a href="https://github.com/PATILYASHH"><strong>Yash Patil</strong></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/PATILYASHH/NOVA/stargazers"><img src="https://img.shields.io/github/stars/PATILYASHH/NOVA?style=social" alt="Stars"/></a>
-  <a href="https://github.com/PATILYASHH/NOVA/network/members"><img src="https://img.shields.io/github/forks/PATILYASHH/NOVA?style=social" alt="Forks"/></a>
+  <a href="https://github.com/PATILYASHH/NOVA-AI/stargazers"><img src="https://img.shields.io/github/stars/PATILYASHH/NOVA-AI?style=social" alt="Stars"/></a>
+  <a href="https://github.com/PATILYASHH/NOVA-AI/network/members"><img src="https://img.shields.io/github/forks/PATILYASHH/NOVA-AI?style=social" alt="Forks"/></a>
 </p>
 
 <p align="center">
