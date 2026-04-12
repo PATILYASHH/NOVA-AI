@@ -1,6 +1,25 @@
 {
   "created": "2026-04-07T18:00:11.040254",
-  "learnings": [],
+  "learnings": [
+    {
+      "learning": "Need to improve: Need to improve command accuracy",
+      "category": "self-improvement",
+      "source": "daily_review",
+      "timestamp": "2026-04-11T18:00:11.171514"
+    },
+    {
+      "learning": "Need to improve: Some errors occurred - could be more careful",
+      "category": "self-improvement",
+      "source": "daily_review",
+      "timestamp": "2026-04-11T18:00:11.171514"
+    },
+    {
+      "learning": "Need to improve: Some mistakes made - could be more careful",
+      "category": "self-improvement",
+      "source": "daily_review",
+      "timestamp": "2026-04-11T18:00:11.171514"
+    }
+  ],
   "patterns": {},
   "common_mistakes": [],
   "best_practices": [

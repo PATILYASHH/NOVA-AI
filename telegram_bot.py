@@ -2711,7 +2711,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         pass
 
     # Step 1: Ask Claude if this needs an action or is just chat
-    action_decision = personality.should_execute_action(message, brain_context)
+    action_decision = await personality.should_execute_action_async(message, brain_context)
 
     response = ""
 
@@ -2722,7 +2722,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if atype == "open_app":
             result = system.open_app(atarget)
-            response = personality.generate_task_response(f"open {atarget}", result.get("message", result.get("error", "")), result["success"])
+            response = await personality.generate_task_response_async(f"open {atarget}", result.get("message", result.get("error", "")), result["success"])
             log_cmd(f"open {atarget}", response[:200], result["success"], "app")
             habit_tracker.record_app_usage(atarget)
 
@@ -2803,11 +2803,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         elif atype == "browser":
             result = utils.open_url(atarget) if atarget.startswith("http") else utils.search_google(atarget)
-            response = personality.generate_task_response(f"browse {atarget}", result.get("message", ""), result["success"])
+            response = await personality.generate_task_response_async(f"browse {atarget}", result.get("message", ""), result["success"])
 
         elif atype == "search":
             result = utils.search_google(atarget)
-            response = personality.generate_task_response(f"search {atarget}", result.get("message", ""), result["success"])
+            response = await personality.generate_task_response_async(f"search {atarget}", result.get("message", ""), result["success"])
 
         elif atype == "volume":
             try:
@@ -2926,9 +2926,9 @@ Give a brief, honest self-assessment in 2-3 sentences. Be genuine, not robotic."
                 edit_prompt = f"I found {review['improvements_found']} things to improve. Applied {review['auto_applied']} auto-fixes."
                 if review.get('details'):
                     edit_prompt += f"\nChanges: {[d.get('change_description','')[:40] for d in review['details'][:3]]}"
-                response = personality.generate_task_response("self-review", edit_prompt, True)
+                response = await personality.generate_task_response_async("self-review", edit_prompt, True)
             else:
-                response = personality.generate_task_response("self-review", "Everything looks good. No improvements needed right now.", True)
+                response = await personality.generate_task_response_async("self-review", "Everything looks good. No improvements needed right now.", True)
 
             if not response:
                 response = f"Reviewed myself. Found {review['improvements_found']} areas, auto-fixed {review['auto_applied']}."
@@ -3085,9 +3085,75 @@ Give a brief, honest self-assessment in 2-3 sentences. Be genuine, not robotic."
             else:
                 response = "Couldn't fetch repos. " + repos_result.get("error", "")
 
+        elif atype == "deploy":
+            # Deploy to Vercel/Netlify
+            if agent.is_running:
+                response = "Already working on something. Hold on."
+            else:
+                platform = atarget.lower() if atarget else "vercel"
+                # Find project path
+                deploy_path = None
+                active_project = memory.rm.context.get("active_project")
+                if active_project:
+                    for p in memory.rom.get_all_projects():
+                        if p["name"] == active_project:
+                            deploy_path = p["path"]
+                            break
+
+                if not deploy_path:
+                    deploy_path = os.getcwd()
+
+                await update.message.reply_text(f"Deploying to **{platform}**...", parse_mode="Markdown")
+
+                async def deploy_progress(msg):
+                    try:
+                        await update.message.reply_text(msg, parse_mode="Markdown")
+                    except Exception:
+                        pass
+
+                if platform in ("vercel", ""):
+                    deploy_prompt = f"""Deploy this project to Vercel. Project path: {deploy_path}
+
+Follow these steps in order:
+1. Check if Vercel CLI is installed: run 'npx vercel --version'. If not installed, run 'npm i -g vercel'
+2. Check if project is already linked: look for .vercel folder in {deploy_path}
+3. If NOT linked (new project): run 'npx vercel --yes' which will auto-create and deploy
+4. If already linked: run 'npx vercel --prod --yes' for production deploy
+5. If there's a build step needed (React, Next.js etc), Vercel handles it automatically
+6. Return the deployment URL from the output
+
+If vercel asks for login, run 'npx vercel login' first.
+If there are build errors, try to fix them and redeploy."""
+
+                elif platform == "netlify":
+                    deploy_prompt = f"""Deploy this project to Netlify. Project path: {deploy_path}
+
+Follow these steps in order:
+1. Check if Netlify CLI is installed: run 'npx netlify --version'. If not, run 'npm i -g netlify-cli'
+2. Check if this is a new project (no .netlify folder)
+3. If new project:
+   - Run 'npx netlify init' to create a new site
+   - Or run 'npx netlify deploy --prod' which will prompt to create
+4. If already linked: run 'npx netlify deploy --prod'
+5. For static sites, use --dir=. or --dir=build or --dir=dist depending on framework
+6. If there's a build command (React/Next), run it first: npm run build
+7. Return the deployment URL
+
+If netlify asks for auth, run 'npx netlify login' first."""
+
+                else:
+                    deploy_prompt = f"Deploy this project at {deploy_path} to {platform}. Install the CLI if needed, set up the project if it's new, and deploy. Return the deployment URL."
+
+                deploy_result = await agent.execute_task(deploy_prompt, deploy_path, progress_cb=deploy_progress)
+                if deploy_result["success"]:
+                    response = f"Deployed!\n\n```\n{deploy_result.get('output', 'Done')[:2000]}\n```"
+                else:
+                    response = f"Deploy failed: {deploy_result.get('error', 'Unknown')}"
+                log_cmd(f"deploy {platform}", response[:200], deploy_result["success"], "agent")
+
         else:
             # Unknown action type - let Claude chat naturally
-            response = personality.generate_response(message, brain_context)
+            response = await personality.generate_response_async(message, brain_context)
 
     else:
         # === JUST CHAT - Let Claude respond naturally ===
@@ -3114,7 +3180,7 @@ Give a brief, honest self-assessment in 2-3 sentences. Be genuine, not robotic."
                             break
         except Exception:
             pass
-        response = personality.generate_response(message, brain_context)
+        response = await personality.generate_response_async(message, brain_context)
 
     if not response or not response.strip():
         response = "I'm here. What do you need?"
@@ -3176,6 +3242,38 @@ Give a brief, honest self-assessment in 2-3 sentences. Be genuine, not robotic."
                     memory.register_project(detected["name"], detected["path"])
     except Exception:
         pass
+
+
+# ============ TASK CONTROL ============
+
+async def killtask_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Kill any stuck/running agent task"""
+    if not is_authorized(update.effective_chat.id):
+        return
+
+    agent.is_running = False
+    agent._active_tasks.clear()
+
+    # Kill any stuck claude processes
+    try:
+        import psutil
+        killed = []
+        for proc in psutil.process_iter(['name', 'cmdline', 'pid']):
+            try:
+                cmdline = " ".join(proc.info.get('cmdline') or []).lower()
+                if 'claude' in cmdline and '-p' in cmdline:
+                    proc.kill()
+                    killed.append(f"claude (PID {proc.info['pid']})")
+            except Exception:
+                pass
+        if killed:
+            await update.message.reply_text(f"Killed stuck tasks:\n" + "\n".join(killed))
+        else:
+            await update.message.reply_text("No stuck tasks found. NOVA is free.")
+    except Exception:
+        await update.message.reply_text("Tasks cleared. NOVA is ready.")
+
+    log_cmd("killtask", "Tasks killed", True, "system")
 
 
 # ============ SELF-CODING COMMANDS ============
@@ -3547,6 +3645,7 @@ def create_bot() -> Application:
     application.add_handler(CommandHandler("task", task_cmd))
 
     # Self-coding commands
+    application.add_handler(CommandHandler("killtask", killtask_cmd))
     application.add_handler(CommandHandler("fixapprove", fixapprove_cmd))
     application.add_handler(CommandHandler("fixreject", fixreject_cmd))
     application.add_handler(CommandHandler("fixes", fixes_cmd))
@@ -3682,7 +3781,7 @@ def create_bot() -> Application:
         logger.warning(f"Anomaly detector failed to start: {e}")
 
     try:
-        proactive.start_background(interval=300)
+        proactive.start_background(interval=1800)  # Every 30 min, not 5
         logger.info("Proactive assistant started")
     except Exception as e:
         logger.warning(f"Proactive assistant failed to start: {e}")
@@ -3698,14 +3797,14 @@ def create_bot() -> Application:
     # Start file watcher
     try:
         file_watcher.alert_callback = _send_telegram_alert
-        file_watcher.start(interval=60)
+        file_watcher.start(interval=300)  # Every 5 min, not 1
         logger.info("File watcher started")
     except Exception as e:
         logger.warning(f"File watcher failed to start: {e}")
 
     # Start resource history tracking
     try:
-        resource_history.start(interval=60)
+        resource_history.start(interval=300)  # Every 5 min, not 1
         logger.info("Resource history tracker started")
     except Exception as e:
         logger.warning(f"Resource history failed to start: {e}")

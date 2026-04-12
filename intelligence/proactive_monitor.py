@@ -33,13 +33,13 @@ class ProactiveMonitor:
         self.monitor_thread = None
         self.alerts_sent = {}  # Track alerts to avoid spam
         self.thresholds = {
-            "cpu_percent": 90,
-            "memory_percent": 85,
-            "disk_percent": 90,
-            "battery_low": 20,
-            "battery_critical": 10
+            "cpu_percent": 95,
+            "memory_percent": 92,
+            "disk_percent": 95,
+            "battery_low": 15,
+            "battery_critical": 5
         }
-        self.check_interval = 60  # seconds
+        self.check_interval = 300  # 5 minutes between checks
         self.load_state()
 
     def load_state(self):
@@ -70,14 +70,15 @@ class ProactiveMonitor:
         self.save_state()
 
     def send_alert(self, alert_type: str, message: str, priority: str = "normal"):
-        """Send alert if not recently sent"""
-        # Avoid duplicate alerts within 5 minutes
+        """Send alert only for important things, no spam"""
+        # Cooldown: 30 min for normal, 10 min for critical
         alert_key = f"{alert_type}_{priority}"
         now = datetime.now()
+        cooldown = 600 if priority == "critical" else 1800  # 10 min or 30 min
 
         if alert_key in self.alerts_sent:
             last_sent = self.alerts_sent[alert_key]
-            if (now - last_sent).seconds < 300:  # 5 minutes
+            if (now - last_sent).seconds < cooldown:
                 return
 
         self.alerts_sent[alert_key] = now
@@ -154,11 +155,12 @@ class ProactiveMonitor:
         return None
 
     def check_large_processes(self) -> Optional[Dict]:
-        """Check for processes using too much resources"""
+        """Check for processes using excessive resources (only alert for extreme cases)"""
         alerts = []
         for proc in psutil.process_iter(['name', 'cpu_percent', 'memory_percent']):
             try:
-                if proc.info['memory_percent'] and proc.info['memory_percent'] > 30:
+                # Only alert if a single process uses >50% RAM (extreme)
+                if proc.info['memory_percent'] and proc.info['memory_percent'] > 50:
                     alerts.append(f"{proc.info['name']}: {proc.info['memory_percent']:.1f}% RAM")
             except:
                 pass
@@ -167,7 +169,7 @@ class ProactiveMonitor:
             return {
                 "type": "process_heavy",
                 "message": f"Heavy processes: {', '.join(alerts[:3])}",
-                "priority": "low"
+                "priority": "normal"
             }
         return None
 

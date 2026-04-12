@@ -159,7 +159,7 @@ class ProactiveAssistant:
 
             # Memory check
             mem = psutil.virtual_memory()
-            if mem.percent > 80 and self._can_suggest("system_memory"):
+            if mem.percent > 93 and self._can_suggest("system_memory"):
                 # Find top memory consumers
                 top_procs = []
                 for proc in psutil.process_iter(['name', 'memory_percent']):
@@ -196,7 +196,7 @@ class ProactiveAssistant:
             # Battery check
             try:
                 battery = psutil.sensors_battery()
-                if battery and not battery.power_plugged and battery.percent < 30:
+                if battery and not battery.power_plugged and battery.percent < 15:
                     suggestions.append({
                         "category": "system_battery",
                         "message": f"Battery at {battery.percent}%. Consider plugging in.",
