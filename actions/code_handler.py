@@ -177,7 +177,7 @@ class CodeHandler:
             if not os.path.exists(file_path):
                 return {"success": False, "error": f"File not found: {file_path}"}
 
-            subprocess.Popen([editor, file_path], shell=True)
+            subprocess.Popen(f'"{editor}" "{file_path}"', shell=True)
             return {"success": True, "message": f"Opened {file_path} in {editor}"}
         except Exception as e:
             return {"success": False, "error": str(e)}

@@ -45,7 +45,9 @@ class FileOperations:
             mode = "a" if append else "w"
 
             # Create directory if needed
-            os.makedirs(os.path.dirname(path), exist_ok=True)
+            dir_path = os.path.dirname(path)
+            if dir_path:
+                os.makedirs(dir_path, exist_ok=True)
 
             with open(path, mode, encoding="utf-8") as f:
                 f.write(content)

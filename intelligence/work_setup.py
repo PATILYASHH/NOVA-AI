@@ -280,7 +280,7 @@ class WorkSetupEngine:
         if progress_callback:
             await progress_callback(f"Opening {editor}...")
         try:
-            subprocess.Popen([editor, project_path], shell=True)
+            subprocess.Popen(f'"{editor}" "{project_path}"', shell=True)
             result["steps"].append({"step": f"Open {editor}", "status": "OK", "detail": project_path})
         except Exception as e:
             result["steps"].append({"step": f"Open {editor}", "status": "FAIL", "detail": str(e)[:50]})
@@ -291,7 +291,7 @@ class WorkSetupEngine:
                 full = os.path.join(project_path, fp) if not os.path.isabs(fp) else fp
                 if os.path.exists(full):
                     try:
-                        subprocess.Popen([editor, full], shell=True)
+                        subprocess.Popen(f'"{editor}" "{full}"', shell=True)
                         result["steps"].append({"step": f"Open file: {fp}", "status": "OK"})
                     except Exception:
                         pass

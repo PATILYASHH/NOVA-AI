@@ -319,21 +319,21 @@ IMPORTANT RULES:
 
     async def generate_response_async(self, user_message: str, context: Dict = None) -> str:
         """Async version of generate_response - doesn't block the bot"""
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, self.generate_response, user_message, context
         )
 
     async def should_execute_action_async(self, user_message: str, context: Dict = None):
         """Async version of should_execute_action - doesn't block the bot"""
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, self.should_execute_action, user_message, context
         )
 
     async def generate_task_response_async(self, task: str, result: str, success: bool, context: Dict = None) -> str:
         """Async version of generate_task_response"""
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, self.generate_task_response, task, result, success, context
         )
@@ -547,11 +547,10 @@ Reply:"""
 
     async def _ask_claude_async(self, prompt: str, timeout: int = 60, system_prompt: str = None) -> Optional[str]:
         """Call Claude CLI - ASYNC version (runs in thread pool, doesn't block the bot)"""
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, self._ask_claude, prompt, timeout, system_prompt
         )
-        return None
 
     def _clean(self, text: str) -> str:
         """Clean Claude's response - no hard truncation"""

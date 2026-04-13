@@ -56,6 +56,9 @@ from core.self_improve import SelfImproveEngine
 from core.personality import Personality
 from core.agent_executor import AgentExecutor
 from core.self_coder import DailyErrorCollector, SelfCoder
+from core.task_planner import TaskPlanner
+from core.bot_status import bot_status
+from core.smart_response import SmartResponse
 from intelligence.work_setup import WorkSetupEngine, OnlineBroadcast
 from intelligence.powers import (
     ScreenVision, WebSearch, FileContentSearch, CodeReview,
@@ -112,6 +115,7 @@ nl_router = NLCommandRouter()
 self_improve = SelfImproveEngine(reflection, learning_loop)
 error_collector = DailyErrorCollector()
 self_coder = SelfCoder(error_collector)
+task_planner = TaskPlanner()
 work_setup = WorkSetupEngine()
 personality = Personality()
 
@@ -245,7 +249,7 @@ def log_cmd(command: str, result: str, success: bool, category: str = "general",
         automation.record_command(command)
 
     # Track file paths for learning
-    if category == "file" and "/" in command or "\\" in command:
+    if category == "file" and ("/" in command or "\\" in command):
         try:
             parts = command.split()
             if len(parts) > 1:
@@ -291,7 +295,7 @@ def _smart_split(text: str, max_len: int = 4000) -> list:
         if part.count('```') % 2 != 0:
             last_open = part.rfind('```')
             after_ticks = part[last_open + 3:last_open + 30].split('\n')[0].strip()
-            lang_tag = after_ticks if after_ticks and not ' ' in after_ticks else ''
+            lang_tag = after_ticks if after_ticks and ' ' not in after_ticks else ''
             part += '\n```'
             remaining = f'```{lang_tag}\n' + remaining
 
@@ -1866,11 +1870,63 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         result = system.shutdown(action)
         await query.edit_message_text(result["message"] if result["success"] else f"Error: {result['error']}")
 
+    elif data.startswith("plan_accept_"):
+        task_id = data.replace("plan_accept_", "")
+        plan = task_planner.pending_approval.get(task_id)
+        if plan:
+            del task_planner.pending_approval[task_id]
+            await query.edit_message_text("Plan accepted! Starting execution...")
+            await bot_status.set_status("working")
+
+            # Find working directory
+            work_dir = None
+            active_project = memory.rm.context.get("active_project")
+            if active_project:
+                for p in memory.rom.get_all_projects():
+                    if p["name"] == active_project:
+                        work_dir = p["path"]
+                        break
+
+            # Execute plan with live updates
+            result = await task_planner.execute_plan(
+                plan, _app.bot, query.message.chat_id, work_dir
+            )
+
+            # Send completion summary
+            if result["success"]:
+                summary = f"*Done!* {result['steps_completed']}/{result['total_steps']} steps completed."
+            else:
+                summary = f"*Stopped.* {result['steps_completed']}/{result['total_steps']} steps completed."
+
+            await _app.bot.send_message(chat_id=query.message.chat_id, text=summary, parse_mode="Markdown")
+            await bot_status.set_status("online")
+            log_cmd(f"plan_{task_id}", summary, result["success"], "agent")
+        else:
+            await query.edit_message_text("Plan expired or not found.")
+
+    elif data.startswith("plan_reject_"):
+        task_id = data.replace("plan_reject_", "")
+        if task_id in task_planner.pending_approval:
+            del task_planner.pending_approval[task_id]
+        task_planner.cancel_plan(task_id)
+        await query.edit_message_text("Plan rejected. What would you like instead?")
+
+    elif data.startswith("plan_changes_"):
+        task_id = data.replace("plan_changes_", "")
+        plan = task_planner.pending_approval.get(task_id)
+        if plan:
+            # Store task_id so next message is treated as changes
+            context.user_data["pending_plan_changes"] = task_id
+            await query.edit_message_text(
+                f"Current plan for: _{plan.description}_\n\n"
+                "What changes do you want? Send your feedback and I'll update the plan.",
+                parse_mode="Markdown"
+            )
+        else:
+            await query.edit_message_text("Plan expired.")
+
     elif data == "approve_plan":
-        plan_goal = query.message.chat.id  # Get from context
-        await query.edit_message_text("Executing plan...")
-        # The plan text was shown, now execute the steps via Claude
-        # For now acknowledge - full execution through /chain or manual steps
+        await query.edit_message_text("Use the Accept/Reject buttons above.")
 
     elif data == "approve_cancel":
         await query.edit_message_text("Cancelled.")
@@ -2061,7 +2117,10 @@ async def changelog_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Show recent self-improvement changelog"""
     if not is_authorized(update.effective_chat.id):
         return
-    days = int(context.args[0]) if context.args else 7
+    try:
+        days = int(context.args[0]) if context.args else 7
+    except ValueError:
+        days = 7
     text = self_improve.get_changelog(days)
     await send_long_message(update, text)
 
@@ -2144,7 +2203,10 @@ async def cliphistory_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Show clipboard history"""
     if not is_authorized(update.effective_chat.id):
         return
-    count = int(context.args[0]) if context.args else 10
+    try:
+        count = int(context.args[0]) if context.args else 10
+    except ValueError:
+        count = 10
     text = clipboard_history.get_recent(count)
     await send_long_message(update, text)
 
@@ -2155,7 +2217,11 @@ async def clipget_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
         await update.message.reply_text("Usage: /clipget <number>")
         return
-    idx = int(context.args[0])
+    try:
+        idx = int(context.args[0])
+    except ValueError:
+        await update.message.reply_text("Please provide a valid number.")
+        return
     content = clipboard_history.get_entry(idx)
     if content:
         await update.message.reply_text(f"```\n{content}\n```", parse_mode="Markdown")
@@ -2225,7 +2291,10 @@ async def graph_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_authorized(update.effective_chat.id):
         return
     metric = context.args[0] if context.args else "cpu"
-    hours = int(context.args[1]) if len(context.args) > 1 else 1
+    try:
+        hours = int(context.args[1]) if len(context.args) > 1 else 1
+    except ValueError:
+        hours = 1
     text = resource_history.get_graph(metric, hours)
     await send_long_message(update, text)
 
@@ -2241,7 +2310,10 @@ async def autokill_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     action = context.args[0]
     if action == "on":
-        threshold = int(context.args[1]) if len(context.args) > 1 else 40
+        try:
+            threshold = int(context.args[1]) if len(context.args) > 1 else 40
+        except ValueError:
+            threshold = 40
         result = process_autokill.enable(threshold)
         process_autokill.start()
         await update.message.reply_text(result)
@@ -2311,7 +2383,10 @@ async def largefiles_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_authorized(update.effective_chat.id):
         return
     directory = context.args[0] if context.args else "C:\\"
-    min_mb = int(context.args[1]) if len(context.args) > 1 else 100
+    try:
+        min_mb = int(context.args[1]) if len(context.args) > 1 else 100
+    except ValueError:
+        min_mb = 100
     await update.message.reply_text(f"Scanning for files > {min_mb}MB...")
     results = batch_ops.find_large_files(directory, min_mb)
     if results:
@@ -2484,11 +2559,17 @@ async def note_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     action = context.args[0]
     if action == "del" and len(context.args) > 1:
-        result = notes.delete(int(context.args[1]))
-        await update.message.reply_text(result)
+        try:
+            result = notes.delete(int(context.args[1]))
+            await update.message.reply_text(result)
+        except ValueError:
+            await update.message.reply_text("Please provide a valid note number.")
     elif action == "done" and len(context.args) > 1:
-        result = notes.mark_done(int(context.args[1]))
-        await update.message.reply_text(result)
+        try:
+            result = notes.mark_done(int(context.args[1]))
+            await update.message.reply_text(result)
+        except ValueError:
+            await update.message.reply_text("Please provide a valid note number.")
     elif action == "search" and len(context.args) > 1:
         result = notes.search(" ".join(context.args[1:]))
         await send_long_message(update, result)
@@ -2637,6 +2718,38 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message = resolved
         await update.message.reply_text(f"Alias resolved: `{message}`", parse_mode="Markdown")
 
+    # Check for pending plan changes (user clicked "Need Changes" button)
+    if context.user_data.get("pending_plan_changes"):
+        task_id = context.user_data.pop("pending_plan_changes")
+        old_plan = task_planner.pending_approval.get(task_id)
+        if old_plan:
+            del task_planner.pending_approval[task_id]
+            await update.message.reply_text("Got it, updating the plan...")
+            await update.message.chat.send_action("typing")
+
+            new_description = f"{old_plan.description}. Changes requested: {message}"
+            new_plan = await asyncio.get_event_loop().run_in_executor(
+                None, task_planner.generate_plan, new_description
+            )
+            if new_plan:
+                task_planner.pending_approval[new_plan.task_id] = new_plan
+                plan_msg = task_planner.get_plan_message_with_buttons(new_plan)
+                keyboard = [[InlineKeyboardButton(b["text"], callback_data=b["callback_data"]) for b in row] for row in plan_msg["buttons"]]
+                try:
+                    await update.message.reply_text(
+                        plan_msg["text"],
+                        reply_markup=InlineKeyboardMarkup(keyboard),
+                        parse_mode="Markdown"
+                    )
+                except Exception:
+                    await update.message.reply_text(
+                        plan_msg["text"],
+                        reply_markup=InlineKeyboardMarkup(keyboard)
+                    )
+            else:
+                await update.message.reply_text("Couldn't update the plan. Tell me what you want differently.")
+            return
+
     # Check for memory recall queries
     if memory_recall.is_recall_query(message):
         text = memory_recall.recall(message)
@@ -2711,6 +2824,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         pass
 
     # Step 1: Ask Claude if this needs an action or is just chat
+    thinking_preview = message[:50] + ("..." if len(message) > 50 else "")
+    await bot_status.set_status("thinking", custom_bio=f'thinking: "{thinking_preview}"')
     action_decision = await personality.should_execute_action_async(message, brain_context)
 
     response = ""
@@ -2944,36 +3059,52 @@ Give a brief, honest self-assessment in 2-3 sentences. Be genuine, not robotic."
         # === AGENT ACTIONS (autonomous multi-step) ===
 
         elif atype == "build_project":
-            if agent.is_running:
-                response = "I'm already working on something. Let me finish first."
+            if agent.is_running or task_planner.active_plans:
+                response = "Already working on something. Send /killtask to cancel it first."
             else:
-                await update.message.reply_text("On it! Building the project... I'll keep you updated.", parse_mode="Markdown")
+                task_desc = atarget or message
+                await update.message.reply_text("Let me plan this out...", parse_mode="Markdown")
+                await bot_status.set_status("planning")
+                await update.message.chat.send_action("typing")
 
-                async def build_progress(msg):
+                # Generate a plan with steps
+                plan = await asyncio.get_event_loop().run_in_executor(
+                    None, task_planner.generate_plan, task_desc
+                )
+
+                if plan:
+                    # Store plan and show with buttons
+                    task_planner.pending_approval[plan.task_id] = plan
+                    plan_msg = task_planner.get_plan_message_with_buttons(plan)
+                    keyboard = [[InlineKeyboardButton(b["text"], callback_data=b["callback_data"]) for b in row] for row in plan_msg["buttons"]]
                     try:
-                        await update.message.reply_text(msg, parse_mode="Markdown")
+                        await update.message.reply_text(
+                            plan_msg["text"],
+                            reply_markup=InlineKeyboardMarkup(keyboard),
+                            parse_mode="Markdown"
+                        )
                     except Exception:
-                        await update.message.reply_text(msg)
-
-                build_result = await agent.build_project(atarget or message, progress_cb=build_progress)
-
-                if build_result["success"]:
-                    response = f"**Done! Project is ready.**\n\n"
-                    response += f"**Name:** {build_result.get('project_name', '')}\n"
-                    response += f"**Path:** `{build_result.get('project_path', '')}`\n"
-                    if build_result.get("repo_url"):
-                        response += f"**GitHub:** {build_result['repo_url']}\n"
-                    if build_result.get("file_count"):
-                        response += f"**Files:** {build_result['file_count']} files created\n"
-                    if build_result.get("files_created"):
-                        file_list = "\n".join(f"  - {f}" for f in build_result["files_created"][:15])
-                        response += f"\n{file_list}"
-                        if build_result["file_count"] > 15:
-                            response += f"\n  ... and {build_result['file_count'] - 15} more"
+                        await update.message.reply_text(
+                            plan_msg["text"],
+                            reply_markup=InlineKeyboardMarkup(keyboard)
+                        )
                 else:
-                    response = f"Had some trouble: {build_result.get('error', 'Unknown issue')}"
-
-                log_cmd(f"build_project", atarget[:100], build_result["success"], "agent")
+                    response = "Couldn't break this into steps. Let me just try it directly..."
+                    # Fallback to direct execution
+                    async def build_progress(msg):
+                        try:
+                            await update.message.reply_text(msg, parse_mode="Markdown")
+                        except Exception:
+                            pass
+                    build_result = await agent.build_project(task_desc, progress_cb=build_progress)
+                    if build_result["success"]:
+                        response = f"Done! Project: `{build_result.get('project_path', '')}`"
+                        if build_result.get("repo_url"):
+                            response += f"\nGitHub: {build_result['repo_url']}"
+                    else:
+                        response = f"Had trouble: {build_result.get('error', 'Unknown')}"
+                    log_cmd("build_project", task_desc[:100], build_result["success"], "agent")
+                return
 
         elif atype == "create_repo":
             repo_name = atarget.strip()
@@ -3042,35 +3173,53 @@ Give a brief, honest self-assessment in 2-3 sentences. Be genuine, not robotic."
                 log_cmd(f"auto_push {push_path}", response[:200], push_result["success"], "agent")
 
         elif atype == "agent_task":
-            if agent.is_running:
-                response = "I'm already working on something. Let me finish first."
+            if agent.is_running or task_planner.active_plans:
+                response = "Already working on something. Send /killtask to cancel it first."
             else:
-                # Find working directory
-                task_dir = None
-                active_project = memory.rm.context.get("active_project")
-                if active_project:
-                    for p in memory.rom.get_all_projects():
-                        if p["name"] == active_project:
-                            task_dir = p["path"]
-                            break
+                task_desc = atarget or message
+                await update.message.reply_text("Planning this out...", parse_mode="Markdown")
+                await bot_status.set_status("planning")
+                await update.message.chat.send_action("typing")
 
-                await update.message.reply_text(f"Working on it...", parse_mode="Markdown")
+                # Generate a plan
+                plan = await asyncio.get_event_loop().run_in_executor(
+                    None, task_planner.generate_plan, task_desc
+                )
 
-                async def task_progress(msg):
+                if plan:
+                    task_planner.pending_approval[plan.task_id] = plan
+                    plan_msg = task_planner.get_plan_message_with_buttons(plan)
+                    keyboard = [[InlineKeyboardButton(b["text"], callback_data=b["callback_data"]) for b in row] for row in plan_msg["buttons"]]
                     try:
-                        await update.message.reply_text(msg, parse_mode="Markdown")
+                        await update.message.reply_text(
+                            plan_msg["text"],
+                            reply_markup=InlineKeyboardMarkup(keyboard),
+                            parse_mode="Markdown"
+                        )
                     except Exception:
-                        pass
-
-                task_result = await agent.execute_task(atarget or message, task_dir, progress_cb=task_progress)
-                if task_result["success"]:
-                    output = task_result.get('output', 'Done')
-                    if len(output) > 3000:
-                        output = output[:3000] + "\n... (truncated)"
-                    response = f"Done!\n\n```\n{output}\n```"
+                        await update.message.reply_text(
+                            plan_msg["text"],
+                            reply_markup=InlineKeyboardMarkup(keyboard)
+                        )
                 else:
-                    response = f"Had an issue: {task_result.get('error', 'Unknown')}"
-                log_cmd(f"agent_task", (atarget or message)[:100], task_result["success"], "agent")
+                    # Small task, just do it directly
+                    task_dir = None
+                    active_project = memory.rm.context.get("active_project")
+                    if active_project:
+                        for p in memory.rom.get_all_projects():
+                            if p["name"] == active_project:
+                                task_dir = p["path"]
+                                break
+                    task_result = await agent.execute_task(task_desc, task_dir)
+                    if task_result["success"]:
+                        output = task_result.get('output', 'Done')
+                        if len(output) > 3000:
+                            output = output[:3000] + "\n..."
+                        response = f"Done!\n\n```\n{output}\n```"
+                    else:
+                        response = f"Had an issue: {task_result.get('error', 'Unknown')}"
+                    log_cmd("agent_task", task_desc[:100], task_result.get("success", False), "agent")
+                return
 
         elif atype == "list_repos":
             await update.message.chat.send_action("typing")
@@ -3104,6 +3253,7 @@ Give a brief, honest self-assessment in 2-3 sentences. Be genuine, not robotic."
                     deploy_path = os.getcwd()
 
                 await update.message.reply_text(f"Deploying to **{platform}**...", parse_mode="Markdown")
+                await bot_status.set_status("deploying")
 
                 async def deploy_progress(msg):
                     try:
@@ -3157,6 +3307,7 @@ If netlify asks for auth, run 'npx netlify login' first."""
 
     else:
         # === JUST CHAT - Let Claude respond naturally ===
+        await bot_status.set_status("thinking", custom_bio=f'thinking: "{message[:40]}"')
         await update.message.chat.send_action("typing")
         # Enrich context with context engine data
         try:
@@ -3180,12 +3331,68 @@ If netlify asks for auth, run 'npx netlify login' first."""
                             break
         except Exception:
             pass
-        response = await personality.generate_response_async(message, brain_context)
+
+        # Use smart thinking response - shows "thinking..." then updates to response
+        async def get_chat_response():
+            return await personality.generate_response_async(message, brain_context)
+
+        response = await SmartResponse.send_thinking_response(
+            _app.bot, update.effective_chat.id, message, get_chat_response
+        )
+        await bot_status.set_status("online")
+
+        # Skip send_long_message since SmartResponse already sent it
+        memory.rm.add_message("nova", response[:1500])
+        memory.process_message(message, response[:1500])
+        nova.post_process(message, response[:200], True)
+
+        # Dynamic learning
+        try:
+            msg_lower = message.lower()
+            if any(kw in msg_lower for kw in ["remember", "don't forget", "keep in mind", "note that", "fyi", "btw i"]):
+                personality.identity.learn_from_yash(message[:300])
+                if personality.vector_memory.is_ready():
+                    personality.vector_memory.store_knowledge(message[:300], "yash_told_me", "direct")
+            if any(kw in msg_lower for kw in ["i like", "i prefer", "i hate", "i want", "i need", "my favorite"]):
+                personality.identity.learn_from_yash(message[:300])
+                if personality.vector_memory.is_ready():
+                    personality.vector_memory.store_knowledge(message[:300], "preference", "direct")
+        except Exception:
+            pass
+
+        # Diary events
+        try:
+            nova_emo = brain_context.get("nova_emotion", {}).get("emotion", "neutral")
+            yash_mood = brain_context.get("nova_emotion", {}).get("yash_mood", "neutral")
+            if yash_mood == "frustrated":
+                reflection.diary.record_event("yash_mood", f"Yash seemed frustrated: {message[:80]}", "caring")
+            elif yash_mood == "happy":
+                reflection.diary.record_event("yash_mood", f"Yash was in a good mood: {message[:80]}", "happy")
+            if any(kw in message.lower() for kw in ["thank", "good job", "nice", "perfect", "awesome"]):
+                reflection.diary.record_event("compliment", f"Yash said: {message[:100]}", "proud")
+        except Exception:
+            pass
+
+        # Auto-detect project
+        try:
+            detected = project_autodetect.detect_from_command(message)
+            if detected:
+                current = memory.rm.context.get("active_project")
+                if not current or current != detected["name"]:
+                    memory.set_active_project(detected["name"])
+                    projects = memory.rom.get_all_projects()
+                    known = [p["name"] for p in projects]
+                    if detected["name"] not in known:
+                        memory.register_project(detected["name"], detected["path"])
+        except Exception:
+            pass
+        return
 
     if not response or not response.strip():
         response = "I'm here. What do you need?"
 
     await send_long_message(update, response)
+    await bot_status.set_status("online")
 
     memory.rm.add_message("nova", response[:1500])
     memory.process_message(message, response[:1500])
@@ -3254,6 +3461,13 @@ async def killtask_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     agent.is_running = False
     agent._active_tasks.clear()
 
+    # Cancel any active plans
+    cancelled_plans = []
+    for tid in list(task_planner.active_plans.keys()):
+        task_planner.cancel_plan(tid)
+        cancelled_plans.append(tid)
+    task_planner.pending_approval.clear()
+
     # Kill any stuck claude processes
     try:
         import psutil
@@ -3266,10 +3480,16 @@ async def killtask_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     killed.append(f"claude (PID {proc.info['pid']})")
             except Exception:
                 pass
+
+        parts = []
         if killed:
-            await update.message.reply_text(f"Killed stuck tasks:\n" + "\n".join(killed))
+            parts.append(f"Killed {len(killed)} stuck process(es)")
+        if cancelled_plans:
+            parts.append(f"Cancelled {len(cancelled_plans)} plan(s)")
+        if parts:
+            await update.message.reply_text("Done. " + ", ".join(parts) + ". NOVA is free.")
         else:
-            await update.message.reply_text("No stuck tasks found. NOVA is free.")
+            await update.message.reply_text("Nothing was stuck. NOVA is free.")
     except Exception:
         await update.message.reply_text("Tasks cleared. NOVA is ready.")
 
@@ -3877,6 +4097,11 @@ def create_bot() -> Application:
             await OnlineBroadcast.send_online_message(app, AUTHORIZED_CHAT_IDS)
         except Exception as e:
             logger.warning(f"Online broadcast failed: {e}")
+
+        # Connect bot_status to the bot instance
+        bot_status.set_bot(app.bot)
+        await bot_status.set_status("online")
+        logger.info("Bot status manager connected")
 
     application.post_init = _post_init
 
