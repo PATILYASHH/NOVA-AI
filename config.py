@@ -6,6 +6,14 @@ Your Professional AI Office Assistant
 import os
 from dotenv import load_dotenv
 
+# Use the Windows certificate store for TLS. Office networks with SSL
+# inspection break certifi's bundle (CERTIFICATE_VERIFY_FAILED on Telegram).
+try:
+    import truststore
+    truststore.inject_into_ssl()
+except ImportError:
+    pass
+
 load_dotenv()
 
 # Telegram Configuration

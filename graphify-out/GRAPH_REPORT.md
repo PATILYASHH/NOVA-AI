@@ -1,904 +1,970 @@
-# Graph Report - .  (2026-04-11)
+# Graph Report - .  (2026-07-12)
 
 ## Corpus Check
-- 42 files · ~54,791 words
+- 46 files · ~68,200 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1408 nodes · 4713 edges · 156 communities detected
-- Extraction: 41% EXTRACTED · 59% INFERRED · 0% AMBIGUOUS · INFERRED: 2760 edges (avg confidence: 0.5)
+- 1607 nodes · 5528 edges · 168 communities detected
+- Extraction: 40% EXTRACTED · 60% INFERRED · 0% AMBIGUOUS · INFERRED: 3308 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## God Nodes (most connected - your core abstractions)
-1. `is_authorized()` - 115 edges
-2. `Personality` - 104 edges
-3. `NovaMemorySystem` - 100 edges
-4. `SelfReflectionSystem` - 96 edges
-5. `ContextEngine` - 72 edges
-6. `CodeHandler` - 71 edges
-7. `FileOperations` - 71 edges
-8. `SystemControl` - 71 edges
-9. `AgentExecutor` - 71 edges
-10. `ProactiveMonitor` - 71 edges
+1. `Personality` - 121 edges
+2. `is_authorized()` - 120 edges
+3. `NovaMemorySystem` - 105 edges
+4. `SelfReflectionSystem` - 101 edges
+5. `AgentExecutor` - 77 edges
+6. `ContextEngine` - 77 edges
+7. `CodeHandler` - 76 edges
+8. `FileOperations` - 76 edges
+9. `SystemControl` - 76 edges
+10. `ProactiveMonitor` - 76 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface with` --uses--> `SmartAutomation`  [INFERRED]
-  telegram_bot.py → intelligence\smart_automation.py
-- `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface with` --uses--> `AgentExecutor`  [INFERRED]
-  telegram_bot.py → core\agent_executor.py
-- `Command executor for macros and automation` --uses--> `SmartAutomation`  [INFERRED]
-  telegram_bot.py → intelligence\smart_automation.py
-- `Command executor for macros and automation` --uses--> `AgentExecutor`  [INFERRED]
-  telegram_bot.py → core\agent_executor.py
-- `NOVA writes private diary on significant events` --uses--> `SmartAutomation`  [INFERRED]
-  telegram_bot.py → intelligence\smart_automation.py
+- `NOVA - Emotion Engine User mood tracking, empathetic responses, tone adaptation` --uses--> `DynamicIdentity`  [INFERRED]
+  core\emotion_engine.py → core\dynamic_identity.py
+- `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface wit` --uses--> `NovaMemorySystem`  [INFERRED]
+  telegram_bot.py → core\memory_system.py
+- `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface wit` --uses--> `SelfReflectionSystem`  [INFERRED]
+  telegram_bot.py → core\self_reflection.py
+- `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface wit` --uses--> `Personality`  [INFERRED]
+  telegram_bot.py → core\personality.py
+- `Command executor for macros and automation` --uses--> `NovaMemorySystem`  [INFERRED]
+  telegram_bot.py → core\memory_system.py
 
 ## Communities
 
-### Community 0 - "Core Intelligence Hub"
-Cohesion: 0.12
-Nodes (157): AdvancedControl, Advanced system control operations, AnomalyDetector, Monitors for anomalies:     1. Unusual system resource usage     2. Unexpected p, CodeHandler, Handle code-related operations, ActivityTracker, CommandLogger (+149 more)
+### Community 0 - "Community 0"
+Cohesion: 0.15
+Nodes (150): AdvancedControl, Advanced system control operations, AgentExecutor, Queue a task for background execution, Autonomous agent that can execute multi-step tasks:     - Create full projects, Get status of all active/recent tasks, AnomalyDetector, Monitors for anomalies:     1. Unusual system resource usage     2. Unexpected (+142 more)
 
-### Community 1 - "System Control API"
+### Community 1 - "Community 1"
 Cohesion: 0.02
-Nodes (48): NOVA - Advanced Control Module Window management, volume, network, downloads, a, NOVA - Anomaly Detector Detect unusual system behavior, security threats, patter, NOVA - Code Handler Module Handles code execution, editing, Claude Code integra, NOVA - Command Logger Automatic logging of all commands and activities, Decorator to automatically track command execution     Use on telegram command, track_command(), NOVA - Configuration Your Professional AI Office Assistant, NOVA - Context Engine Memory-driven decision making - pulls relevant memory into (+40 more)
+Nodes (104): can_edit_with_approval(), can_freely_edit(), check_action(), DynamicIdentity, NOVA - Dynamic Identity System Loads personality, emotions, knowledge from edit, Get current emotion configuration, Get mood detection keywords from dynamic config, Get expressions for a specific emotion (+96 more)
 
-### Community 2 - "Telegram Command Handlers"
+### Community 2 - "Community 2"
 Cohesion: 0.04
-Nodes (126): about(), addrule_cmd(), addstartup_cmd(), alias_cmd(), anomalies_cmd(), apps_cmd(), _auto_diary_on_event(), autokill_cmd() (+118 more)
+Nodes (131): about(), addrule_cmd(), addstartup_cmd(), alias_cmd(), anomalies_cmd(), apps_cmd(), _auto_diary_on_event(), autokill_cmd() (+123 more)
 
-### Community 3 - "Memory System"
+### Community 3 - "Community 3"
+Cohesion: 0.02
+Nodes (37): NOVA - Advanced Control Module Window management, volume, network, downloads, a, NOVA - Anomaly Detector Detect unusual system behavior, security threats, patt, _get_gh_username(), github_create_repo(), NOVA - Code Handler Module Handles code execution, editing, Claude Code integra, Get authenticated GitHub username from gh cli, NOVA - Command Logger Automatic logging of all commands and activities, Decorator to automatically track command execution     Use on telegram command (+29 more)
+
+### Community 4 - "Community 4"
 Cohesion: 0.03
 Nodes (48): DailyReviewer, ProjectTracker, RandomAccessMemory, NOVA - 3-Tier Memory System  Memory Architecture: 1. RM (Register Memory) - C, Set currently active project, Set current task being worked on, Get summary of current context for NOVA, Clear register memory (new session) (+40 more)
 
-### Community 4 - "Self-Reflection Engine"
+### Community 5 - "Community 5"
 Cohesion: 0.04
-Nodes (31): LearningsDatabase, NOVADiary, PerformanceTracker, NOVA - Self Reflection System End of day self-evaluation, performance scoring,, Record a mistake made, Record task completion, Calculate self-score out of 10 based on today's performance         Returns sco, Get scores from past days (+23 more)
+Nodes (33): LearningsDatabase, NOVADiary, PerformanceTracker, NOVA - Self Reflection System End of day self-evaluation, performance scoring,, Record a mistake made, Record task completion, Calculate self-score out of 10 based on today's performance         Returns sco, Get scores from past days (+25 more)
 
-### Community 5 - "Self-Improvement Engine"
+### Community 6 - "Community 6"
 Cohesion: 0.05
-Nodes (27): CodePatcher, NOVA - Self-Improvement Engine NOVA reviews its own performance, identifies weak, Safely apply code patches to NOVA's own files, Create backup before modification, Restore file from backup, Apply a text replacement patch to a file, Add content to a file (end, start, or after a marker), Generate a readable diff (+19 more)
+Nodes (27): CodePatcher, NOVA - Self-Improvement Engine NOVA reviews its own performance, identifies wea, Safely apply code patches to NOVA's own files, Create backup before modification, Restore file from backup, Apply a text replacement patch to a file, Add content to a file (end, start, or after a marker), Generate a readable diff (+19 more)
 
-### Community 6 - "Learning Loop"
+### Community 7 - "Community 7"
 Cohesion: 0.06
 Nodes (20): AdaptiveStrategy, BehaviorProfile, from_dict(), NOVA - Learning Loop Actual feedback loop where past learnings influence future, Predict what user will do next based on workflow patterns, Record an action and its outcome - the core learning input, Tracks and learns from behavioral patterns, Record when user corrects NOVA's behavior (+12 more)
 
-### Community 7 - "Smart Automation"
+### Community 8 - "Community 8"
+Cohesion: 0.06
+Nodes (24): best_match(), ConversationTracker, EntityExtractor, FuzzyMatcher, IntentClassifier, NOVA - Natural Language Processing Engine Advanced NLU without external APIs -, Extract all entities from text, Extract primary action verb and its category (+16 more)
+
+### Community 9 - "Community 9"
+Cohesion: 0.06
+Nodes (19): CausalChain, DecisionNode, NOVA - Reasoning Engine Rule-based logic, decision trees, cause-effect analysis, Predict causes of an effect, Load persistent reasoning state, Save persistent reasoning state, Register built-in reasoning rules, A node in a decision tree (+11 more)
+
+### Community 10 - "Community 10"
 Cohesion: 0.07
-Nodes (18): CommandChain, from_dict(), Macro, NOVA - Smart Automation Command chaining, macros, workflow automation, and intel, Set the command executor function, Start recording a macro, Record a command during macro recording, Stop recording and save macro (+10 more)
+Nodes (14): Plan, Check if plan is fully executed, Format plan status for display, Create an execution plan for a goal         Either from templates or custom tas, Match a goal to a template, A single task in a plan, Execute a plan step by step         Calls progress_callback after each step wit, Execute a single task (+6 more)
 
-### Community 8 - "NLP Engine"
-Cohesion: 0.06
-Nodes (24): best_match(), ConversationTracker, EntityExtractor, FuzzyMatcher, IntentClassifier, NOVA - Natural Language Processing Engine Advanced NLU without external APIs - f, Extract all entities from text, Extract primary action verb and its category (+16 more)
+### Community 11 - "Community 11"
+Cohesion: 0.07
+Nodes (12): CommandChain, from_dict(), Macro, NOVA - Smart Automation Command chaining, macros, workflow automation, and int, Start recording a macro, Record a command during macro recording, Stop recording and save macro, A recorded macro - sequence of commands (+4 more)
 
-### Community 9 - "Reasoning Engine"
-Cohesion: 0.06
-Nodes (19): CausalChain, DecisionNode, NOVA - Reasoning Engine Rule-based logic, decision trees, cause-effect analysis,, Predict causes of an effect, Load persistent reasoning state, Save persistent reasoning state, Register built-in reasoning rules, A node in a decision tree (+11 more)
-
-### Community 10 - "Agent Executor"
-Cohesion: 0.08
-Nodes (17): AgentExecutor, AgentStep, NOVA - Autonomous Agent Executor Chains Claude Code + Git + GitHub CLI to execut, Auto stage, commit, and push all changes, A single step in an autonomous execution plan, Create a new GitHub repo and optionally link to local directory, Execute any arbitrary task autonomously using Claude Code.         This is the g, Extract project name, language, type from description (+9 more)
-
-### Community 11 - "Auto Backup"
+### Community 12 - "Community 12"
 Cohesion: 0.09
 Nodes (13): AutoBackup, NOVA - Auto Backup System Automatically backup important files and projects, Check if path should be excluded from backup, Backup a specific path, Backup all configured targets, Keep only the last N backups for a name, Automatic backup system for files and projects, Get backup system status (+5 more)
 
-### Community 12 - "Personality Response"
-Cohesion: 0.08
-Nodes (12): Classify message as coding, task, or casual, Generate a conversational response with adaptive context, Natural response after executing a task, Ask Claude to classify the message. Detects:         - PC actions (open app, scr, Create execution plan for complex task, Write private diary entry, Generate 6PM daily report, Ensure response is valid Telegram Markdown (+4 more)
+### Community 13 - "Community 13"
+Cohesion: 0.1
+Nodes (10): Auto stage, commit, and push all changes, Create a new GitHub repo and optionally link to local directory, Execute any arbitrary task autonomously using Claude Code.         This is the, Extract project name, language, type from description, Build a specific, actionable prompt for Claude Code to generate the project, Create a .gitignore file based on language, Generate a simple commit message from changes, Send progress notification (+2 more)
 
-### Community 13 - "Context Engine Methods"
+### Community 14 - "Community 14"
 Cohesion: 0.09
 Nodes (11): Find past interactions relevant to current query, Get preferences relevant to current intent, Get active project context, Detect if this is a follow-up to previous conversation, Get current time period, Get current session duration in minutes, Get a quick system state summary, Get work pattern insights for current time (+3 more)
 
-### Community 14 - "Style Learner Methods"
+### Community 15 - "Community 15"
 Cohesion: 0.1
 Nodes (10): Scan all repos under a base path, Collect relevant files from repo, Analyze naming conventions, Extract color schemes and theme preferences, Detect tech stack from files, Analyze commonly used packages, Learn project structure patterns, Learn code patterns: error handling, imports, etc. (+2 more)
 
-### Community 15 - "Anomaly Detection Methods"
+### Community 16 - "Community 16"
 Cohesion: 0.11
 Nodes (8): Run all anomaly checks, Check for CPU usage anomaly, Check for memory usage anomaly, Check for new/unknown processes, Check for disk space anomalies, Check for network anomalies, Load baselines and state, Update baseline measurements of normal behavior
 
-### Community 16 - "Work Setup"
+### Community 17 - "Community 17"
 Cohesion: 0.12
 Nodes (7): ProjectSetup, NOVA - Work Setup System When user says "I'm going to work on FlashLink", NOVA:, Full workspace setup for a project         Returns step-by-step results, Configuration for setting up a project workspace, Generate a work briefing, Add or update project setup config, Get project setup config
 
-### Community 17 - "Extras Utilities"
+### Community 18 - "Community 18"
 Cohesion: 0.12
-Nodes (3): batch_delete(), Scan directory and return file state, Check all watched paths for changes
+Nodes (8): Analyze today's errors and generate fix proposals using Claude.         Called, Group similar errors together, Generate a fix proposal for a group of related errors, Parse Claude's response into a structured proposal, Apply a fix proposal using Claude Code.         This is the actual self-coding, Reject a fix proposal, Save proposals to disk, Get summary of today's errors
 
-### Community 18 - "Command Logger Methods"
+### Community 19 - "Community 19"
+Cohesion: 0.14
+Nodes (8): NOVA - Smart Task Planner Breaks big tasks into steps, shows live-updating prog, Extract JSON from Claude's response, Execute a plan step by step with live Telegram updates, A plan with steps that can be tracked, Update the live progress message on Telegram, Format the plan as a live-updating progress message, Use Claude to break a task into steps, TaskPlan
+
+### Community 20 - "Community 20"
 Cohesion: 0.14
 Nodes (6): Ensure log file exists, Update date if day changed, Log a command execution, Get all commands from today, Get today's command count, Get commands by category
 
-### Community 19 - "Memory Recall Methods"
+### Community 21 - "Community 21"
 Cohesion: 0.18
 Nodes (7): Search file operation history, Search project change history, Search today's session memory, Format recall results for display, Search memory and return relevant past interactions, Extract meaningful search terms from query, Calculate relevance score
 
-### Community 20 - "Proactive Suggestions"
+### Community 22 - "Community 22"
 Cohesion: 0.19
-Nodes (7): Get suggestions based on user habits, Get suggestions based on system state, Get work pattern suggestions, Get workflow continuation suggestions, Get time-aware suggestions, Check if we can make a suggestion in this category, Get current proactive suggestions         Called periodically or on user interac
+Nodes (7): Get suggestions based on user habits, Get suggestions based on system state, Get work pattern suggestions, Get workflow continuation suggestions, Get time-aware suggestions, Check if we can make a suggestion in this category, Get current proactive suggestions         Called periodically or on user intera
 
-### Community 21 - "Task Scheduler Methods"
+### Community 23 - "Community 23"
 Cohesion: 0.16
 Nodes (6): Remove a scheduled task, Enable or disable a task, Calculate next run time for a task, Background scheduler loop, Run a task immediately, Add a scheduled task          Args:             name: Task name (unique ident
 
-### Community 22 - "Documentation Concepts"
-Cohesion: 0.2
-Nodes (12): Context Engine, Emotion Engine, Learning Loop, 3-Tier Memory System, NLP Engine, NOVA Brain, Proactive Assistant, RAM (Random Access Memory) (+4 more)
+### Community 24 - "Community 24"
+Cohesion: 0.18
+Nodes (7): BotStatus, NOVA - Bot Status Manager Updates NOVA's Telegram name and bio based on what it, Reset to online status immediately, Manages NOVA's Telegram display name and short description (bio).     Uses styl, Set the bot instance (called after bot is created), Update NOVA's status on Telegram., Reset status to online after delay
 
-### Community 23 - "Proactive Monitor Methods"
-Cohesion: 0.27
-Nodes (4): Background monitoring loop with morning briefing, Send a morning briefing to Yash, Get current system status, Send alert if not recently sent
+### Community 25 - "Community 25"
+Cohesion: 0.17
+Nodes (1): batch_delete()
 
-### Community 24 - "Habit Tracker Methods"
+### Community 26 - "Community 26"
+Cohesion: 0.18
+Nodes (5): Clear today's errors after they've been reviewed, Record an error that occurred during operation, Record a command that failed, Record when NOVA misclassified a message, Record a crash/exception
+
+### Community 27 - "Community 27"
+Cohesion: 0.24
+Nodes (5): Background monitoring loop with morning briefing, Send a morning briefing to Yash, Send evening summary + self-coding proposals, Get current system status, Send alert only for important things, no spam
+
+### Community 28 - "Community 28"
+Cohesion: 0.31
+Nodes (9): append_global_md(), extract_last_messages(), load_env(), main(), NOVA Claude Reporter - Stop Hook Registered as a global Claude Code Stop hook. F, Return (last_user_text, last_assistant_text) from a session transcript., Send a message, return message_id or None., record_session() (+1 more)
+
+### Community 29 - "Community 29"
+Cohesion: 0.33
+Nodes (7): _escape_html_safe(), _make_final_text(), make_progress_bar(), _make_thinking_text(), NOVA - Smart Response System Advanced Telegram chat features: - Live "thinking, send_progress_bar(), send_thinking_response()
+
+### Community 30 - "Community 30"
 Cohesion: 0.22
 Nodes (3): Record work on a project, Analyze recorded data for patterns, Record a command execution
 
-### Community 25 - "Context Preferences"
+### Community 31 - "Community 31"
 Cohesion: 0.25
 Nodes (3): Learn a user preference from behavior, Load learned user preferences, Save user preferences
 
-### Community 26 - "Nova Brain Methods"
+### Community 32 - "Community 32"
 Cohesion: 0.29
 Nodes (3): Load NOVA's persistent memory, Save to NOVA's persistent memory, Append an entry to memory
 
-### Community 27 - "Extras Init"
+### Community 33 - "Community 33"
 Cohesion: 0.29
 Nodes (0): 
 
-### Community 28 - "Powers Search"
+### Community 34 - "Community 34"
 Cohesion: 0.29
 Nodes (3): Get a quick answer by searching and summarizing, Search for text inside files, Find function/class definition
 
-### Community 29 - "Proactive State"
+### Community 35 - "Community 35"
 Cohesion: 0.29
 Nodes (1): Dismiss a category of suggestions
 
-### Community 30 - "Emotion State"
+### Community 36 - "Community 36"
 Cohesion: 0.33
-Nodes (1): Detect mood from user message
+Nodes (3): AgentStep, NOVA - Autonomous Agent Executor Chains Claude Code + Git + GitHub CLI to execu, A single step in an autonomous execution plan
 
-### Community 31 - "Powers App Tracking"
+### Community 37 - "Community 37"
 Cohesion: 0.33
 Nodes (1): Record current running apps
 
-### Community 32 - "Powers Core"
+### Community 38 - "Community 38"
 Cohesion: 0.47
-Nodes (5): analyze_image(), analyze_screenshot(), NOVA - Power Features Screen Vision, Web Search, File Content Search, Code Revie, read_pdf(), summarize_pdf()
+Nodes (5): analyze_image(), analyze_screenshot(), NOVA - Power Features Screen Vision, Web Search, File Content Search, Code Revi, read_pdf(), summarize_pdf()
 
-### Community 33 - "Self-Reflection Docs"
-Cohesion: 0.4
-Nodes (5): Self-Reflection System, Learnings Database, Performance Tracker, Private Diary System, Self-Scoring System
-
-### Community 34 - "Auto Push"
+### Community 39 - "Community 39"
 Cohesion: 0.5
-Nodes (3): auto_push(), NOVA - Auto Push to GitHub Runs daily at 5PM to commit and push all changes to N, Commit all changes and push to GitHub
+Nodes (4): main(), NOVA Watchdog - Keeps NOVA always running. Restarts NOVA if it crashes. Run thi, Run NOVA and return when it exits, run_nova()
 
-### Community 35 - "Emotion Response"
+### Community 40 - "Community 40"
 Cohesion: 0.5
-Nodes (2): Get the appropriate response tone for current mood, Adapt a response based on current emotional context
+Nodes (3): auto_push(), NOVA - Auto Push to GitHub Runs daily at 5PM to commit and push all changes to, Commit all changes and push to GitHub
 
-### Community 36 - "Nova Brain Parse"
+### Community 41 - "Community 41"
 Cohesion: 0.5
-Nodes (2): Legacy intent parsing - used as fallback (matches NLP engine intent names), Full intelligence pipeline for processing a message         Returns structured u
+Nodes (2): Legacy intent parsing - used as fallback (matches NLP engine intent names), Full intelligence pipeline for processing a message         Returns structured
 
-### Community 37 - "Project Autodetect"
-Cohesion: 0.5
-Nodes (2): Detect project from a file/directory path, Detect project from a command that references a path
-
-### Community 38 - "Background Services"
+### Community 42 - "Community 42"
 Cohesion: 0.5
 Nodes (0): 
 
-### Community 39 - "Git Auto Commit"
-Cohesion: 0.5
-Nodes (2): Generate commit message from current diff, Stage all, generate message, commit
-
-### Community 40 - "Screen Vision"
+### Community 43 - "Community 43"
 Cohesion: 0.5
 Nodes (2): Take screenshot and read all text from it, Check if specific text is visible on screen
 
-### Community 41 - "Activity Tracker Init"
+### Community 44 - "Community 44"
+Cohesion: 0.5
+Nodes (2): Generate commit message from current diff, Stage all, generate message, commit
+
+### Community 45 - "Community 45"
 Cohesion: 0.67
 Nodes (1): Ensure activity file exists
 
-### Community 42 - "Powers Init"
-Cohesion: 0.67
-Nodes (0): 
-
-### Community 43 - "Code Review"
+### Community 46 - "Community 46"
 Cohesion: 0.67
 Nodes (1): Review code changes using Claude
 
-### Community 44 - "NOVA Origin"
-Cohesion: 1.0
-Nodes (3): NOVA Creation Event, Yash (Owner), NOVA System Overview
+### Community 47 - "Community 47"
+Cohesion: 0.67
+Nodes (0): 
 
-### Community 45 - "Activity Recent"
+### Community 48 - "Community 48"
 Cohesion: 1.0
 Nodes (1): Get recent activities
 
-### Community 46 - "Session Update"
+### Community 49 - "Community 49"
 Cohesion: 1.0
 Nodes (1): Update session context after each action
 
-### Community 47 - "Response Prefix"
+### Community 50 - "Community 50"
 Cohesion: 1.0
-Nodes (1): Generate a smart prefix for responses based on context         Returns None if n
+Nodes (1): Generate a smart prefix for responses based on context         Returns None if
 
-### Community 48 - "Nova Mood"
-Cohesion: 1.0
-Nodes (1): Get NOVA's own mood based on performance
-
-### Community 49 - "Action Outcome"
-Cohesion: 1.0
-Nodes (1): Track success/failure streaks for emotional awareness
-
-### Community 50 - "Empathetic Prefix"
-Cohesion: 1.0
-Nodes (1): Get an empathetic prefix based on context
-
-### Community 51 - "Break Suggestion"
-Cohesion: 1.0
-Nodes (1): Should NOVA suggest a break?
-
-### Community 52 - "Mood Summary"
-Cohesion: 1.0
-Nodes (1): Get mood tracking summary
-
-### Community 53 - "Plan Cancel"
-Cohesion: 1.0
-Nodes (1): Cancel an active plan
-
-### Community 54 - "Handler Register"
+### Community 51 - "Community 51"
 Cohesion: 1.0
 Nodes (1): Register an action handler
 
-### Community 55 - "Plan Suggest"
+### Community 52 - "Community 52"
+Cohesion: 1.0
+Nodes (1): Cancel an active plan
+
+### Community 53 - "Community 53"
 Cohesion: 1.0
 Nodes (1): Suggest a plan based on intent and entities
 
-### Community 56 - "Learning Summary"
+### Community 54 - "Community 54"
 Cohesion: 1.0
 Nodes (1): Get summary of what NOVA has learned
 
-### Community 57 - "Intelligence Init"
-Cohesion: 1.0
-Nodes (1): Initialize intelligence modules (called after all modules are created)
-
-### Community 58 - "Post Process"
+### Community 55 - "Community 55"
 Cohesion: 1.0
 Nodes (1): Called after an action is executed - feeds back into learning
 
-### Community 59 - "Format Response"
+### Community 56 - "Community 56"
 Cohesion: 1.0
 Nodes (1): Format NOVA's response with personality and emotional awareness
 
-### Community 60 - "Greeting"
-Cohesion: 1.0
-Nodes (1): Get context-aware greeting
-
-### Community 61 - "Intelligence Status"
-Cohesion: 1.0
-Nodes (1): Get status of all intelligence modules
-
-### Community 62 - "Help Message"
+### Community 57 - "Community 57"
 Cohesion: 1.0
 Nodes (1): Return NOVA's capabilities
 
-### Community 63 - "Personality Core"
+### Community 58 - "Community 58"
 Cohesion: 1.0
-Nodes (1): NOVA - Dynamic Personality via Claude CLI All messages routed through 'claude -p
+Nodes (1): Get status of all intelligence modules
 
-### Community 64 - "Action Message"
+### Community 59 - "Community 59"
 Cohesion: 1.0
-Nodes (1): Get a human-readable message for a reasoning action
+Nodes (1): Initialize intelligence modules (called after all modules are created)
 
-### Community 65 - "Success Rate"
+### Community 60 - "Community 60"
+Cohesion: 1.0
+Nodes (1): Get context-aware greeting
+
+### Community 61 - "Community 61"
 Cohesion: 1.0
 Nodes (1): Get historical success rate for an action
 
-### Community 66 - "Decision Summary"
+### Community 62 - "Community 62"
 Cohesion: 1.0
 Nodes (1): Get summary of recent decisions
 
-### Community 67 - "Changelog"
+### Community 63 - "Community 63"
+Cohesion: 1.0
+Nodes (1): Get a human-readable message for a reasoning action
+
+### Community 64 - "Community 64"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 65 - "Community 65"
+Cohesion: 1.0
+Nodes (1): Get all pending (unapproved) proposals
+
+### Community 66 - "Community 66"
+Cohesion: 1.0
+Nodes (1): Format a proposal for Telegram display
+
+### Community 67 - "Community 67"
 Cohesion: 1.0
 Nodes (1): Get changelog of recent improvements
 
-### Community 68 - "Background Anomaly"
+### Community 68 - "Community 68"
 Cohesion: 1.0
-Nodes (1): Start background anomaly detection
+Nodes (1): Cancel a running plan
 
-### Community 69 - "Command Anomaly"
+### Community 69 - "Community 69"
+Cohesion: 1.0
+Nodes (1): Format a plan message with Accept/Reject/Changes buttons
+
+### Community 70 - "Community 70"
 Cohesion: 1.0
 Nodes (1): Check if a command is anomalous based on history
 
-### Community 70 - "Stop Anomaly"
+### Community 71 - "Community 71"
+Cohesion: 1.0
+Nodes (1): Start background anomaly detection
+
+### Community 72 - "Community 72"
 Cohesion: 1.0
 Nodes (1): Stop background detection
 
-### Community 71 - "Clipboard Entry"
+### Community 73 - "Community 73"
 Cohesion: 1.0
 Nodes (1): Get entry by index (1-based, newest first)
 
-### Community 72 - "Habit Init"
+### Community 74 - "Community 74"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 73 - "Habit Predictions"
+### Community 75 - "Community 75"
 Cohesion: 1.0
 Nodes (1): Get predictions based on current time and patterns
 
-### Community 74 - "Next Command"
+### Community 76 - "Community 76"
 Cohesion: 1.0
 Nodes (1): Predict next command based on sequences
 
-### Community 75 - "Memory Recall Core"
+### Community 77 - "Community 77"
 Cohesion: 1.0
 Nodes (1): NOVA - Conversation Memory Recall Search past interactions: "remember that file
 
-### Community 76 - "Recall Query Check"
+### Community 78 - "Community 78"
 Cohesion: 1.0
 Nodes (1): Check if user is asking about past interactions
 
-### Community 77 - "Image Read"
-Cohesion: 1.0
-Nodes (1): Read text from an image file
-
-### Community 78 - "System Dashboard"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 79 - "Screen Area Read"
+### Community 79 - "Community 79"
 Cohesion: 1.0
 Nodes (1): Read text from a specific screen area
 
-### Community 80 - "Web Search"
+### Community 80 - "Community 80"
 Cohesion: 1.0
-Nodes (1): Search the web using DuckDuckGo HTML
+Nodes (1): Read text from an image file
 
-### Community 81 - "Page Fetch"
+### Community 81 - "Community 81"
 Cohesion: 1.0
 Nodes (1): Fetch and extract text from a webpage
 
-### Community 82 - "Proactive Summary"
+### Community 82 - "Community 82"
 Cohesion: 1.0
-Nodes (1): Get suggestion summary
+Nodes (0): 
 
-### Community 83 - "Proactive Background"
+### Community 83 - "Community 83"
+Cohesion: 1.0
+Nodes (1): Search the web using DuckDuckGo HTML
+
+### Community 84 - "Community 84"
 Cohesion: 1.0
 Nodes (1): Start background suggestion checking
 
-### Community 84 - "Proactive Stop"
+### Community 85 - "Community 85"
 Cohesion: 1.0
 Nodes (1): Stop background checking
 
-### Community 85 - "Monitor Init"
+### Community 86 - "Community 86"
+Cohesion: 1.0
+Nodes (1): Get suggestion summary
+
+### Community 87 - "Community 87"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 86 - "Monitor State"
+### Community 88 - "Community 88"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 87 - "Monitor Stop"
+### Community 89 - "Community 89"
 Cohesion: 1.0
 Nodes (1): Stop background monitoring
 
-### Community 88 - "Large Processes"
+### Community 90 - "Community 90"
 Cohesion: 1.0
-Nodes (1): Check for processes using too much resources
+Nodes (1): Check for processes using excessive resources (only alert for extreme cases)
 
-### Community 89 - "Monitor Start"
+### Community 91 - "Community 91"
 Cohesion: 1.0
 Nodes (1): Start background monitoring
 
-### Community 90 - "Scheduler Init"
+### Community 92 - "Community 92"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 91 - "Task List"
+### Community 93 - "Community 93"
 Cohesion: 1.0
 Nodes (1): List all scheduled tasks
 
-### Community 92 - "Style Init"
+### Community 94 - "Community 94"
+Cohesion: 1.0
+Nodes (1): Parse a chain of commands from natural language
+
+### Community 95 - "Community 95"
+Cohesion: 1.0
+Nodes (1): Get predefined quick action chains
+
+### Community 96 - "Community 96"
+Cohesion: 1.0
+Nodes (1): Get automation summary
+
+### Community 97 - "Community 97"
+Cohesion: 1.0
+Nodes (1): Set the command executor function
+
+### Community 98 - "Community 98"
+Cohesion: 1.0
+Nodes (1): NOVA - Style Learner Learns user's coding style, UI preferences, naming pattern
+
+### Community 99 - "Community 99"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 93 - "Style Learner Core"
-Cohesion: 1.0
-Nodes (1): NOVA - Style Learner Learns user's coding style, UI preferences, naming patterns
-
-### Community 94 - "Style Guide"
+### Community 100 - "Community 100"
 Cohesion: 1.0
 Nodes (1): Generate a style guide from learned patterns
 
-### Community 95 - "Style Recommendations"
+### Community 101 - "Community 101"
 Cohesion: 1.0
 Nodes (1): Get style recommendations for a new project
 
-### Community 96 - "Project Name Extract"
-Cohesion: 1.0
-Nodes (1): Extract project name from work request
-
-### Community 97 - "Work Request Check"
+### Community 102 - "Community 102"
 Cohesion: 1.0
 Nodes (1): Check if user is requesting work setup
 
-### Community 98 - "Advanced Rationale 1"
+### Community 103 - "Community 103"
+Cohesion: 1.0
+Nodes (1): Extract project name from work request
+
+### Community 104 - "Community 104"
 Cohesion: 1.0
 Nodes (1): Set system volume (0-100)
 
-### Community 99 - "Advanced Rationale 2"
+### Community 105 - "Community 105"
 Cohesion: 1.0
 Nodes (1): Get network information
 
-### Community 100 - "Advanced Rationale 3"
+### Community 106 - "Community 106"
 Cohesion: 1.0
 Nodes (1): Get WiFi connection info
 
-### Community 101 - "Advanced Rationale 4"
+### Community 107 - "Community 107"
 Cohesion: 1.0
 Nodes (1): List available WiFi networks
 
-### Community 102 - "Advanced Rationale 5"
+### Community 108 - "Community 108"
 Cohesion: 1.0
 Nodes (1): Download file from URL
 
-### Community 103 - "Advanced Rationale 6"
+### Community 109 - "Community 109"
 Cohesion: 1.0
 Nodes (1): List installed programs
 
-### Community 104 - "Advanced Rationale 7"
+### Community 110 - "Community 110"
 Cohesion: 1.0
 Nodes (1): List startup programs
 
-### Community 105 - "Advanced Rationale 8"
+### Community 111 - "Community 111"
 Cohesion: 1.0
 Nodes (1): List Windows services
 
-### Community 106 - "Advanced Rationale 9"
+### Community 112 - "Community 112"
 Cohesion: 1.0
 Nodes (1): Start/stop/restart a service
 
-### Community 107 - "Advanced Rationale 10"
+### Community 113 - "Community 113"
 Cohesion: 1.0
 Nodes (1): Minimize all windows (show desktop)
 
-### Community 108 - "Advanced Rationale 11"
+### Community 114 - "Community 114"
 Cohesion: 1.0
 Nodes (1): Get environment variable
 
-### Community 109 - "Advanced Rationale 12"
+### Community 115 - "Community 115"
 Cohesion: 1.0
 Nodes (1): List all environment variables
 
-### Community 110 - "Advanced Rationale 13"
+### Community 116 - "Community 116"
 Cohesion: 1.0
 Nodes (1): Get detailed disk information
 
-### Community 111 - "Advanced Rationale 14"
+### Community 117 - "Community 117"
 Cohesion: 1.0
 Nodes (1): Empty the recycle bin
 
-### Community 112 - "Advanced Rationale 15"
+### Community 118 - "Community 118"
 Cohesion: 1.0
 Nodes (1): Clear temporary files
 
-### Community 113 - "Code Handler Rationale 1"
+### Community 119 - "Community 119"
 Cohesion: 1.0
 Nodes (1): Execute code in the specified language
 
-### Community 114 - "Code Handler Rationale 2"
+### Community 120 - "Community 120"
 Cohesion: 1.0
-Nodes (1): Execute a task using Claude Code CLI
+Nodes (1): Execute a task using Claude Code CLI via stdin pipe
 
-### Community 115 - "Code Handler Rationale 3"
+### Community 121 - "Community 121"
 Cohesion: 1.0
 Nodes (1): Execute git operations
 
-### Community 116 - "Code Handler Rationale 4"
+### Community 122 - "Community 122"
 Cohesion: 1.0
 Nodes (1): Open a file in code editor
 
-### Community 117 - "Code Handler Rationale 5"
+### Community 123 - "Community 123"
 Cohesion: 1.0
 Nodes (1): Build a knowledge graph of a codebase using Graphify
 
-### Community 118 - "Code Handler Rationale 6"
+### Community 124 - "Community 124"
 Cohesion: 1.0
 Nodes (1): Query a project's knowledge graph and return relevant context
 
-### Community 119 - "Code Handler Rationale 7"
+### Community 125 - "Community 125"
 Cohesion: 1.0
 Nodes (1): Check which projects have been indexed with Graphify
 
-### Community 120 - "Code Handler Rationale 8"
+### Community 126 - "Community 126"
 Cohesion: 1.0
-Nodes (1): Create a new GitHub repository and optionally link it to a local folder
+Nodes (1): Create a new GitHub repository and link it to a local folder
 
-### Community 121 - "Code Handler Rationale 9"
+### Community 127 - "Community 127"
 Cohesion: 1.0
 Nodes (1): Create a pull request
 
-### Community 122 - "Code Handler Rationale 10"
+### Community 128 - "Community 128"
 Cohesion: 1.0
 Nodes (1): List user's GitHub repositories
 
-### Community 123 - "Code Handler Rationale 11"
+### Community 129 - "Community 129"
 Cohesion: 1.0
 Nodes (1): Get info about a specific repo
 
-### Community 124 - "Code Handler Rationale 12"
+### Community 130 - "Community 130"
 Cohesion: 1.0
 Nodes (1): Auto stage all changes, commit with message, and push
 
-### Community 125 - "File Ops Rationale 1"
+### Community 131 - "Community 131"
 Cohesion: 1.0
 Nodes (1): Read contents of a file
 
-### Community 126 - "File Ops Rationale 2"
+### Community 132 - "Community 132"
 Cohesion: 1.0
 Nodes (1): Write content to a file
 
-### Community 127 - "File Ops Rationale 3"
+### Community 133 - "Community 133"
 Cohesion: 1.0
 Nodes (1): Delete a file or directory
 
-### Community 128 - "File Ops Rationale 4"
+### Community 134 - "Community 134"
 Cohesion: 1.0
 Nodes (1): List contents of a directory
 
-### Community 129 - "File Ops Rationale 5"
+### Community 135 - "Community 135"
 Cohesion: 1.0
 Nodes (1): Find files matching a pattern
 
-### Community 130 - "File Ops Rationale 6"
+### Community 136 - "Community 136"
 Cohesion: 1.0
 Nodes (1): Copy file or directory
 
-### Community 131 - "File Ops Rationale 7"
+### Community 137 - "Community 137"
 Cohesion: 1.0
 Nodes (1): Move file or directory
 
-### Community 132 - "System Control Rationale 1"
+### Community 138 - "Community 138"
 Cohesion: 1.0
 Nodes (1): Execute a shell command
 
-### Community 133 - "System Control Rationale 2"
+### Community 139 - "Community 139"
 Cohesion: 1.0
 Nodes (1): Find the full path to an executable using multiple strategies.
 
-### Community 134 - "System Control Rationale 3"
+### Community 140 - "Community 140"
 Cohesion: 1.0
 Nodes (1): Open an application using cmd terminal
 
-### Community 135 - "System Control Rationale 4"
+### Community 141 - "Community 141"
 Cohesion: 1.0
 Nodes (1): Check if an application is currently running.
 
-### Community 136 - "System Control Rationale 5"
+### Community 142 - "Community 142"
 Cohesion: 1.0
 Nodes (1): Close an application by name
 
-### Community 137 - "System Control Rationale 6"
+### Community 143 - "Community 143"
 Cohesion: 1.0
 Nodes (1): Get system status information
 
-### Community 138 - "System Control Rationale 7"
+### Community 144 - "Community 144"
 Cohesion: 1.0
 Nodes (1): List running processes
 
-### Community 139 - "System Control Rationale 8"
+### Community 145 - "Community 145"
 Cohesion: 1.0
 Nodes (1): Shutdown, restart, or sleep the PC
 
-### Community 140 - "Utilities Rationale 1"
+### Community 146 - "Community 146"
 Cohesion: 1.0
 Nodes (1): Open URL in default browser
 
-### Community 141 - "Utilities Rationale 2"
+### Community 147 - "Community 147"
 Cohesion: 1.0
 Nodes (1): Get current date and time
 
-### Community 142 - "Utilities Rationale 3"
+### Community 148 - "Community 148"
 Cohesion: 1.0
 Nodes (1): Set a reminder (creates a scheduled task)
 
-### Community 143 - "NLP Rationale 1"
+### Community 149 - "Community 149"
+Cohesion: 1.0
+Nodes (1): Check if NOVA can edit this file without permission
+
+### Community 150 - "Community 150"
+Cohesion: 1.0
+Nodes (1): Check if NOVA can edit this file with Yash's approval
+
+### Community 151 - "Community 151"
+Cohesion: 1.0
+Nodes (1): NOVA cannot delete files without explicit permission
+
+### Community 152 - "Community 152"
+Cohesion: 1.0
+Nodes (1): Check if an action is allowed
+
+### Community 153 - "Community 153"
 Cohesion: 1.0
 Nodes (1): Calculate similarity ratio between two strings
 
-### Community 144 - "NLP Rationale 2"
+### Community 154 - "Community 154"
 Cohesion: 1.0
 Nodes (1): Find best matching candidate
 
-### Community 145 - "NLP Rationale 3"
+### Community 155 - "Community 155"
 Cohesion: 1.0
 Nodes (1): Get close matches from candidates
 
-### Community 146 - "Powers Rationale 1"
+### Community 156 - "Community 156"
 Cohesion: 1.0
-Nodes (1): Analyze an image:         1. Extract text with OCR (if available)         2. Sen
+Nodes (1): Send a response with a live thinking phase:         1. Show "thinking about: [s
 
-### Community 147 - "Powers Rationale 2"
+### Community 157 - "Community 157"
+Cohesion: 1.0
+Nodes (1): Create the thinking indicator message
+
+### Community 158 - "Community 158"
+Cohesion: 1.0
+Nodes (1): Create the final response with optional thinking spoiler.         Uses HTML for
+
+### Community 159 - "Community 159"
+Cohesion: 1.0
+Nodes (1): Escape HTML chars but preserve code blocks and formatting.         Converts mar
+
+### Community 160 - "Community 160"
+Cohesion: 1.0
+Nodes (1): Send a message with quick-action buttons at the bottom.         actions: [{"lab
+
+### Community 161 - "Community 161"
+Cohesion: 1.0
+Nodes (1): Send a text-based progress bar
+
+### Community 162 - "Community 162"
+Cohesion: 1.0
+Nodes (1): Create a text progress bar
+
+### Community 163 - "Community 163"
+Cohesion: 1.0
+Nodes (1): Analyze an image:         1. Extract text with OCR (if available)         2. S
+
+### Community 164 - "Community 164"
 Cohesion: 1.0
 Nodes (1): Take a screenshot and analyze it
 
-### Community 148 - "Powers Rationale 3"
+### Community 165 - "Community 165"
 Cohesion: 1.0
 Nodes (1): Extract text from a PDF file
 
-### Community 149 - "Powers Rationale 4"
+### Community 166 - "Community 166"
 Cohesion: 1.0
 Nodes (1): Read a PDF and summarize it using Claude
 
-### Community 150 - "Work Setup Rationale"
+### Community 167 - "Community 167"
 Cohesion: 1.0
 Nodes (1): Send online notification to all authorized users
 
-### Community 151 - "Goal Planner Doc"
-Cohesion: 1.0
-Nodes (1): Goal Planner
-
-### Community 152 - "Anomaly Detector Doc"
-Cohesion: 1.0
-Nodes (1): Anomaly Detector
-
-### Community 153 - "Smart Automation Doc"
-Cohesion: 1.0
-Nodes (1): Smart Automation
-
-### Community 154 - "Day 1 Performance"
-Cohesion: 1.0
-Nodes (1): Day 1 Performance
-
-### Community 155 - "Day 2 Performance"
-Cohesion: 1.0
-Nodes (1): Day 2 Performance
-
 ## Knowledge Gaps
-- **463 isolated node(s):** `NOVA - Auto Push to GitHub Runs daily at 5PM to commit and push all changes to N`, `Commit all changes and push to GitHub`, `NOVA - Configuration Your Professional AI Office Assistant`, `NOVA - Main Entry Point (AGI-Enhanced) Professional AI Office Assistant for Remo`, `Print NOVA startup banner` (+458 more)
+- **511 isolated node(s):** `NOVA - Auto Push to GitHub Runs daily at 5PM to commit and push all changes to`, `Commit all changes and push to GitHub`, `NOVA - Configuration Your Professional AI Office Assistant`, `NOVA - Main Entry Point (AGI-Enhanced) Professional AI Office Assistant for Rem`, `Print NOVA startup banner` (+506 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Activity Recent`** (2 nodes): `.get_recent()`, `Get recent activities`
+- **Thin community `Community 48`** (2 nodes): `.get_recent()`, `Get recent activities`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Session Update`** (2 nodes): `.update_session()`, `Update session context after each action`
+- **Thin community `Community 49`** (2 nodes): `.update_session()`, `Update session context after each action`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Response Prefix`** (2 nodes): `.generate_response_prefix()`, `Generate a smart prefix for responses based on context         Returns None if n`
+- **Thin community `Community 50`** (2 nodes): `.generate_response_prefix()`, `Generate a smart prefix for responses based on context         Returns None if`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Nova Mood`** (2 nodes): `.get_nova_mood()`, `Get NOVA's own mood based on performance`
+- **Thin community `Community 51`** (2 nodes): `.register_handler()`, `Register an action handler`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Action Outcome`** (2 nodes): `.record_action_outcome()`, `Track success/failure streaks for emotional awareness`
+- **Thin community `Community 52`** (2 nodes): `.cancel_plan()`, `Cancel an active plan`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Empathetic Prefix`** (2 nodes): `.get_empathetic_prefix()`, `Get an empathetic prefix based on context`
+- **Thin community `Community 53`** (2 nodes): `.suggest_plan()`, `Suggest a plan based on intent and entities`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Break Suggestion`** (2 nodes): `.should_suggest_break()`, `Should NOVA suggest a break?`
+- **Thin community `Community 54`** (2 nodes): `.get_learning_summary()`, `Get summary of what NOVA has learned`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Mood Summary`** (2 nodes): `.get_mood_summary()`, `Get mood tracking summary`
+- **Thin community `Community 55`** (2 nodes): `.post_process()`, `Called after an action is executed - feeds back into learning`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Plan Cancel`** (2 nodes): `.cancel_plan()`, `Cancel an active plan`
+- **Thin community `Community 56`** (2 nodes): `.format_response()`, `Format NOVA's response with personality and emotional awareness`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Handler Register`** (2 nodes): `.register_handler()`, `Register an action handler`
+- **Thin community `Community 57`** (2 nodes): `.get_help_message()`, `Return NOVA's capabilities`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Plan Suggest`** (2 nodes): `.suggest_plan()`, `Suggest a plan based on intent and entities`
+- **Thin community `Community 58`** (2 nodes): `.get_intelligence_status()`, `Get status of all intelligence modules`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Learning Summary`** (2 nodes): `.get_learning_summary()`, `Get summary of what NOVA has learned`
+- **Thin community `Community 59`** (2 nodes): `.init_intelligence()`, `Initialize intelligence modules (called after all modules are created)`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Intelligence Init`** (2 nodes): `.init_intelligence()`, `Initialize intelligence modules (called after all modules are created)`
+- **Thin community `Community 60`** (2 nodes): `.get_greeting()`, `Get context-aware greeting`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Post Process`** (2 nodes): `.post_process()`, `Called after an action is executed - feeds back into learning`
+- **Thin community `Community 61`** (2 nodes): `Get historical success rate for an action`, `.get_success_rate()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Format Response`** (2 nodes): `.format_response()`, `Format NOVA's response with personality and emotional awareness`
+- **Thin community `Community 62`** (2 nodes): `Get summary of recent decisions`, `.get_decision_summary()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Greeting`** (2 nodes): `.get_greeting()`, `Get context-aware greeting`
+- **Thin community `Community 63`** (2 nodes): `Get a human-readable message for a reasoning action`, `.get_action_message()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Intelligence Status`** (2 nodes): `.get_intelligence_status()`, `Get status of all intelligence modules`
+- **Thin community `Community 64`** (2 nodes): `.__init__()`, `._load()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Help Message`** (2 nodes): `.get_help_message()`, `Return NOVA's capabilities`
+- **Thin community `Community 65`** (2 nodes): `Get all pending (unapproved) proposals`, `.get_pending_proposals()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Personality Core`** (2 nodes): `personality.py`, `NOVA - Dynamic Personality via Claude CLI All messages routed through 'claude -p`
+- **Thin community `Community 66`** (2 nodes): `Format a proposal for Telegram display`, `.format_proposal_message()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Action Message`** (2 nodes): `Get a human-readable message for a reasoning action`, `.get_action_message()`
+- **Thin community `Community 67`** (2 nodes): `Get changelog of recent improvements`, `.get_changelog()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Success Rate`** (2 nodes): `Get historical success rate for an action`, `.get_success_rate()`
+- **Thin community `Community 68`** (2 nodes): `Cancel a running plan`, `.cancel_plan()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Decision Summary`** (2 nodes): `Get summary of recent decisions`, `.get_decision_summary()`
+- **Thin community `Community 69`** (2 nodes): `Format a plan message with Accept/Reject/Changes buttons`, `.get_plan_message_with_buttons()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Changelog`** (2 nodes): `Get changelog of recent improvements`, `.get_changelog()`
+- **Thin community `Community 70`** (2 nodes): `.check_command_anomaly()`, `Check if a command is anomalous based on history`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Background Anomaly`** (2 nodes): `.start_background()`, `Start background anomaly detection`
+- **Thin community `Community 71`** (2 nodes): `.start_background()`, `Start background anomaly detection`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Command Anomaly`** (2 nodes): `.check_command_anomaly()`, `Check if a command is anomalous based on history`
+- **Thin community `Community 72`** (2 nodes): `.stop()`, `Stop background detection`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Stop Anomaly`** (2 nodes): `.stop()`, `Stop background detection`
+- **Thin community `Community 73`** (2 nodes): `.get_entry()`, `Get entry by index (1-based, newest first)`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Clipboard Entry`** (2 nodes): `.get_entry()`, `Get entry by index (1-based, newest first)`
+- **Thin community `Community 74`** (2 nodes): `.__init__()`, `._load()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Habit Init`** (2 nodes): `.__init__()`, `._load()`
+- **Thin community `Community 75`** (2 nodes): `.get_predictions()`, `Get predictions based on current time and patterns`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Habit Predictions`** (2 nodes): `.get_predictions()`, `Get predictions based on current time and patterns`
+- **Thin community `Community 76`** (2 nodes): `.get_next_likely_command()`, `Predict next command based on sequences`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Next Command`** (2 nodes): `.get_next_likely_command()`, `Predict next command based on sequences`
+- **Thin community `Community 77`** (2 nodes): `memory_recall.py`, `NOVA - Conversation Memory Recall Search past interactions: "remember that file`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Memory Recall Core`** (2 nodes): `memory_recall.py`, `NOVA - Conversation Memory Recall Search past interactions: "remember that file`
+- **Thin community `Community 78`** (2 nodes): `.is_recall_query()`, `Check if user is asking about past interactions`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Recall Query Check`** (2 nodes): `.is_recall_query()`, `Check if user is asking about past interactions`
+- **Thin community `Community 79`** (2 nodes): `Read text from a specific screen area`, `.read_area()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Image Read`** (2 nodes): `Read text from an image file`, `.read_image()`
+- **Thin community `Community 80`** (2 nodes): `Read text from an image file`, `.read_image()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `System Dashboard`** (2 nodes): `._bar()`, `.generate()`
+- **Thin community `Community 81`** (2 nodes): `Fetch and extract text from a webpage`, `.fetch_page()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Screen Area Read`** (2 nodes): `Read text from a specific screen area`, `.read_area()`
+- **Thin community `Community 82`** (2 nodes): `._bar()`, `.generate()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Web Search`** (2 nodes): `Search the web using DuckDuckGo HTML`, `.search()`
+- **Thin community `Community 83`** (2 nodes): `Search the web using DuckDuckGo HTML`, `.search()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Page Fetch`** (2 nodes): `Fetch and extract text from a webpage`, `.fetch_page()`
+- **Thin community `Community 84`** (2 nodes): `.start_background()`, `Start background suggestion checking`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Proactive Summary`** (2 nodes): `.get_summary()`, `Get suggestion summary`
+- **Thin community `Community 85`** (2 nodes): `.stop()`, `Stop background checking`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Proactive Background`** (2 nodes): `.start_background()`, `Start background suggestion checking`
+- **Thin community `Community 86`** (2 nodes): `.get_summary()`, `Get suggestion summary`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Proactive Stop`** (2 nodes): `.stop()`, `Stop background checking`
+- **Thin community `Community 87`** (2 nodes): `.__init__()`, `.load_state()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Monitor Init`** (2 nodes): `.__init__()`, `.load_state()`
+- **Thin community `Community 88`** (2 nodes): `.save_state()`, `.set_threshold()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Monitor State`** (2 nodes): `.save_state()`, `.set_threshold()`
+- **Thin community `Community 89`** (2 nodes): `.stop()`, `Stop background monitoring`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Monitor Stop`** (2 nodes): `.stop()`, `Stop background monitoring`
+- **Thin community `Community 90`** (2 nodes): `.check_large_processes()`, `Check for processes using excessive resources (only alert for extreme cases)`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Large Processes`** (2 nodes): `.check_large_processes()`, `Check for processes using too much resources`
+- **Thin community `Community 91`** (2 nodes): `.start()`, `Start background monitoring`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Monitor Start`** (2 nodes): `.start()`, `Start background monitoring`
+- **Thin community `Community 92`** (2 nodes): `.__init__()`, `.load_tasks()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Scheduler Init`** (2 nodes): `.__init__()`, `.load_tasks()`
+- **Thin community `Community 93`** (2 nodes): `List all scheduled tasks`, `.list_tasks()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Task List`** (2 nodes): `List all scheduled tasks`, `.list_tasks()`
+- **Thin community `Community 94`** (2 nodes): `Parse a chain of commands from natural language`, `.parse_chain_from_text()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Style Init`** (2 nodes): `.__init__()`, `._load()`
+- **Thin community `Community 95`** (2 nodes): `Get predefined quick action chains`, `.get_quick_actions()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Style Learner Core`** (2 nodes): `style_learner.py`, `NOVA - Style Learner Learns user's coding style, UI preferences, naming patterns`
+- **Thin community `Community 96`** (2 nodes): `Get automation summary`, `.get_summary()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Style Guide`** (2 nodes): `Generate a style guide from learned patterns`, `.get_style_guide()`
+- **Thin community `Community 97`** (2 nodes): `Set the command executor function`, `.set_executor()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Style Recommendations`** (2 nodes): `Get style recommendations for a new project`, `.get_recommendations_for()`
+- **Thin community `Community 98`** (2 nodes): `style_learner.py`, `NOVA - Style Learner Learns user's coding style, UI preferences, naming pattern`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Project Name Extract`** (2 nodes): `Extract project name from work request`, `.extract_project_name()`
+- **Thin community `Community 99`** (2 nodes): `.__init__()`, `._load()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Work Request Check`** (2 nodes): `Check if user is requesting work setup`, `.is_work_request()`
+- **Thin community `Community 100`** (2 nodes): `Generate a style guide from learned patterns`, `.get_style_guide()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 1`** (1 nodes): `Set system volume (0-100)`
+- **Thin community `Community 101`** (2 nodes): `Get style recommendations for a new project`, `.get_recommendations_for()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 2`** (1 nodes): `Get network information`
+- **Thin community `Community 102`** (2 nodes): `Check if user is requesting work setup`, `.is_work_request()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 3`** (1 nodes): `Get WiFi connection info`
+- **Thin community `Community 103`** (2 nodes): `Extract project name from work request`, `.extract_project_name()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 4`** (1 nodes): `List available WiFi networks`
+- **Thin community `Community 104`** (1 nodes): `Set system volume (0-100)`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 5`** (1 nodes): `Download file from URL`
+- **Thin community `Community 105`** (1 nodes): `Get network information`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 6`** (1 nodes): `List installed programs`
+- **Thin community `Community 106`** (1 nodes): `Get WiFi connection info`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 7`** (1 nodes): `List startup programs`
+- **Thin community `Community 107`** (1 nodes): `List available WiFi networks`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 8`** (1 nodes): `List Windows services`
+- **Thin community `Community 108`** (1 nodes): `Download file from URL`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 9`** (1 nodes): `Start/stop/restart a service`
+- **Thin community `Community 109`** (1 nodes): `List installed programs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 10`** (1 nodes): `Minimize all windows (show desktop)`
+- **Thin community `Community 110`** (1 nodes): `List startup programs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 11`** (1 nodes): `Get environment variable`
+- **Thin community `Community 111`** (1 nodes): `List Windows services`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 12`** (1 nodes): `List all environment variables`
+- **Thin community `Community 112`** (1 nodes): `Start/stop/restart a service`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 13`** (1 nodes): `Get detailed disk information`
+- **Thin community `Community 113`** (1 nodes): `Minimize all windows (show desktop)`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 14`** (1 nodes): `Empty the recycle bin`
+- **Thin community `Community 114`** (1 nodes): `Get environment variable`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Advanced Rationale 15`** (1 nodes): `Clear temporary files`
+- **Thin community `Community 115`** (1 nodes): `List all environment variables`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Code Handler Rationale 1`** (1 nodes): `Execute code in the specified language`
+- **Thin community `Community 116`** (1 nodes): `Get detailed disk information`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Code Handler Rationale 2`** (1 nodes): `Execute a task using Claude Code CLI`
+- **Thin community `Community 117`** (1 nodes): `Empty the recycle bin`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Code Handler Rationale 3`** (1 nodes): `Execute git operations`
+- **Thin community `Community 118`** (1 nodes): `Clear temporary files`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Code Handler Rationale 4`** (1 nodes): `Open a file in code editor`
+- **Thin community `Community 119`** (1 nodes): `Execute code in the specified language`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Code Handler Rationale 5`** (1 nodes): `Build a knowledge graph of a codebase using Graphify`
+- **Thin community `Community 120`** (1 nodes): `Execute a task using Claude Code CLI via stdin pipe`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Code Handler Rationale 6`** (1 nodes): `Query a project's knowledge graph and return relevant context`
+- **Thin community `Community 121`** (1 nodes): `Execute git operations`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Code Handler Rationale 7`** (1 nodes): `Check which projects have been indexed with Graphify`
+- **Thin community `Community 122`** (1 nodes): `Open a file in code editor`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Code Handler Rationale 8`** (1 nodes): `Create a new GitHub repository and optionally link it to a local folder`
+- **Thin community `Community 123`** (1 nodes): `Build a knowledge graph of a codebase using Graphify`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Code Handler Rationale 9`** (1 nodes): `Create a pull request`
+- **Thin community `Community 124`** (1 nodes): `Query a project's knowledge graph and return relevant context`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Code Handler Rationale 10`** (1 nodes): `List user's GitHub repositories`
+- **Thin community `Community 125`** (1 nodes): `Check which projects have been indexed with Graphify`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Code Handler Rationale 11`** (1 nodes): `Get info about a specific repo`
+- **Thin community `Community 126`** (1 nodes): `Create a new GitHub repository and link it to a local folder`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Code Handler Rationale 12`** (1 nodes): `Auto stage all changes, commit with message, and push`
+- **Thin community `Community 127`** (1 nodes): `Create a pull request`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `File Ops Rationale 1`** (1 nodes): `Read contents of a file`
+- **Thin community `Community 128`** (1 nodes): `List user's GitHub repositories`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `File Ops Rationale 2`** (1 nodes): `Write content to a file`
+- **Thin community `Community 129`** (1 nodes): `Get info about a specific repo`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `File Ops Rationale 3`** (1 nodes): `Delete a file or directory`
+- **Thin community `Community 130`** (1 nodes): `Auto stage all changes, commit with message, and push`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `File Ops Rationale 4`** (1 nodes): `List contents of a directory`
+- **Thin community `Community 131`** (1 nodes): `Read contents of a file`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `File Ops Rationale 5`** (1 nodes): `Find files matching a pattern`
+- **Thin community `Community 132`** (1 nodes): `Write content to a file`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `File Ops Rationale 6`** (1 nodes): `Copy file or directory`
+- **Thin community `Community 133`** (1 nodes): `Delete a file or directory`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `File Ops Rationale 7`** (1 nodes): `Move file or directory`
+- **Thin community `Community 134`** (1 nodes): `List contents of a directory`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `System Control Rationale 1`** (1 nodes): `Execute a shell command`
+- **Thin community `Community 135`** (1 nodes): `Find files matching a pattern`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `System Control Rationale 2`** (1 nodes): `Find the full path to an executable using multiple strategies.`
+- **Thin community `Community 136`** (1 nodes): `Copy file or directory`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `System Control Rationale 3`** (1 nodes): `Open an application using cmd terminal`
+- **Thin community `Community 137`** (1 nodes): `Move file or directory`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `System Control Rationale 4`** (1 nodes): `Check if an application is currently running.`
+- **Thin community `Community 138`** (1 nodes): `Execute a shell command`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `System Control Rationale 5`** (1 nodes): `Close an application by name`
+- **Thin community `Community 139`** (1 nodes): `Find the full path to an executable using multiple strategies.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `System Control Rationale 6`** (1 nodes): `Get system status information`
+- **Thin community `Community 140`** (1 nodes): `Open an application using cmd terminal`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `System Control Rationale 7`** (1 nodes): `List running processes`
+- **Thin community `Community 141`** (1 nodes): `Check if an application is currently running.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `System Control Rationale 8`** (1 nodes): `Shutdown, restart, or sleep the PC`
+- **Thin community `Community 142`** (1 nodes): `Close an application by name`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Utilities Rationale 1`** (1 nodes): `Open URL in default browser`
+- **Thin community `Community 143`** (1 nodes): `Get system status information`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Utilities Rationale 2`** (1 nodes): `Get current date and time`
+- **Thin community `Community 144`** (1 nodes): `List running processes`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Utilities Rationale 3`** (1 nodes): `Set a reminder (creates a scheduled task)`
+- **Thin community `Community 145`** (1 nodes): `Shutdown, restart, or sleep the PC`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `NLP Rationale 1`** (1 nodes): `Calculate similarity ratio between two strings`
+- **Thin community `Community 146`** (1 nodes): `Open URL in default browser`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `NLP Rationale 2`** (1 nodes): `Find best matching candidate`
+- **Thin community `Community 147`** (1 nodes): `Get current date and time`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `NLP Rationale 3`** (1 nodes): `Get close matches from candidates`
+- **Thin community `Community 148`** (1 nodes): `Set a reminder (creates a scheduled task)`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Powers Rationale 1`** (1 nodes): `Analyze an image:         1. Extract text with OCR (if available)         2. Sen`
+- **Thin community `Community 149`** (1 nodes): `Check if NOVA can edit this file without permission`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Powers Rationale 2`** (1 nodes): `Take a screenshot and analyze it`
+- **Thin community `Community 150`** (1 nodes): `Check if NOVA can edit this file with Yash's approval`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Powers Rationale 3`** (1 nodes): `Extract text from a PDF file`
+- **Thin community `Community 151`** (1 nodes): `NOVA cannot delete files without explicit permission`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Powers Rationale 4`** (1 nodes): `Read a PDF and summarize it using Claude`
+- **Thin community `Community 152`** (1 nodes): `Check if an action is allowed`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Work Setup Rationale`** (1 nodes): `Send online notification to all authorized users`
+- **Thin community `Community 153`** (1 nodes): `Calculate similarity ratio between two strings`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Goal Planner Doc`** (1 nodes): `Goal Planner`
+- **Thin community `Community 154`** (1 nodes): `Find best matching candidate`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Anomaly Detector Doc`** (1 nodes): `Anomaly Detector`
+- **Thin community `Community 155`** (1 nodes): `Get close matches from candidates`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Smart Automation Doc`** (1 nodes): `Smart Automation`
+- **Thin community `Community 156`** (1 nodes): `Send a response with a live thinking phase:         1. Show "thinking about: [s`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Day 1 Performance`** (1 nodes): `Day 1 Performance`
+- **Thin community `Community 157`** (1 nodes): `Create the thinking indicator message`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Day 2 Performance`** (1 nodes): `Day 2 Performance`
+- **Thin community `Community 158`** (1 nodes): `Create the final response with optional thinking spoiler.         Uses HTML for`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 159`** (1 nodes): `Escape HTML chars but preserve code blocks and formatting.         Converts mar`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 160`** (1 nodes): `Send a message with quick-action buttons at the bottom.         actions: [{"lab`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 161`** (1 nodes): `Send a text-based progress bar`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 162`** (1 nodes): `Create a text progress bar`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 163`** (1 nodes): `Analyze an image:         1. Extract text with OCR (if available)         2. S`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 164`** (1 nodes): `Take a screenshot and analyze it`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 165`** (1 nodes): `Extract text from a PDF file`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 166`** (1 nodes): `Read a PDF and summarize it using Claude`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 167`** (1 nodes): `Send online notification to all authorized users`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `NovaMemorySystem` connect `Core Intelligence Hub` to `Extras Utilities`, `Memory System`, `Project Autodetect`?**
+- **Why does `Personality` connect `Community 1` to `Community 0`?**
   _High betweenness centrality (0.117) - this node is a cross-community bridge._
-- **Why does `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface with` connect `Core Intelligence Hub` to `Telegram Command Handlers`, `Agent Executor`, `Smart Automation`?**
-  _High betweenness centrality (0.080) - this node is a cross-community bridge._
-- **Why does `SelfReflectionSystem` connect `Core Intelligence Hub` to `Extras Utilities`, `Self-Reflection Engine`, `Project Autodetect`?**
-  _High betweenness centrality (0.080) - this node is a cross-community bridge._
-- **Are the 87 inferred relationships involving `Personality` (e.g. with `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface with` and `Command executor for macros and automation`) actually correct?**
-  _`Personality` has 87 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 87 inferred relationships involving `NovaMemorySystem` (e.g. with `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface with` and `Command executor for macros and automation`) actually correct?**
-  _`NovaMemorySystem` has 87 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 87 inferred relationships involving `SelfReflectionSystem` (e.g. with `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface with` and `Command executor for macros and automation`) actually correct?**
-  _`SelfReflectionSystem` has 87 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 52 inferred relationships involving `ContextEngine` (e.g. with `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface with` and `Command executor for macros and automation`) actually correct?**
-  _`ContextEngine` has 52 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `NovaMemorySystem` connect `Community 1` to `Community 0`, `Community 4`?**
+  _High betweenness centrality (0.105) - this node is a cross-community bridge._
+- **Why does `SelfReflectionSystem` connect `Community 1` to `Community 0`, `Community 5`?**
+  _High betweenness centrality (0.075) - this node is a cross-community bridge._
+- **Are the 100 inferred relationships involving `Personality` (e.g. with `NOVA - Terminal Interface Talk to NOVA directly from your terminal. No Telegram` and `Check if NOVA is properly set up`) actually correct?**
+  _`Personality` has 100 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 92 inferred relationships involving `NovaMemorySystem` (e.g. with `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface wit` and `Command executor for macros and automation`) actually correct?**
+  _`NovaMemorySystem` has 92 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 92 inferred relationships involving `SelfReflectionSystem` (e.g. with `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface wit` and `Command executor for macros and automation`) actually correct?**
+  _`SelfReflectionSystem` has 92 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 60 inferred relationships involving `AgentExecutor` (e.g. with `NOVA - Telegram Bot Handler (AGI-Enhanced) Full-featured Telegram interface wit` and `Command executor for macros and automation`) actually correct?**
+  _`AgentExecutor` has 60 INFERRED edges - model-reasoned connections that need verification._
