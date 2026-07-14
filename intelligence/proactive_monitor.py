@@ -40,6 +40,8 @@ class ProactiveMonitor:
             "battery_critical": 5
         }
         self.check_interval = 300  # 5 minutes between checks
+        # Alert types never pushed to Telegram (Yash: no RAM warnings)
+        self.muted_alerts = {"memory_high", "process_heavy"}
         self.load_state()
 
     def load_state(self):
@@ -49,6 +51,8 @@ class ProactiveMonitor:
                 with open(MONITOR_DATA, 'r') as f:
                     data = json.load(f)
                     self.thresholds.update(data.get("thresholds", {}))
+                    if "muted_alerts" in data:
+                        self.muted_alerts = set(data["muted_alerts"])
         except:
             pass
 
@@ -59,6 +63,7 @@ class ProactiveMonitor:
             with open(MONITOR_DATA, 'w') as f:
                 json.dump({
                     "thresholds": self.thresholds,
+                    "muted_alerts": sorted(self.muted_alerts),
                     "last_check": datetime.now().isoformat()
                 }, f, indent=2)
         except Exception as e:
@@ -71,6 +76,9 @@ class ProactiveMonitor:
 
     def send_alert(self, alert_type: str, message: str, priority: str = "normal"):
         """Send alert only for important things, no spam"""
+        if alert_type in self.muted_alerts:
+            return
+
         # Cooldown: 30 min for normal, 10 min for critical
         alert_key = f"{alert_type}_{priority}"
         now = datetime.now()
@@ -78,7 +86,7 @@ class ProactiveMonitor:
 
         if alert_key in self.alerts_sent:
             last_sent = self.alerts_sent[alert_key]
-            if (now - last_sent).seconds < cooldown:
+            if (now - last_sent).total_seconds() < cooldown:
                 return
 
         self.alerts_sent[alert_key] = now

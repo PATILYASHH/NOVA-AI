@@ -13,6 +13,8 @@ import subprocess
 from datetime import datetime
 from typing import Dict, List, Callable, Optional
 
+from config import CLAUDE_CMD
+
 logger = logging.getLogger(__name__)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -192,7 +194,7 @@ If you can't determine a good fix, respond with: NO_FIX_NEEDED"""
 
         try:
             result = subprocess.run(
-                ["claude", "-p", "--system-prompt",
+                CLAUDE_CMD + ["-p", "--system-prompt",
                  "You are a code debugging expert. Analyze errors and propose specific, safe fixes. Be concise."],
                 input=prompt,
                 capture_output=True, text=True,
@@ -282,7 +284,7 @@ IMPORTANT:
 
         try:
             result = subprocess.run(
-                ["claude", "-p", "--dangerously-skip-permissions", prompt],
+                CLAUDE_CMD + ["-p", "--dangerously-skip-permissions", prompt],
                 capture_output=True, text=True,
                 cwd=BASE_DIR, timeout=120
             )

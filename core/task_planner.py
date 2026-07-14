@@ -18,6 +18,8 @@ import subprocess
 from datetime import datetime
 from typing import Dict, List, Optional, Callable
 
+from config import CLAUDE_CMD
+
 logger = logging.getLogger(__name__)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -111,7 +113,7 @@ Rules:
 
         try:
             result = subprocess.run(
-                ["claude", "-p", "--system-prompt",
+                CLAUDE_CMD + ["-p", "--system-prompt",
                  "You are a task planner. Break tasks into concrete executable steps. Reply ONLY with valid JSON."],
                 input=prompt,
                 capture_output=True, text=True,
@@ -206,7 +208,7 @@ Previous steps completed: {[s['name'] for s in plan.steps[:i] if s['status'] == 
 Execute this step now. Be specific and thorough."""
 
                 step_result = subprocess.run(
-                    ["claude", "-p", "--dangerously-skip-permissions", step_prompt],
+                    CLAUDE_CMD + ["-p", "--dangerously-skip-permissions", step_prompt],
                     input=step_prompt,
                     capture_output=True, text=True,
                     cwd=cwd, timeout=300,

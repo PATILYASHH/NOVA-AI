@@ -8,6 +8,7 @@ All features enabled - Only Yash can access
 import os
 import re
 import time
+import tempfile
 import logging
 import asyncio
 from typing import Optional, Dict
@@ -2701,6 +2702,107 @@ async def deltask_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # ============ SMART MESSAGE HANDLER (AGI-ENHANCED) ============
 
+class _TypingKeeper:
+    """Keeps Telegram's typing indicator alive across a slow await.
+    Telegram shows typing ~5s per send_action, so refresh every 4s."""
+
+    def __init__(self, chat):
+        self._chat = chat
+        self._task = None
+
+    async def __aenter__(self):
+        async def _loop():
+            while True:
+                try:
+                    await self._chat.send_action("typing")
+                except Exception:
+                    pass
+                await asyncio.sleep(4)
+        self._task = asyncio.create_task(_loop())
+        return self
+
+    async def __aexit__(self, *exc):
+        if self._task:
+            self._task.cancel()
+        return False
+
+
+async def _execute_step(atype: str, atarget: str) -> dict:
+    """
+    Execute one PC action inside a multi-step plan.
+    Returns {"success": bool, "summary": str, "photo": path?}.
+    Risky actions are refused here - they need individual approval.
+    """
+    try:
+        if atype == "open_app":
+            r = await asyncio.to_thread(system.open_app, atarget)
+            return {"success": r["success"], "summary": r.get("message", r.get("error", ""))}
+        if atype == "screenshot":
+            r = await asyncio.to_thread(utils.take_screenshot)
+            if r["success"]:
+                return {"success": True, "summary": "Screenshot captured", "photo": r["path"]}
+            return {"success": False, "summary": r.get("error", "screenshot failed")}
+        if atype == "see_screen":
+            r = await asyncio.to_thread(ImageIntelligence.see_screen, atarget or None)
+            shot = r.pop("shot_path", None) if isinstance(r, dict) else None
+            out = {"success": r.get("success", False),
+                   "summary": (r.get("analysis") or r.get("error", ""))[:400]}
+            if shot:  # let the plan runner show what NOVA saw, then it cleans up
+                out["photo"] = shot
+            return out
+        if atype == "system_info":
+            r = await asyncio.to_thread(system.get_system_info)
+            return {"success": r["success"], "summary": (r.get("info") or r.get("error", ""))[:400]}
+        if atype == "run_cmd":
+            r = await asyncio.to_thread(system.run_command, atarget)
+            return {"success": r["success"], "summary": (r.get("output") or r.get("error", ""))[:400]}
+        if atype == "git":
+            r = await asyncio.to_thread(code.git_operation, atarget or "status", ".")
+            return {"success": r["success"], "summary": (r.get("output") or r.get("error", ""))[:400]}
+        if atype == "find_file":
+            r = await asyncio.to_thread(file_ops.find_files, atarget)
+            files = r.get("files", []) if r.get("success") else []
+            return {"success": bool(files),
+                    "summary": (f"{len(files)} found: " + ", ".join(files[:5])) if files
+                               else f"nothing matching '{atarget}'"}
+        if atype == "read_file":
+            r = await asyncio.to_thread(file_ops.read_file, atarget)
+            return {"success": r["success"], "summary": (r.get("content") or r.get("error", ""))[:400]}
+        if atype == "clipboard":
+            r = utils.clipboard_read()
+            return {"success": r["success"], "summary": (r.get("content") or r.get("error", ""))[:300]}
+        if atype in ("browser", "search"):
+            if atype == "browser" and atarget.startswith("http"):
+                r = utils.open_url(atarget)
+            else:
+                r = utils.search_google(atarget)
+            return {"success": r["success"], "summary": r.get("message", r.get("error", ""))}
+        if atype == "network":
+            r = advanced.get_network_info()
+            return {"success": r.get("success", True), "summary": (r.get("info") or r.get("error", ""))[:300]}
+        if atype == "battery":
+            r = advanced.get_battery_status()
+            return {"success": r.get("success", True), "summary": (r.get("info") or r.get("error", ""))[:200]}
+        if atype == "disk":
+            r = advanced.get_disk_info()
+            return {"success": r.get("success", True), "summary": (r.get("info") or r.get("error", ""))[:300]}
+        if atype == "processes":
+            r = await asyncio.to_thread(system.list_processes, atarget or None)
+            return {"success": r.get("success", True), "summary": (r.get("output") or r.get("error", ""))[:400]}
+        if atype == "volume":
+            r = advanced.set_volume(int(atarget))
+            return {"success": r.get("success", True), "summary": r.get("message", "volume set")}
+        if atype == "whatsapp_share":
+            r = await asyncio.to_thread(utils.share_file_whatsapp, atarget)
+            return {"success": r["success"], "summary": (r.get("message") or r.get("error", ""))[:300]}
+        if atype in ("delete", "kill", "power", "close_app"):
+            return {"success": False,
+                    "summary": f"'{atype}' needs your individual approval - ask me separately"}
+        return {"success": False, "summary": f"unsupported step type '{atype}'"}
+    except Exception as e:
+        return {"success": False, "summary": f"error: {e}"}
+
+
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     AGI-Enhanced message handler
@@ -2823,10 +2925,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception:
         pass
 
-    # Step 1: Ask Claude if this needs an action or is just chat
-    thinking_preview = message[:50] + ("..." if len(message) > 50 else "")
-    await bot_status.set_status("thinking", custom_bio=f'thinking: "{thinking_preview}"')
-    action_decision = await personality.should_execute_action_async(message, brain_context)
+    # Step 1: decide action vs chat - local fast-path first, Claude if unclear
+    async with _TypingKeeper(update.message.chat):
+        action_decision = await personality.should_execute_action_async(message, brain_context)
 
     response = ""
 
@@ -2835,9 +2936,40 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         atype = action_decision["type"]
         atarget = action_decision["target"]
 
-        if atype == "open_app":
-            result = system.open_app(atarget)
-            response = await personality.generate_task_response_async(f"open {atarget}", result.get("message", result.get("error", "")), result["success"])
+        if atype == "multi":
+            # Claude planned a sequence of PC actions - execute step by step,
+            # stop on the first failure instead of blindly continuing.
+            steps = action_decision.get("steps", [])[:6]
+            results = []
+            async with _TypingKeeper(update.message.chat):
+                for step in steps:
+                    r = await _execute_step(step.get("type", ""), step.get("target", ""))
+                    results.append((step, r))
+                    if r.get("photo"):
+                        try:
+                            with open(r["photo"], "rb") as ph:
+                                await update.message.reply_photo(ph)
+                            os.remove(r["photo"])
+                        except Exception:
+                            pass
+                    if not r["success"]:
+                        break
+                all_ok = all(r["success"] for _, r in results)
+                steps_summary = "\n".join(
+                    f"{i+1}. {(s.get('type','') + ' ' + s.get('target','')).strip()} -> "
+                    f"{'OK' if r['success'] else 'FAILED'}: {r['summary'][:150]}"
+                    for i, (s, r) in enumerate(results)
+                )
+                if not all_ok and len(results) < len(steps):
+                    steps_summary += f"\n(stopped - skipped {len(steps) - len(results)} remaining step(s))"
+                natural = await personality.generate_task_response_async(message, steps_summary, all_ok)
+            response = f"{natural}\n\n{steps_summary}"
+            log_cmd(f"multi x{len(steps)}", steps_summary[:200], all_ok, "multi")
+
+        elif atype == "open_app":
+            async with _TypingKeeper(update.message.chat):
+                result = await asyncio.to_thread(system.open_app, atarget)
+                response = await personality.generate_task_response_async(f"open {atarget}", result.get("message", result.get("error", "")), result["success"])
             log_cmd(f"open {atarget}", response[:200], result["success"], "app")
             habit_tracker.record_app_usage(atarget)
 
@@ -2872,6 +3004,28 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     pass
             return
 
+        elif atype == "see_screen":
+            # NOVA genuinely looks at the screen (Claude vision) and reasons.
+            async with _TypingKeeper(update.message.chat):
+                result = await asyncio.to_thread(ImageIntelligence.see_screen, atarget or None)
+            shot = result.pop("shot_path", None) if isinstance(result, dict) else None
+            if shot and os.path.exists(shot):
+                try:
+                    with open(shot, "rb") as ph:
+                        await update.message.reply_photo(ph, caption="What I'm looking at:")
+                except Exception as e:
+                    logger.debug(f"Couldn't send screen photo: {e}")
+                finally:
+                    try:
+                        os.remove(shot)
+                    except Exception:
+                        pass
+            if result.get("success"):
+                response = result["analysis"]
+            else:
+                response = f"Couldn't see the screen: {result.get('error', 'unknown')}"
+            log_cmd(f"see_screen {atarget}", response[:200], result.get("success", False), "vision")
+
         elif atype == "git":
             op = atarget or "status"
             path = "."
@@ -2881,12 +3035,12 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     if p["name"] == active_project:
                         path = p["path"]
                         break
-            result = code.git_operation(op, path)
+            result = await asyncio.to_thread(code.git_operation, op, path)
             response = f"```\n{result['output']}\n```" if result["success"] else f"Git error: {result['error']}"
             log_cmd(f"git {op}", response[:200], result["success"], "git")
 
         elif atype == "find_file":
-            result = file_ops.find_files(atarget)
+            result = await asyncio.to_thread(file_ops.find_files, atarget)
             if result["success"] and result["files"]:
                 response = f"Found {result['count']} files:\n" + "\n".join(result['files'][:10])
             else:
@@ -2899,10 +3053,62 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             log_cmd(f"read {atarget}", "Read", result.get("success", False), "file")
 
         elif atype == "run_cmd":
-            result = system.run_command(atarget)
+            async with _TypingKeeper(update.message.chat):
+                result = await asyncio.to_thread(system.run_command, atarget)
             output = result.get("output", result.get("error", "Done"))
             response = f"```\n{output[:800]}\n```"
             log_cmd(atarget, output[:200], result["success"], "command")
+
+        elif atype == "whatsapp_share":
+            # Resolve the file: exact path, else fuzzy search common locations
+            fpath = atarget.strip().strip('"')
+            if not os.path.isfile(fpath):
+                needle = fpath.lower()
+                for junk in ("the ", "a ", "my ", "that "):
+                    if needle.startswith(junk):
+                        needle = needle[len(junk):]
+                pattern = needle if "*" in needle else "*" + "*".join(needle.split()) + "*"
+                found_file = None
+                async with _TypingKeeper(update.message.chat):
+                    for root in (r"C:\code", os.path.join(os.path.expanduser("~"), "Desktop"),
+                                 os.path.join(os.path.expanduser("~"), "Downloads"),
+                                 os.path.join(os.path.expanduser("~"), "Documents")):
+                        found = await asyncio.to_thread(file_ops.find_files, pattern, root, 10)
+                        files = [f for f in found.get("files", []) if os.path.isfile(f)] if found.get("success") else []
+                        if files:
+                            found_file = max(files, key=os.path.getmtime)  # newest match wins
+                            break
+                if found_file:
+                    fpath = found_file
+
+            if not os.path.isfile(fpath):
+                response = (f"Couldn't find a file matching '{atarget}' in C:\\code, Desktop, "
+                            f"Downloads or Documents. Give me the exact path.")
+                log_cmd(f"whatsapp_share {atarget}", response[:200], False, "share")
+            else:
+                async with _TypingKeeper(update.message.chat):
+                    result = await asyncio.to_thread(utils.share_file_whatsapp, fpath)
+                if result["success"]:
+                    response = result["message"]
+                    log_cmd(f"whatsapp_share {fpath}", response[:200], True, "share")
+                else:
+                    # Plan B: send the file right here on Telegram
+                    try:
+                        if os.path.getsize(fpath) <= 49 * 1024 * 1024:
+                            with open(fpath, "rb") as fdoc:
+                                await update.message.reply_document(
+                                    fdoc,
+                                    caption=f"WhatsApp didn't work ({result['error'][:150]}). "
+                                            f"Here's the file directly.")
+                            log_cmd(f"whatsapp_share {fpath}", "fallback: sent via Telegram", True, "share")
+                            return
+                        response = (f"WhatsApp share failed: {result['error']}\n"
+                                    f"File is {os.path.getsize(fpath) // (1024*1024)}MB - "
+                                    f"too big to send here (50MB Telegram limit).")
+                    except Exception as e:
+                        response = (f"WhatsApp share failed: {result['error']}\n"
+                                    f"Telegram fallback also failed: {e}")
+                    log_cmd(f"whatsapp_share {fpath}", response[:200], False, "share")
 
         elif atype == "network":
             result = advanced.get_network_info()
@@ -2918,11 +3124,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         elif atype == "browser":
             result = utils.open_url(atarget) if atarget.startswith("http") else utils.search_google(atarget)
-            response = await personality.generate_task_response_async(f"browse {atarget}", result.get("message", ""), result["success"])
+            async with _TypingKeeper(update.message.chat):
+                response = await personality.generate_task_response_async(f"browse {atarget}", result.get("message", ""), result["success"])
 
         elif atype == "search":
             result = utils.search_google(atarget)
-            response = await personality.generate_task_response_async(f"search {atarget}", result.get("message", ""), result["success"])
+            async with _TypingKeeper(update.message.chat):
+                response = await personality.generate_task_response_async(f"search {atarget}", result.get("message", ""), result["success"])
 
         elif atype == "volume":
             try:
@@ -3307,7 +3515,6 @@ If netlify asks for auth, run 'npx netlify login' first."""
 
     else:
         # === JUST CHAT - Let Claude respond naturally ===
-        await bot_status.set_status("thinking", custom_bio=f'thinking: "{message[:40]}"')
         await update.message.chat.send_action("typing")
         # Enrich context with context engine data
         try:
@@ -3315,8 +3522,8 @@ If netlify asks for auth, run 'npx netlify login' first."""
             rich_ctx = context_engine.build_context(message, nlp_result)
             if rich_ctx:
                 brain_context["rich_context"] = rich_ctx
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Context enrichment failed: {e}")
         # Auto-inject graphify context for coding questions
         try:
             msg_type = personality._detect_message_type(message)
@@ -3325,21 +3532,20 @@ If netlify asks for auth, run 'npx netlify login' first."""
                 if active_project:
                     for p in memory.rom.get_all_projects():
                         if p["name"] == active_project:
-                            graph_result = code.graphify_query(message, p["path"])
+                            graph_result = await asyncio.to_thread(code.graphify_query, message, p["path"])
                             if graph_result.get("success") and graph_result.get("context"):
                                 brain_context["graph_context"] = graph_result["context"]
                             break
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Graphify context injection failed: {e}")
 
-        # Use smart thinking response - shows "thinking..." then updates to response
+        # Reply directly - only the native "typing..." indicator while generating
         async def get_chat_response():
             return await personality.generate_response_async(message, brain_context)
 
-        response = await SmartResponse.send_thinking_response(
+        response = await SmartResponse.send_typing_response(
             _app.bot, update.effective_chat.id, message, get_chat_response
         )
-        await bot_status.set_status("online")
 
         # Skip send_long_message since SmartResponse already sent it
         memory.rm.add_message("nova", response[:1500])
@@ -3357,8 +3563,8 @@ If netlify asks for auth, run 'npx netlify login' first."""
                 personality.identity.learn_from_yash(message[:300])
                 if personality.vector_memory.is_ready():
                     personality.vector_memory.store_knowledge(message[:300], "preference", "direct")
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Dynamic learning failed: {e}")
 
         # Diary events
         try:
@@ -3616,21 +3822,24 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_authorized(update.effective_chat.id):
         return
 
-    await update.message.chat.send_action("typing")
     await update.message.reply_text("Analyzing the image...")
 
+    photo_path = None
     try:
-        # Download the photo
+        # Download the photo to the system temp dir (never the repo - the 5PM
+        # auto-push would otherwise commit leftover temp files to public GitHub)
         photo = update.message.photo[-1]  # Highest resolution
         photo_file = await photo.get_file()
-        photo_path = os.path.join(BASE_DIR, f"temp_photo_{update.message.message_id}.jpg")
+        photo_path = os.path.join(tempfile.gettempdir(), f"nova_photo_{update.message.message_id}.jpg")
         await photo_file.download_to_drive(photo_path)
 
         # Get caption as question
         question = update.message.caption or None
 
-        # Analyze
-        result = ImageIntelligence.analyze_image(photo_path, question)
+        # Analyze off the event loop (OCR + Claude take ~20-30s and would
+        # otherwise freeze the whole bot for every other user/message)
+        async with _TypingKeeper(update.message.chat):
+            result = await asyncio.to_thread(ImageIntelligence.analyze_image, photo_path, question)
 
         if result["success"]:
             response = result.get("analysis", "")
@@ -3643,12 +3852,6 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         await send_long_message(update, response)
 
-        # Cleanup
-        try:
-            os.remove(photo_path)
-        except Exception:
-            pass
-
         memory.rm.add_message("user", f"[Sent a photo] {question or 'no caption'}")
         memory.rm.add_message("nova", response[:500])
         log_cmd("photo_analysis", response[:200], True, "intelligence")
@@ -3656,6 +3859,12 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         await update.message.reply_text(f"Couldn't analyze: {str(e)[:200]}")
         logger.error(f"Photo handler error: {e}")
+    finally:
+        if photo_path and os.path.exists(photo_path):
+            try:
+                os.remove(photo_path)
+            except Exception as e:
+                logger.debug(f"Temp photo cleanup failed: {e}")
 
 
 async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -3667,72 +3876,62 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     file_name = doc.file_name or "unknown"
     file_ext = os.path.splitext(file_name)[1].lower()
 
-    await update.message.chat.send_action("typing")
-
+    doc_path = None
     try:
-        # Download the file
+        # Download to the system temp dir (not the repo - avoids the 5PM
+        # auto-push committing leftover temp files to public GitHub)
         doc_file = await doc.get_file()
-        doc_path = os.path.join(BASE_DIR, f"temp_doc_{update.message.message_id}{file_ext}")
+        doc_path = os.path.join(tempfile.gettempdir(), f"nova_doc_{update.message.message_id}{file_ext}")
         await doc_file.download_to_drive(doc_path)
 
         caption = update.message.caption or ""
 
-        if file_ext == ".pdf":
-            # PDF handling
-            await update.message.reply_text(f"Reading **{file_name}**...", parse_mode="Markdown")
+        # All branches below do blocking work (PDF parse + Claude ~20-45s) so
+        # they run off the event loop under a live typing indicator.
+        async with _TypingKeeper(update.message.chat):
+            if file_ext == ".pdf":
+                await update.message.reply_text(f"Reading **{file_name}**...", parse_mode="Markdown")
 
-            if "summar" in caption.lower() or not caption:
-                result = PDFReader.summarize_pdf(doc_path)
-                if result["success"]:
-                    response = f"**{result['file_name']}** ({result['total_pages']} pages)\n\n{result['summary']}"
+                if "summar" in caption.lower() or not caption:
+                    result = await asyncio.to_thread(PDFReader.summarize_pdf, doc_path)
+                    if result["success"]:
+                        response = f"**{result['file_name']}** ({result['total_pages']} pages)\n\n{result['summary']}"
+                    else:
+                        response = f"Error: {result['error']}"
                 else:
-                    response = f"Error: {result['error']}"
+                    # User asked a specific question about the PDF
+                    read_result = await asyncio.to_thread(PDFReader.read_pdf, doc_path)
+                    if read_result["success"]:
+                        prompt = f"Yash sent a PDF ({read_result['file_name']}, {read_result['total_pages']} pages) and asks: {caption}\n\nPDF content:\n{read_result['text'][:6000]}"
+                        response = await personality._ask_claude_async(prompt, timeout=45) or f"Here's the PDF content:\n```\n{read_result['text'][:3000]}\n```"
+                    else:
+                        response = f"Error reading PDF: {read_result['error']}"
+
+            elif file_ext in (".py", ".js", ".ts", ".dart", ".java", ".cpp", ".c", ".go", ".rs",
+                              ".html", ".css", ".json", ".yaml", ".yml", ".md", ".txt", ".sh",
+                              ".bat", ".ps1", ".sql", ".xml", ".csv", ".toml", ".ini", ".cfg"):
+                # Code/text file - read and analyze
+                try:
+                    with open(doc_path, 'r', encoding='utf-8', errors='ignore') as f:
+                        content = f.read()[:8000]
+
+                    if caption:
+                        prompt = f"Yash sent a file ({file_name}) and says: {caption}\n\nFile content:\n```\n{content}\n```"
+                        response = await personality._ask_claude_async(prompt, timeout=45) or f"```\n{content[:3000]}\n```"
+                    else:
+                        response = f"**{file_name}** ({len(content)} chars):\n```\n{content[:3000]}\n```"
+                except Exception as e:
+                    response = f"Error reading {file_name}: {e}"
+
+            elif file_ext in (".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"):
+                # Image file
+                result = await asyncio.to_thread(ImageIntelligence.analyze_image, doc_path, caption)
+                response = result.get("analysis", result.get("ocr_text", "Couldn't analyze image"))
+
             else:
-                # User asked a specific question about the PDF
-                read_result = PDFReader.read_pdf(doc_path)
-                if read_result["success"]:
-                    # Ask Claude about it
-                    from core.personality import Personality
-                    p = Personality()
-                    prompt = f"Yash sent a PDF ({read_result['file_name']}, {read_result['total_pages']} pages) and asks: {caption}\n\nPDF content:\n{read_result['text'][:6000]}"
-                    response = p._ask_claude(prompt, timeout=45) or f"Here's the PDF content:\n```\n{read_result['text'][:3000]}\n```"
-                else:
-                    response = f"Error reading PDF: {read_result['error']}"
-
-        elif file_ext in (".py", ".js", ".ts", ".dart", ".java", ".cpp", ".c", ".go", ".rs",
-                          ".html", ".css", ".json", ".yaml", ".yml", ".md", ".txt", ".sh",
-                          ".bat", ".ps1", ".sql", ".xml", ".csv", ".toml", ".ini", ".cfg"):
-            # Code/text file - read and analyze
-            try:
-                with open(doc_path, 'r', encoding='utf-8', errors='ignore') as f:
-                    content = f.read()[:8000]
-
-                if caption:
-                    # User asked something about the file
-                    from core.personality import Personality
-                    p = Personality()
-                    prompt = f"Yash sent a file ({file_name}) and says: {caption}\n\nFile content:\n```\n{content}\n```"
-                    response = p._ask_claude(prompt, timeout=45) or f"```\n{content[:3000]}\n```"
-                else:
-                    response = f"**{file_name}** ({len(content)} chars):\n```\n{content[:3000]}\n```"
-            except Exception as e:
-                response = f"Error reading {file_name}: {e}"
-
-        elif file_ext in (".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"):
-            # Image file
-            result = ImageIntelligence.analyze_image(doc_path, caption)
-            response = result.get("analysis", result.get("ocr_text", "Couldn't analyze image"))
-
-        else:
-            response = f"Received **{file_name}** ({doc.file_size // 1024}KB). I can read PDFs, code files, and images. This file type ({file_ext}) isn't supported yet."
+                response = f"Received **{file_name}** ({doc.file_size // 1024}KB). I can read PDFs, code files, and images. This file type ({file_ext}) isn't supported yet."
 
         await send_long_message(update, response)
-
-        # Cleanup
-        try:
-            os.remove(doc_path)
-        except Exception:
-            pass
 
         memory.rm.add_message("user", f"[Sent file: {file_name}] {caption}")
         memory.rm.add_message("nova", response[:500])
@@ -3741,6 +3940,12 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         await update.message.reply_text(f"Couldn't process: {str(e)[:200]}")
         logger.error(f"Document handler error: {e}")
+    finally:
+        if doc_path and os.path.exists(doc_path):
+            try:
+                os.remove(doc_path)
+            except Exception as e:
+                logger.debug(f"Temp doc cleanup failed: {e}")
 
 
 # ============ ERROR HANDLER ============

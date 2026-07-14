@@ -1,8 +1,7 @@
 """
 NOVA - Smart Response System
 Advanced Telegram chat features:
-- Live "thinking" message that updates to final response
-- Expandable thinking section (spoiler) showing what NOVA considered
+- Native "typing..." indicator while generating, then direct reply
 - Progress indicators for long tasks
 - Interactive quick-reply buttons
 """
@@ -24,62 +23,50 @@ class SmartResponse:
     """
 
     @staticmethod
-    async def send_thinking_response(bot, chat_id: int, user_message: str,
-                                      get_response_func, context: dict = None):
+    async def send_typing_response(bot, chat_id: int, user_message: str,
+                                    get_response_func, context: dict = None):
         """
-        Send a response with a live thinking phase:
-        1. Show "thinking about: [summary]" message
-        2. Update with the actual response
-        3. Add thinking details as spoiler (tap to reveal)
+        Show Telegram's native "typing..." indicator while generating,
+        then send the response directly. No intermediate messages.
 
         Returns the response text.
         """
-        # Step 1: Send thinking message
-        thinking_text = SmartResponse._make_thinking_text(user_message)
-        try:
-            thinking_msg = await bot.send_message(
-                chat_id=chat_id,
-                text=thinking_text,
-                parse_mode="HTML"
-            )
-        except Exception:
-            thinking_msg = await bot.send_message(chat_id=chat_id, text="thinking...")
+        # Telegram shows "typing..." for ~5s per action, so refresh it
+        # until the response is ready
+        async def keep_typing():
+            while True:
+                try:
+                    await bot.send_chat_action(chat_id=chat_id, action="typing")
+                except Exception:
+                    pass
+                await asyncio.sleep(4)
 
-        # Step 2: Get the actual response (non-blocking)
+        typing_task = asyncio.create_task(keep_typing())
         try:
             response = await get_response_func()
         except Exception as e:
             response = f"Had an issue: {str(e)[:200]}"
+        finally:
+            typing_task.cancel()
 
         if not response or not response.strip():
             response = "hmm, couldn't come up with anything. try again?"
 
-        # Step 3: Edit the thinking message with final response
         final_text = SmartResponse._make_final_text(response, user_message)
         try:
-            await thinking_msg.edit_text(
+            await bot.send_message(
+                chat_id=chat_id,
                 text=final_text,
                 parse_mode="HTML"
             )
         except Exception:
-            # If HTML fails, try plain text
+            # If HTML fails, try plain text (truncated as last resort)
             try:
-                await thinking_msg.edit_text(text=response)
-            except Exception:
-                # If edit fails entirely, send new message
                 await bot.send_message(chat_id=chat_id, text=response)
+            except Exception:
+                await bot.send_message(chat_id=chat_id, text=response[:4000])
 
         return response
-
-    @staticmethod
-    def _make_thinking_text(user_message: str) -> str:
-        """Create the thinking indicator message"""
-        # Short summary of what NOVA is thinking about
-        msg_preview = user_message[:60]
-        if len(user_message) > 60:
-            msg_preview += "..."
-
-        return f'<i>thinking about: "{msg_preview}"</i>'
 
     @staticmethod
     def _make_final_text(response: str, user_message: str = "") -> str:

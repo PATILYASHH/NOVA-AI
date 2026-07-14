@@ -4,11 +4,14 @@ Clipboard, screenshot, browser, and other utilities
 """
 
 import os
+import time
 import subprocess
 import webbrowser
 import logging
 from datetime import datetime
 from typing import Optional
+
+from config import WHATSAPP_PHONE
 
 logger = logging.getLogger(__name__)
 
@@ -91,6 +94,82 @@ class Utilities:
             return {"success": True, "message": f"Searching Google for: {query}"}
         except Exception as e:
             return {"success": False, "error": str(e)}
+
+    @staticmethod
+    def _whatsapp_app_available() -> bool:
+        """Check if a WhatsApp app handles the whatsapp:// protocol"""
+        try:
+            import winreg
+            winreg.CloseKey(winreg.OpenKey(winreg.HKEY_CLASSES_ROOT, "whatsapp"))
+            return True
+        except Exception:
+            return False
+
+    @staticmethod
+    def share_file_whatsapp(file_path: str, phone: str = None, wait_load: int = 15) -> dict:
+        """
+        Share a file to Yash's WhatsApp:
+        1. Copy the file to the clipboard (as a file, not text)
+        2. Open the direct chat (app if installed, else WhatsApp Web)
+        3. Paste and send
+
+        GUI automation - requires WhatsApp app or a logged-in WhatsApp Web
+        session in the default browser. Delivery cannot be verified.
+        """
+        if not SCREENSHOT_AVAILABLE:
+            return {"success": False, "error": "pyautogui not available - can't automate the paste"}
+
+        phone = phone or WHATSAPP_PHONE
+        if not phone:
+            return {"success": False, "error": "WHATSAPP_PHONE is not set in .env"}
+
+        path = os.path.abspath(os.path.expanduser(file_path))
+        if not os.path.isfile(path):
+            return {"success": False, "error": f"File not found: {path}"}
+
+        size_mb = os.path.getsize(path) / (1024 * 1024)
+        if size_mb > 95:
+            return {"success": False,
+                    "error": f"File is {size_mb:.0f}MB - over WhatsApp's ~100MB media limit"}
+
+        # 1. Put the file on the clipboard as a file drop (pyperclip only does text)
+        try:
+            ps = subprocess.run(
+                ["powershell", "-NoProfile", "-Command", f'Set-Clipboard -Path "{path}"'],
+                capture_output=True, text=True, timeout=20
+            )
+            if ps.returncode != 0:
+                return {"success": False,
+                        "error": f"Couldn't copy file to clipboard: {(ps.stderr or '')[:200]}"}
+        except Exception as e:
+            return {"success": False, "error": f"Clipboard copy failed: {e}"}
+
+        # 2. Open the direct chat
+        if Utilities._whatsapp_app_available():
+            subprocess.Popen(f'cmd /c start "" "whatsapp://send?phone={phone}"', shell=True,
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            opened_in = "WhatsApp app"
+            time.sleep(8)
+        else:
+            webbrowser.open(f"https://web.whatsapp.com/send?phone={phone}")
+            opened_in = "WhatsApp Web"
+            time.sleep(wait_load)
+
+        # 3. Paste the file and send
+        try:
+            pyautogui.hotkey("ctrl", "v")
+            time.sleep(4)  # wait for the attachment preview to appear
+            pyautogui.press("enter")
+            time.sleep(2)
+        except Exception as e:
+            return {"success": False, "error": f"Paste/send automation failed: {e}"}
+
+        return {
+            "success": True,
+            "message": (f"Copied {os.path.basename(path)} ({size_mb:.1f}MB), opened the chat "
+                        f"with +{phone} in {opened_in}, pasted and hit send. "
+                        f"Check WhatsApp to confirm - I can't verify delivery from here.")
+        }
 
     @staticmethod
     def get_current_time() -> dict:

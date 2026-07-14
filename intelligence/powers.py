@@ -9,12 +9,15 @@ import os
 import re
 import json
 import time
+import tempfile
 import logging
 import subprocess
 import threading
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 from pathlib import Path
+
+from config import CLAUDE_CMD
 
 logger = logging.getLogger(__name__)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -608,49 +611,78 @@ class ImageIntelligence:
         except Exception as e:
             result["ocr_text"] = f"(OCR failed: {e})"
 
-        # Step 2: Analyze with Claude
-        prompt = question or "Describe what you see in this image. If there's code or text, explain it."
-        if result["ocr_text"] and result["ocr_text"][0] != "(":
-            prompt += f"\n\nOCR extracted text from the image:\n{result['ocr_text'][:2000]}"
-
-        try:
-            # Claude CLI can read files when given the path in the prompt
-            full_prompt = f"""Yash sent an image. The image is at: {image_path}
-
-{prompt}
-
-Based on any text extracted and the context, give a helpful response."""
-
-            r = subprocess.run(
-                ["claude", "-p", "--system-prompt", "You are NOVA, Yash's AI assistant. Analyze the image/text and respond helpfully."],
-                input=full_prompt,
-                capture_output=True, text=True,
-                cwd=BASE_DIR, timeout=30
-            )
-            if r.returncode == 0 and r.stdout.strip():
-                result["analysis"] = r.stdout.strip()[:3000]
-            else:
-                result["analysis"] = f"Extracted text:\n{result['ocr_text'][:2000]}" if result["ocr_text"] else "Couldn't analyze the image."
-        except Exception as e:
-            result["analysis"] = f"Analysis failed: {e}\nExtracted text:\n{result['ocr_text'][:1000]}"
+        # Step 2: Genuinely SEE the image with Claude's Read tool (real vision,
+        # works without OCR). Falls back to OCR text if vision fails.
+        question = question or "Describe what you see in this image. If there's code or text, explain it."
+        vision = cls.see_image(image_path, question)
+        if vision["success"]:
+            result["analysis"] = vision["analysis"]
+        elif result["ocr_text"] and result["ocr_text"][0] != "(":
+            result["analysis"] = f"(vision unavailable) Extracted text:\n{result['ocr_text'][:2000]}"
+        else:
+            result["analysis"] = f"Couldn't analyze the image: {vision.get('error', 'unknown')}"
 
         return result
 
     @classmethod
-    def analyze_screenshot(cls, question: str = None) -> dict:
-        """Take a screenshot and analyze it"""
+    def see_image(cls, image_path: str, question: str = None, timeout: int = 90) -> dict:
+        """
+        Let Claude actually SEE an image via its Read tool (real vision).
+        This is genuine image understanding, not OCR.
+        """
+        if not os.path.isfile(image_path):
+            return {"success": False, "error": f"image not found: {image_path}"}
+        q = question or "Describe what is shown in this image, clearly and specifically."
+        prompt = (f"Use your Read tool to open the image at {image_path}, then answer "
+                  f"as NOVA (concise, direct): {q}")
         try:
-            import pyautogui
-            screenshot_path = os.path.join(BASE_DIR, "temp_screenshot_analysis.png")
-            pyautogui.screenshot(screenshot_path)
-            result = cls.analyze_image(screenshot_path, question)
-            try:
-                os.remove(screenshot_path)
-            except Exception:
-                pass
-            return result
+            r = subprocess.run(
+                CLAUDE_CMD + ["-p", "--dangerously-skip-permissions", prompt],
+                input="",  # empty stdin so the CLI doesn't wait for piped input
+                capture_output=True, text=True,
+                cwd=BASE_DIR, timeout=timeout,
+                encoding="utf-8", errors="replace",
+            )
+            if r.returncode == 0 and r.stdout.strip():
+                return {"success": True, "analysis": r.stdout.strip()[:3000]}
+            return {"success": False, "error": (r.stderr or "vision returned nothing")[:300]}
+        except subprocess.TimeoutExpired:
+            return {"success": False, "error": f"vision timed out after {timeout}s"}
         except Exception as e:
             return {"success": False, "error": str(e)}
+
+    @classmethod
+    def see_screen(cls, question: str = None) -> dict:
+        """
+        Capture the current screen and let NOVA genuinely SEE it.
+        Returns {"success", "analysis", "shot_path"} - shot_path is kept so the
+        caller can show Yash exactly what NOVA saw, then should delete it.
+        """
+        try:
+            import pyautogui
+        except Exception as e:
+            return {"success": False, "error": f"screen capture unavailable: {e}"}
+        shot = os.path.join(tempfile.gettempdir(), f"nova_screen_{int(time.time())}.png")
+        try:
+            pyautogui.screenshot(shot)
+        except Exception as e:
+            return {"success": False, "error": f"couldn't capture screen: {e}"}
+        result = cls.see_image(shot, question or "What is currently on the screen? "
+                                                 "Name the visible apps/windows and what's happening.")
+        result["shot_path"] = shot
+        return result
+
+    @classmethod
+    def analyze_screenshot(cls, question: str = None) -> dict:
+        """Take a screenshot and analyze it (delegates to real-vision see_screen)."""
+        result = cls.see_screen(question)
+        shot = result.pop("shot_path", None)
+        if shot and os.path.exists(shot):
+            try:
+                os.remove(shot)
+            except Exception:
+                pass
+        return result
 
 
 # ============ PDF READER ============
@@ -712,7 +744,7 @@ Document ({read_result['total_pages']} pages, "{read_result['file_name']}"):
 
         try:
             r = subprocess.run(
-                ["claude", "-p", "--system-prompt", "You are NOVA. Summarize this document clearly and concisely."],
+                CLAUDE_CMD + ["-p", "--system-prompt", "You are NOVA. Summarize this document clearly and concisely."],
                 input=prompt,
                 capture_output=True, text=True,
                 cwd=BASE_DIR, timeout=45

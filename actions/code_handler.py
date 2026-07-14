@@ -10,6 +10,8 @@ import tempfile
 import logging
 from typing import Optional, Dict
 
+from config import CLAUDE_CMD
+
 logger = logging.getLogger(__name__)
 
 # Cache GitHub username (fetched once via gh cli)
@@ -103,7 +105,7 @@ class CodeHandler:
         try:
             cwd = working_dir or os.getcwd()
 
-            cmd = ["claude", "-p"]
+            cmd = list(CLAUDE_CMD) + ["-p"]
             if skip_permissions:
                 cmd.append("--dangerously-skip-permissions")
 

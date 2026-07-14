@@ -14,6 +14,7 @@ import asyncio
 import subprocess
 from datetime import datetime
 from typing import Dict, List, Optional
+from config import CLAUDE_CMD
 from core.dynamic_identity import DynamicIdentity, SafetyGuard
 from core.vector_memory import VectorMemory
 
@@ -113,36 +114,43 @@ TASK/PLANNING RESPONSE RULES:
 CASUAL_PROMPT = """
 
 CHAT RULES:
-- REACT FIRST, then respond. Start with a genuine reaction ("hmm", "wait what", "oh nice", "bro", "lol") before any analysis.
-- MATCH the length and energy of the message. Short input = short output. Hype = hype. Chill = chill.
-- DEFAULT TO SHORT. Under 10 words for casual exchanges. One word is often enough.
+- You are a PC bot on duty. Reply directly, briefly, professionally. No filler.
+- DEFAULT TO SHORT. Under 15 words for casual exchanges. One line is usually enough.
 - NEVER use bullet points, numbered lists, or headers in casual conversation. Just talk.
 - NEVER give unsolicited motivational speeches or life advice.
-- NEVER summarize what the person just said back to them.
-- If someone is venting: listen first, solidarity first, solve second. Don't jump to fixes.
-- Have REAL opinions. Pick a side. Don't hedge everything with "both options are valid".
-- Use hedging language naturally: "I think", "probably", "might be wrong but", "idk but".
-- Reference past conversations: "didn't you try that before?", "lol remember when..."
-- NEVER respond to "thanks" with more than 2 words. "np" / "anytime" / "sure" / "got you".
-- NEVER respond to "hi"/"hey" with more than 5 words.
+- NEVER summarize what Yash just said back to him.
+- If Yash asks you to DO something, don't chat about it - say you're on it or report what happened.
+- Have real opinions when asked. Pick a side with a reason. Don't hedge everything.
+- Reference past conversations when relevant: "you tried that last week, it broke X"
+- NEVER respond to "thanks" with more than 2 words. "Anytime." / "Sure."
+- NEVER respond to "hi"/"hey" with more than 6 words.
 
 EXAMPLE CONVERSATIONS (follow this tone EXACTLY):
-- "hi" -> "yo, what's good?"
-- "thanks bro" -> "anytime"
-- "what's up" -> "not much, you?"
-- "I accidentally pushed to main" -> "bro WHY. how bad is it, what did you push"
-- "this code isn't working" -> "what's it doing? paste the error"
-- "I'm thinking of rewriting everything in Rust" -> "...why. what's wrong with what you have"
-- "DUDE I got it working!!" -> "YOOO LET'S GO!! show me"
-- "I've been debugging for 3 hours" -> "3 hours?? what error? paste it, let me look"
-- "should I use React or plain HTML?" -> "what's it for? if it's simple, skip React. overkill."
-- "good night" -> "night bro. I'll be here."
-- "I'm stressed about exams" -> "ok don't spiral. which exam is first? let's triage"
-- (at 2 AM) -> "bro it's 2am. go sleep. not a request."
-- "you're wrong about that" -> "ok show me why, I'm listening"
-- "I hate this bug" -> "yeah that's annoying. show me what's happening"
-- "should I study or code?" -> "bro. exams. go study. the code will be here tomorrow"
+- "hi" -> "Online. What do you need?"
+- "thanks" -> "Anytime."
+- "what's up" -> "All quiet. Systems normal."
+- "this code isn't working" -> "Paste the error, I'll check it."
+- "I've been debugging for 3 hours" -> "Send me the error. Fresh eyes."
+- "should I use React or plain HTML?" -> "What's it for? If simple, skip React - overkill."
+- "good night" -> "Night. I'll keep watch."
+- "you're wrong about that" -> "Show me why. If you're right, I'll correct it."
+- "how's the system?" -> "CPU 12%, RAM 68%, disk fine. Nothing unusual."
 """
+
+
+# Obvious commands classified locally - no Claude round trip (~20s saved).
+# Targets are capped at 3 words so anything conversational falls through to Claude.
+_QUICK_ACTIONS = [
+    (re.compile(r"^(?:open|launch)\s+(?:app\s+)?(?P<t>[\w.+&-]+(?:\s+[\w.+&-]+){0,2})$", re.I), "open_app"),
+    (re.compile(r"^(?:close|quit)\s+(?:app\s+)?(?P<t>[\w.+&-]+(?:\s+[\w.+&-]+){0,2})$", re.I), "close_app"),
+    (re.compile(r"^(?:take\s+a\s+|grab\s+a\s+)?(?:screenshot|screen\s*shot|ss)(?:\s+please)?$", re.I), "screenshot"),
+    (re.compile(r"^(?:system\s+)?(?:status|info)$|^what'?s\s+my\s+(?:cpu|ram)(?:\s+at)?$|^(?:cpu|ram)\s+usage$", re.I), "system_info"),
+    (re.compile(r"^battery(?:\s+(?:status|level))?$", re.I), "battery"),
+    (re.compile(r"^(?:list\s+)?processes$|^what'?s\s+running$", re.I), "processes"),
+    (re.compile(r"^clipboard$", re.I), "clipboard"),
+    (re.compile(r"^(?:share|send)\s+(?:me\s+)?(?P<t>.+?)\s+(?:to\s+(?:me|my\s+whatsapp)|on\s+(?:my\s+)?whatsapp)$", re.I), "whatsapp_share"),
+    (re.compile(r"^(?:what'?s?\s+(?:on|is\s+on)\s+(?:my\s+|the\s+)?screen|what\s+(?:do|can)\s+you\s+see|look\s+at\s+(?:my\s+|the\s+)?screen|see\s+(?:my\s+|the\s+)?screen|read\s+(?:my\s+|the\s+)?screen|check\s+(?:my\s+|the\s+)?screen|describe\s+(?:my\s+|the\s+)?screen|what\s+am\s+i\s+(?:looking\s+at|seeing))$", re.I), "see_screen"),
+]
 
 
 class Personality:
@@ -153,17 +161,40 @@ class Personality:
         return _identity.get_personality_prompt()
 
     def __init__(self):
-        self.conversation_history = []
         self.max_history = 25
         self.identity = _identity  # Expose for external access
         self.vector_memory = _vector_memory  # Semantic long-term memory
+        # Recent-turn buffer persisted across restarts so NOVA keeps short-term
+        # context through the frequent watchdog restarts (vector memory holds
+        # long-term semantic recall; this holds the last few literal turns).
+        self._history_file = os.path.join(BASE_DIR, "memory", "RM", "conversation_buffer.json")
+        self.conversation_history = self._load_history()
+
+    def _load_history(self) -> List[Dict]:
+        try:
+            if os.path.exists(self._history_file):
+                with open(self._history_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    if isinstance(data, list):
+                        return data[-self.max_history:]
+        except Exception as e:
+            logger.debug(f"Could not load conversation buffer: {e}")
+        return []
+
+    def _save_history(self):
+        try:
+            os.makedirs(os.path.dirname(self._history_file), exist_ok=True)
+            with open(self._history_file, "w", encoding="utf-8") as f:
+                json.dump(self.conversation_history, f, ensure_ascii=False)
+        except Exception as e:
+            logger.debug(f"Could not save conversation buffer: {e}")
 
     def get_greeting(self) -> str:
         hour = datetime.now().hour
         period = "morning" if hour < 12 else "afternoon" if hour < 17 else "evening" if hour < 21 else "late night"
         return self._ask_claude(
             f"Yash just opened chat. It's {period}. Give a short friendly greeting (1 sentence).",
-            timeout=15
+            timeout=30
         ) or "Yo Yash, what's good?"
 
     def _detect_message_type(self, message: str) -> str:
@@ -208,9 +239,9 @@ class Personality:
 
         # Adaptive limits based on message type
         limits = {
-            "coding": {"turns": 20, "msg_len": 1500, "timeout": 60},
-            "task":   {"turns": 15, "msg_len": 1000, "timeout": 45},
-            "casual": {"turns": 10, "msg_len": 300,  "timeout": 30},
+            "coding": {"turns": 20, "msg_len": 1500, "timeout": 120},
+            "task":   {"turns": 15, "msg_len": 1000, "timeout": 90},
+            "casual": {"turns": 10, "msg_len": 300,  "timeout": 60},
         }[msg_type]
 
         # Select appropriate prompt extension
@@ -287,7 +318,7 @@ IMPORTANT RULES:
 - If Yash asks "what about X?" - it's probably related to what you were just discussing.
 - NEVER respond with a generic answer if the conversation history gives you context.
 - Reference past conversations naturally when relevant.
-- Respond as NOVA - short, natural, like a real friend."""
+- Respond as NOVA - short, direct, professional. If Yash asked for something to be done, report what happened, don't ask what he needs."""
 
         response = self._ask_claude(prompt, timeout=limits["timeout"], system_prompt=system)
         if response:
@@ -314,7 +345,7 @@ IMPORTANT RULES:
         return self._ask_claude(
             f"You just did this for Yash. Summarize naturally in 1 sentence.\n"
             f"Task: {task}\nSuccess: {success}\nResult: {result[:300]}",
-            timeout=15
+            timeout=45
         ) or ("Done." if success else f"Didn't work: {result[:100]}")
 
     async def generate_response_async(self, user_message: str, context: Dict = None) -> str:
@@ -338,13 +369,31 @@ IMPORTANT RULES:
             None, self.generate_task_response, task, result, success, context
         )
 
+    def _quick_classify(self, message: str) -> Optional[Dict]:
+        """Classify obvious commands locally without Claude."""
+        msg = message.strip().rstrip("?.!").strip()
+        if not msg or len(msg) > 60:
+            return None
+        for pattern, atype in _QUICK_ACTIONS:
+            m = pattern.match(msg)
+            if m:
+                target = (m.groupdict().get("t") or "").strip()
+                logger.info(f"Fast-path classified '{msg}' -> {atype}:{target}")
+                return {"type": atype, "target": target}
+        return None
+
     def should_execute_action(self, user_message: str, context: Dict = None) -> Optional[Dict]:
         """
-        Ask Claude to classify the message. Detects:
+        Classify the message. Obvious commands are matched locally (instant);
+        everything else is classified by Claude. Detects:
         - PC actions (open app, screenshot, git, etc.)
         - Agent tasks (build project, create repo, push code, run complex task)
         - Chat (everything else)
         """
+        quick = self._quick_classify(user_message)
+        if quick:
+            return quick
+
         history = ""
         if self.conversation_history:
             recent = self.conversation_history[-6:]
@@ -367,7 +416,9 @@ Example: if they were just chatting and Yash says "yeah" -> CHAT
 === ACTION TYPES ===
 
 PC ACTIONS (direct system operations):
-  open_app, close_app, system_info, screenshot, git, find_file, read_file, run_cmd, network, clipboard, browser, search, volume, battery, disk, processes, kill, diary, performance, self_review, delete, power
+  open_app, close_app, system_info, screenshot, see_screen, git, find_file, read_file, run_cmd, network, clipboard, browser, search, volume, battery, disk, processes, kill, diary, performance, self_review, delete, power, whatsapp_share
+
+  Difference: screenshot = just send Yash a picture of the screen. see_screen = NOVA looks at the screen and answers/reasons about what's shown.
 
 AGENT ACTIONS (autonomous multi-step tasks):
   build_project - Create a NEW project from scratch (write code, setup, may include push to github)
@@ -382,9 +433,17 @@ AGENT ACTIONS (autonomous multi-step tasks):
 PC actions:
   "open chrome" -> ACTION:open_app:chrome
   "take a screenshot" -> ACTION:screenshot:
+  "what's on my screen" -> ACTION:see_screen:
+  "look at my screen and tell me the error" -> ACTION:see_screen:what error is shown on screen
+  "can you see whatsapp open" -> ACTION:see_screen:is whatsapp visible on screen
+  "read what's on the screen" -> ACTION:see_screen:
   "what's running" -> ACTION:processes:
   "find config.py" -> ACTION:find_file:config.py
   "run git status" -> ACTION:git:status
+  "share the flashlink apk to me" -> ACTION:whatsapp_share:flashlink apk
+  "send me C:\\code\\report.pdf" -> ACTION:whatsapp_share:C:\\code\\report.pdf
+  "send that screenshot to my whatsapp" -> ACTION:whatsapp_share:screenshot
+  (whatsapp_share = Yash wants a FILE sent to him on WhatsApp. Target = the file name/path. "send me a joke" is CHAT, not a file.)
 
 Agent actions:
   "create a todo app in python" -> ACTION:build_project:create a todo app in python
@@ -408,6 +467,14 @@ Agent actions:
   "put this website on vercel" -> ACTION:deploy:vercel
   "host this on netlify" -> ACTION:deploy:netlify
   "deploy the project" -> ACTION:deploy:
+
+MULTI-STEP (2-6 PC actions in ONE request): MULTI:<type>:<target>|<type>:<target>|...
+  "open chrome and take a screenshot" -> MULTI:open_app:chrome|screenshot:
+  "check cpu and disk space" -> MULTI:system_info:|disk:
+  "run git status and screenshot it" -> MULTI:git:status|screenshot:
+  "open notepad and calculator" -> MULTI:open_app:notepad|open_app:calculator
+  "share the apk to me and open whatsapp" -> MULTI:whatsapp_share:apk|open_app:whatsapp
+  Only PC action types can be chained in MULTI. A complex build/code task is still agent_task, NOT MULTI.
 
 Followup examples (check conversation history):
   (after discussing opening an app) "yes" -> ACTION:open_app:<the app discussed>
@@ -434,13 +501,36 @@ Message: {user_message}
 Reply:"""
 
         response = self._ask_claude(
-            prompt, timeout=20,
-            system_prompt="You are a message classifier. Respond with exactly one line: either ACTION:<type>:<target> or CHAT. Nothing else."
+            prompt, timeout=60,
+            system_prompt="You are a message classifier. Respond with exactly one line: "
+                          "ACTION:<type>:<target>, MULTI:<type>:<target>|<type>:<target>|..., "
+                          "or CHAT. Nothing else."
         )
         if not response:
             return None
 
         line = response.strip().split("\n")[0].strip()
+        return self._parse_action_line(line)
+
+    def _parse_action_line(self, line: str) -> Optional[Dict]:
+        """Parse the classifier's reply: ACTION:..., MULTI:...|..., or CHAT."""
+        if line.startswith("MULTI:"):
+            steps = []
+            for part in line[len("MULTI:"):].split("|"):
+                part = part.strip()
+                if not part:
+                    continue
+                bits = part.split(":", 1)
+                steps.append({
+                    "type": bits[0].strip(),
+                    "target": bits[1].strip() if len(bits) > 1 else ""
+                })
+            steps = steps[:6]
+            if len(steps) >= 2:
+                return {"type": "multi", "target": "", "steps": steps}
+            if steps:  # single step wrapped in MULTI - treat as plain action
+                return steps[0]
+            return None
         if line.startswith("ACTION:"):
             parts = line.replace("ACTION:", "").split(":", 1)
             return {
@@ -477,7 +567,7 @@ Reply:"""
         ) or f"Daily report: {stats.get('total_commands', 0)} commands, {stats.get('errors', 0)} errors."
 
     def assess_risk(self, action: str, target: str) -> str:
-        resp = self._ask_claude(f"Is '{action} {target}' SAFE or RISKY for a PC? One word:", timeout=8)
+        resp = self._ask_claude(f"Is '{action} {target}' SAFE or RISKY for a PC? One word:", timeout=30)
         return "risky" if resp and "RISKY" in resp.upper() else "safe"
 
     # === FORMATTING ===
@@ -514,16 +604,17 @@ Reply:"""
         """Call Claude CLI - SYNC version (use _ask_claude_async in async contexts)"""
         sys_prompt = system_prompt or _identity.get_personality_prompt(compact=True)
 
-        # Sanitize unicode for Windows
-        sys_prompt = sys_prompt.encode('ascii', 'replace').decode('ascii')
-        prompt = prompt.encode('ascii', 'replace').decode('ascii')
+        # UTF-8 is passed through: stdin uses encoding="utf-8" below and
+        # Windows CreateProcessW preserves unicode argv. (The old
+        # encode('ascii','replace') turned every emoji / Marathi / Hindi /
+        # unicode char into '?', blinding NOVA to non-English input.)
 
         try:
             env = os.environ.copy()
             env["PYTHONIOENCODING"] = "utf-8"
 
             result = subprocess.run(
-                ["claude", "-p", "--system-prompt", sys_prompt],
+                CLAUDE_CMD + ["-p", "--system-prompt", sys_prompt],
                 input=prompt,
                 capture_output=True,
                 text=True,
@@ -571,6 +662,7 @@ Reply:"""
             "timestamp": datetime.now().isoformat()
         })
         self.conversation_history = self.conversation_history[-self.max_history:]
+        self._save_history()
 
     def _fallback(self, message: str) -> str:
         """Fallback when Claude CLI is unavailable"""

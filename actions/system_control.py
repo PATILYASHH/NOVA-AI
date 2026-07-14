@@ -176,7 +176,8 @@ class SystemControl:
                 if os.path.isfile(actual_path):
                     return path  # Return full string including args
 
-        # Strategy 4: Search common directories with glob
+        # Strategy 4: Search common directories (depth-limited - a recursive
+        # glob over Program Files/AppData can block for minutes)
         search_dirs = [
             os.path.expandvars(r"%PROGRAMFILES%"),
             os.path.expandvars(r"%PROGRAMFILES(X86)%"),
@@ -185,9 +186,12 @@ class SystemControl:
         ]
         exe_name = command if command.endswith('.exe') else f"{command}.exe"
         for base_dir in search_dirs:
-            matches = glob_mod.glob(os.path.join(base_dir, '**', exe_name), recursive=True)
-            if matches:
-                return matches[0]
+            for depth in (exe_name,
+                          os.path.join('*', exe_name),
+                          os.path.join('*', '*', exe_name)):
+                matches = glob_mod.glob(os.path.join(base_dir, depth))
+                if matches:
+                    return matches[0]
 
         # Strategy 5: Check Windows registry for installed apps
         try:
@@ -210,8 +214,44 @@ class SystemControl:
         return None
 
     @classmethod
+    def find_start_menu_app(cls, name: str) -> Optional[dict]:
+        """
+        Find an installed app's Start Menu shortcut by fuzzy name match.
+        Returns {"name": <shortcut name>, "path": <.lnk path>} or None.
+        """
+        import difflib
+        roots = [
+            os.path.expandvars(r"%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs"),
+            os.path.expandvars(r"%APPDATA%\Microsoft\Windows\Start Menu\Programs"),
+        ]
+        shortcuts = {}
+        for root in roots:
+            if not os.path.isdir(root):
+                continue
+            for dirpath, _dirs, files in os.walk(root):
+                for f in files:
+                    if f.lower().endswith(".lnk"):
+                        shortcuts.setdefault(os.path.splitext(f)[0].lower(),
+                                             os.path.join(dirpath, f))
+        if not shortcuts:
+            return None
+
+        key = name.lower().strip().replace(".exe", "")
+        if key in shortcuts:
+            return {"name": key, "path": shortcuts[key]}
+        # Substring match (shortest wins: "anydesk" -> "AnyDesk" not "AnyDesk Uninstaller")
+        subs = [k for k in shortcuts if key in k or k in key]
+        if subs:
+            best = min(subs, key=len)
+            return {"name": best, "path": shortcuts[best]}
+        close = difflib.get_close_matches(key, list(shortcuts.keys()), n=1, cutoff=0.75)
+        if close:
+            return {"name": close[0], "path": shortcuts[close[0]]}
+        return None
+
+    @classmethod
     def open_app(cls, app_name: str) -> dict:
-        """Open an application using cmd terminal"""
+        """Open an application: resolved exe -> Start Menu shortcut -> shell start"""
         try:
             app_lower = app_name.lower().strip()
 
@@ -226,42 +266,50 @@ class SystemControl:
 
             # Try to find the executable
             exe_path = cls._find_exe_path(command)
+            launched_via = None
 
             if exe_path:
                 logger.info(f"Opening {app_name} via resolved path: {exe_path}")
-                # Use cmd /c start to launch the app in a new process
-                if ' --' in exe_path:
-                    # Special launch command (like Discord's Update.exe --processStart)
-                    cmd_str = f'cmd /c start "" "{exe_path}"'
-                elif ' ' in exe_path:
-                    cmd_str = f'cmd /c start "" "{exe_path}"'
-                else:
-                    cmd_str = f'cmd /c start "" "{exe_path}"'
-
-                subprocess.Popen(cmd_str, shell=True,
+                subprocess.Popen(f'cmd /c start "" "{exe_path}"', shell=True,
                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                launched_via = "exe"
             else:
-                # Fallback: try start command directly (for apps registered in PATH or shell)
-                logger.info(f"Opening {app_name} via direct start command: {command}")
-                if " " in command:
-                    cmd_str = f'cmd /c start "" "{command}"'
+                # Exe not found - check Start Menu shortcuts (fuzzy match).
+                # Covers apps whose exe name differs from what Yash calls them.
+                shortcut = cls.find_start_menu_app(app_name) or cls.find_start_menu_app(command)
+                if shortcut:
+                    logger.info(f"Opening {app_name} via Start Menu shortcut: {shortcut['path']}")
+                    subprocess.Popen(f'cmd /c start "" "{shortcut["path"]}"', shell=True,
+                                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    launched_via = f"shortcut '{shortcut['name']}'"
                 else:
-                    cmd_str = f'cmd /c start "" {command}'
+                    # Last resort: shell start (apps registered in PATH or App Paths)
+                    logger.info(f"Opening {app_name} via direct start command: {command}")
+                    quoted = f'"{command}"' if " " in command else command
+                    proc = subprocess.run(f'cmd /c start "" {quoted}', shell=True,
+                                          capture_output=True, text=True, timeout=10)
+                    if proc.returncode != 0 and proc.stderr:
+                        return {"success": False,
+                                "error": f"Couldn't find '{app_name}' on this PC - no exe, "
+                                         f"no Start Menu entry. It doesn't look installed."}
+                    launched_via = "shell"
 
-                proc = subprocess.run(cmd_str, shell=True, capture_output=True,
-                                      text=True, timeout=10)
-                if proc.returncode != 0 and proc.stderr:
-                    return {"success": False, "error": f"Could not open {app_name}: {proc.stderr.strip()}"}
-
-            # Verify the app launched by waiting briefly and checking processes
+            # Verify the app actually launched (check twice - some apps start slow)
             time.sleep(1.5)
-            app_running = cls._is_app_running(command, app_name)
-
-            if app_running:
+            if cls._is_app_running(command, app_name):
                 return {"success": True, "message": f"Opened {app_name}"}
-            else:
-                # App might still be starting up - give benefit of the doubt if no error
-                return {"success": True, "message": f"Launched {app_name} (may take a moment to start)"}
+            time.sleep(2.5)
+            if cls._is_app_running(command, app_name):
+                return {"success": True, "message": f"Opened {app_name}"}
+
+            if launched_via == "shell":
+                # Nothing resolved AND no process appeared - report honestly
+                return {"success": False,
+                        "error": f"Ran start for '{app_name}' but no matching process "
+                                 f"appeared. It's probably not installed."}
+            return {"success": True,
+                    "message": f"Launched {app_name} via {launched_via} - process not "
+                               f"visible yet, it may still be starting"}
 
         except subprocess.TimeoutExpired:
             return {"success": False, "error": f"Timed out trying to open {app_name}"}

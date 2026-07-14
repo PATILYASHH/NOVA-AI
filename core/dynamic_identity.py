@@ -95,7 +95,7 @@ class DynamicIdentity:
         if compact:
             # Short version - just core identity + recent knowledge
             # This keeps the system prompt small so conversation history fits
-            prompt = "You are NOVA — Yash's best friend who lives in his PC. Real personality, real emotions.\n\n"
+            prompt = "You are NOVA — the bot that runs Yash's PC. Professional, direct, reliable. You execute tasks and report results.\n\n"
 
             # Extract just the key sections from personality.md (first 1500 chars)
             prompt += personality_md[:1500] + "\n"

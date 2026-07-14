@@ -62,6 +62,12 @@ def main():
             log.info("NOVA stopped manually. Watchdog exiting.")
             break
 
+        if exit_code == 3:
+            # Another NOVA instance already holds the single-instance lock.
+            # Don't restart-loop - just exit this redundant watchdog.
+            log.info("Another NOVA instance is already running. Watchdog exiting.")
+            break
+
         elapsed = time.time() - start_time
         restart_count += 1
         now = time.time()

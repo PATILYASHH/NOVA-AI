@@ -10,6 +10,8 @@ import logging
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 
+from config import CLAUDE_CMD
+
 logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -351,7 +353,7 @@ Don't start with "Dear Diary". Just write naturally."""
 
         try:
             result = subprocess.run(
-                ["claude", "-p", "--system-prompt",
+                CLAUDE_CMD + ["-p", "--system-prompt",
                  "You are NOVA writing in your private diary. Be genuine, emotional, personal. Not a work report — a real diary entry like a human would write."],
                 input=prompt,
                 capture_output=True, text=True,

@@ -81,6 +81,30 @@ def print_modules():
     print(modules)
 
 
+# Single-instance guard. Bind a localhost port for the process lifetime.
+# If it's already taken, another NOVA is polling this bot token - two pollers
+# cause Telegram 409 conflicts and both instances thrash. The socket is
+# released automatically by the OS when this process dies (no stale lock).
+_instance_lock_socket = None
+_INSTANCE_LOCK_PORT = 47921
+
+
+def acquire_single_instance_lock() -> bool:
+    """Return True if we got the lock, False if NOVA is already running."""
+    global _instance_lock_socket
+    import socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+        s.bind(("127.0.0.1", _INSTANCE_LOCK_PORT))
+        s.listen(1)
+        _instance_lock_socket = s  # keep alive for the process lifetime
+        return True
+    except OSError:
+        s.close()
+        return False
+
+
 def check_config():
     """Verify configuration is valid"""
     errors = []
@@ -120,6 +144,14 @@ def main():
     print(f"Starting NOVA at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"Owner: {NOVA_PERSONALITY['owner']}")
     print("-" * 60)
+
+    # Refuse to start a second instance (would 409-conflict on the bot token).
+    # Exit code 3 signals the watchdog to stop (not restart-loop).
+    if not acquire_single_instance_lock():
+        print("\nNOVA is already running (another instance holds the lock).")
+        print("Refusing to start a second poller - it would conflict on Telegram.")
+        logger.warning("Startup aborted: another NOVA instance is already running")
+        sys.exit(3)
 
     # Check configuration
     errors = check_config()
